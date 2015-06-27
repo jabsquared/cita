@@ -1,0 +1,13 @@
+/* Empty. Add your own CSS if you like */
+
+.nav{
+    text-align: center;
+    clear: both;
+}
+
+
+.logo {
+  font-family: cursive;
+  font-weight: 900;
+  font-size: 20px;
+}
