@@ -1,0 +1,9 @@
+{
+  "name": "ExpenseTracker",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.11",
+    "jQuery": "~2.1.1",
+    "fontawesome": "~4.2.0"
+  }
+}
