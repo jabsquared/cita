@@ -5,11 +5,12 @@
 // the 2nd parameter is an array of 'requires'
 var myApp = angular.module('starter', ['ionic']);
 
-myApp.controller('MainCtrl', function() {
+myApp.controller('MainCtrl', function($scope) {
 	this.items = [];
 	for (var i = 1; i <= 20; i++) {
 		this.items.push(i);
 	}
+    $scope.listCanSwipe = true
 });
 
 myApp.run(function($ionicPlatform) {
