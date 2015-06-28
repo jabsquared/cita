@@ -37,6 +37,6 @@ angular.module('ionicApp', ['ionic'])
   ];
 
 	/* iterate through array and append text "AM" to values */
-	
+
 
 });
