@@ -7,7 +7,7 @@
     </ion-header-bar>
 
   <ion-content padding="true">
-    <img id='calendar' src="/img/cal.png" alt="Calendar" />
+    <img id='calendar' ng-src="img/cal.png" alt="Calendar" />
     <div class="appointments">
       <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
       <div class="events" ng-repeat="a in appointments">
@@ -22,7 +22,7 @@
                   </div>
                 </div>
                 <div class="biz-logo">
-                  <img src="/img/biz-icons/{{a.img_p}}" alt="" />
+                  <img ng-src="img/biz-icons/{{a.img_p}}" alt="" />
                 </div>
               </a>
        </div>
