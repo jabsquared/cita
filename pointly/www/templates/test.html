@@ -1,5 +1,19 @@
-<ion-view view-title="Test">
+<ion-view view-title="Schedule" ng-controller='MainCtrl'>
   <ion-content padding="true">
-      <h1>It Works!</h1>
+    {{test}}
+    <ion-list can-swipe="listCanSwipe">
+      <ion-item collection-repeat="item in main.items">
+        {{item}}
+        <ion-option-button class="button-positive" ng-click="edit(item)">
+          Add
+        </ion-option-button>
+        <ion-option-button class="button-positive" ng-click="edit(item)">
+          Edit
+        </ion-option-button>
+        <ion-option-button class="button-positive" ng-click="edit(item)">
+          Schedule
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

@@ -87,4 +87,13 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('HomeTabCtrl', function($scope) {
   console.log('HomeTabCtrl');
+})
+
+.controller('MainCtrl', function($scope) {
+  $scope.test = 'Scope Works!';
+	$scope.items = [];
+	for (var i = 1; i <= 20; i++) {
+		$scope.items.push(i);
+	}
+    $scope.listCanSwipe = true
 });
