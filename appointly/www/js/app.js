@@ -7,10 +7,14 @@ var myApp = angular.module('starter', ['ionic']);
 
 myApp.controller('MainCtrl', function($scope) {
 	this.items = [];
-	for (var i = 1; i <= 20; i++) {
+	for (var i = 0; i <= 20; i++) {
 		this.items.push(i);
 	}
     $scope.listCanSwipe = true
+});
+
+myApp.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('top');
 });
 
 myApp.run(function($ionicPlatform) {

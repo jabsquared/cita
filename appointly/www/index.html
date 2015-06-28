@@ -12,7 +12,7 @@
 	<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
+		
 	<!-- ionic/angularjs js -->
 	<script src="lib/ionic/js/ionic.bundle.js"></script>
 
@@ -27,8 +27,22 @@
 
 	<ion-pane>
 		<ion-header-bar class="bar-stable">
-			<h1 class="title">Ionic Blank Starter</h1>
+			<button class="button button-icon icon ion-navicon"></button>
 		</ion-header-bar>
+		<ion-tabs class="tabs-positive">
+			<ion-tab title="Day">
+				Day
+			</ion-tab>
+
+			<ion-tab title="Week">
+				Week
+			</ion-tab>
+
+			<ion-tab title="Month">
+				Month
+			</ion-tab>
+		</ion-tabs>
+
 		<ion-content>
 			<ion-list can-swipe="listCanSwipe">
 				<ion-item collection-repeat="item in main.items">
