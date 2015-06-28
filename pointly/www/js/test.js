@@ -100,22 +100,24 @@ angular.module('ionicApp', ['ionic'])
       });
     });
 
-
     $scope.appointments = [
         {
           name: 'Green Valley Clinic',
+          img_p: 'health.png',
           date: 'June 30th',
           time: 10,
           zone: 'am'
         },
         {
           name: 'Silver Point Dental',
+          img_p: 'dental.png',
           date: 'July 16th',
           time: 2,
           zone: 'pm'
         },
         {
           name: 'Multicare',
+          img_p: 'multicare.png',
           date: 'July 25th',
           time: 4,
           zone: 'pm'

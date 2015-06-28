@@ -12,12 +12,17 @@
       <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
       <div class="events" ng-repeat="a in appointments">
               <a class="item slot" href="#" ng-style="">
-                <div class="app-title">
-                  <p>Meeting with</p>
-                  <p id='biz-name'>{{a.name}}</p>
+                <div class="all-info">
+                  <div class="app-title">
+                    <p>Meeting with</p>
+                    <p id='biz-name'>{{a.name}}</p>
+                  </div>
+                  <div class="app-info">
+                    <i class="ion-ios-clock-outline"></i><div class='date-info'>{{a.date}} {{a.time}}{{a.zone}}</div>
+                  </div>
                 </div>
-                <div class="app-info">
-                  <i class="ion-ios-clock-outline"></i>{{a.date}} {{a.time}}{{a.zone}}
+                <div class="biz-logo">
+                  <img src="/img/{{a.img_p}}" alt="" />
                 </div>
               </a>
        </div>
