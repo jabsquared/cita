@@ -1,9 +1,9 @@
-<ion-view title="History">
+<ion-view title="MM/DD/YYYY Schedule">
   <ion-nav-buttons side="right">
     <a class="button button-icon icon ion-plus" href="#/app/create"></a>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <ion-list can-swipe="listCanSwipe" ng-controller="MyCtrl" show-delete="shouldShowDelete" show-reorder="shouldShowReorder">
+    <ion-list>
       <ion-item ng-repeat="expense in expenses | orderBy:'date':reverse track by expense.id" class="item item-icon-left">
         <i class="icon ion-record {{ expense.category.cssClass }}"></i>
         <div class="row">
@@ -17,20 +17,8 @@
             {{ expense.amount | currency }}
           </div>
         </div>
+        <ion-option-button class="button button-assertive" on-tap="confirmDelete(expense.id)">Cancel</ion-option-button>
       </ion-item>
     </ion-list>
-    <ion-option-button class="button-positive" ng-click="share(item)">
-      Add
-    </ion-option-button>
-    <ion-option-button class="button-info" ng-click="edit(item)">
-      Cancel
-    </ion-option-button>
-
-        <ion-delete-button class="ion-minus-circled"
-                       ng-click="items.splice($index, 1)">
-    </ion-delete-button>
-    <ion-reorder-button class="ion-navicon"
-                        on-reorder="reorderItem(item, $fromIndex, $toIndex)">
-    </ion-reorder-button>
   </ion-content>
 </ion-view>
