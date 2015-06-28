@@ -89,11 +89,37 @@ angular.module('ionicApp', ['ionic'])
   console.log('HomeTabCtrl');
 })
 
-.controller('MainCtrl', function($scope) {
+.controller('MainCtrl', function($http, $scope) {
   $scope.test = 'Scope Works!';
-	$scope.items = [];
-	for (var i = 1; i <= 20; i++) {
-		$scope.items.push(i);
-	}
-    $scope.listCanSwipe = true
+
+  $scope.stories = [];
+
+  $http.get('http://www.reddit.com/r/cringepics/.json').success(function(response) {
+      angular.forEach(response.data.children, function(child){
+        $scope.stories.push(child.data);
+      });
+    });
+
+
+    $scope.appointments = [
+        {
+          name: 'Green Valley Clinic',
+          date: 'June 30th',
+          time: 10,
+          zone: 'am'
+        },
+        {
+          name: 'Silver Point Dental',
+          date: 'July 16th',
+          time: 2,
+          zone: 'pm'
+        },
+        {
+          name: 'Multicare',
+          date: 'July 25th',
+          time: 4,
+          zone: 'pm'
+        }
+      ];
+
 });

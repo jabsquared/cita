@@ -1,4 +1,4 @@
-<ion-view view-title="Sign-In">
+<!-- <ion-view>
   <ion-content>
     <div class="list">
       <label class="item item-input">
@@ -19,4 +19,35 @@
       </p>
     </div>
   </ion-content>
+</ion-view> -->
+<ion-view>
+    <ion-content class="" padding="true">
+        <div id="logo-name">
+            <p>APPOINTLY</p>
+        </div>
+        <img id='logo' src="/img/AppIcon.png" alt="Appointly" />
+        <form style="">
+            <ion-list style="">
+                <!-- <label style="" class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input placeholder="" type="text">
+                </label>
+                <label style="" class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input placeholder="" type="password">
+                </label> -->
+                <label class="item item-input item-floating-label input">
+                  <span class="input-label">First Name</span>
+                  <input type="text" placeholder="First Name">
+                </label>
+                <label class="item item-input item-floating-label input">
+                  <span class="input-label">Last Name</span>
+                  <input type="password" placeholder="Password">
+                </label>
+            </ion-list>
+            <div style="height: 20px;" class="spacer"></div>
+            <button style="color: #fff" class="button button-block sign-in-btn" ng-click="signIn(user)" >Sign in</button>
+            <a style="" class="button button-stable button-clear button-block " href="#/signup">Or create an account</a>
+        </form>
+    </ion-content>
 </ion-view>

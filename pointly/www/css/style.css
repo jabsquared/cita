@@ -5,3 +5,108 @@
     margin-right: auto;
     max-width: 20em;
 }
+
+/*Header*/
+
+.bar {
+  padding: 0px;
+  border: none;
+}
+
+#header-title {
+  font-size: 1.5em;
+  height: 30px;
+  margin: 0.5em auto;
+}
+
+.ion-plus-circled {
+  border: none;
+}
+
+.button .button-icon .icon .ion-navicon {
+
+}
+
+/*Schedule View*/
+
+.ion-ios-clock-outline{
+  margin-right: 5px;
+  font-size: 16px;
+  color: #50D2C2;
+  /*color: rgb(80 210 194);*/
+}
+
+.app-title {
+  margin-bottom: 5px;
+}
+
+.app-title p{
+  display: inline;
+  font-size: 1em;
+}
+
+#biz-name{
+  color: black;
+}
+
+.app-info{
+  font-size: .8em;
+  font-weight: 600;
+}
+
+/*Sign-up Page*/
+
+#logo-name{
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #50D2C2;
+}
+
+#logo-name p {
+  font-size: 19px;
+}
+
+#logo {
+    display: block;
+    width: 55px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sign-in-btn{
+  background-color: #50D2C2;
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
+.time {
+  float: left;
+  width: 100px;
+  height: 100%;
+  background-color: white;
+  position: relative;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.time p {
+  margin: 0;
+  color: #19468D;
+}
+
+.slot {
+  padding: 5px;
+  vertical-align: center;
+  font-size: 14px;
+  overflow: hidden;
+}
