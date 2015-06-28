@@ -15,8 +15,6 @@ setInterval(function(){
     },
     success   : function (data) {
       if (typeof success != 'undefined') {
-
-
         // jQuery.parseJSON(doc.responseJSON.documents.toSource());
         success(data);
       }

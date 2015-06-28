@@ -1,5 +1,9 @@
 /* Empty. Add your own CSS if you like */
 
+.appForm input{
+  color: #50D2C2;
+}
+
 .content{
     margin-left: auto;
     margin-right: auto;

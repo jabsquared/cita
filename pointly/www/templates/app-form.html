@@ -1,14 +1,18 @@
 <ion-view style="" title="Schedule Appointment">
   <ion-content scroll="false" padding="false">
-    <form style="">
+    <form class="appForm">
       <ion-list style="">
         <label style="" name="search" class="item item-input">
           <i class="icon ion-search placeholder-icon"></i>
           <input placeholder="Search" type="search">
         </label>
+        <label style="" name="name" class="item item-input">
+          <span class="input-label">Business</span>
+          <input name="date" value="Multicare" type="date">
+        </label>
         <label style="" name="date" class="item item-input">
           <span class="input-label">Date</span>
-          <input placeholder="June 28, 2015" type="date">
+          <input name="date" placeholder="June 28, 2015" type="date">
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
@@ -18,13 +22,9 @@
           <span class="input-label">Location</span>
           <input placeholder="Near me" type="text">
         </label>
-        <label style="" name="label" class="item item-select">
-          <span class="input-label">Label</span>
-          <select></select>
-        </label>
       </ion-list>
     </form>
-    <div style="" class="button-bar"></div>
-    <button style="" class="button button-dark button-block ">CHECK CALENDAR</button>
+    <div style="#50D2C2" class="button-bar"></div>
+    <button ng-click="go()" style="background-color: #50D2C2; color: #fff;" class="button button-block ">Submit Request</button>
   </ion-content>
 </ion-view>
