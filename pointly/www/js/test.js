@@ -73,6 +73,32 @@ angular.module('ionicApp', ['ionic'])
         }
       }
     })
+
+    $.ajax({
+      url: 'http://appointlysmsserver.mybluemix.net/data',
+      type: 'POST',
+      dataType: 'json',
+      data: '{"txt":"Test! I works! Yeaaaaa! I love life!"}',
+      // beforeSend: function(xhr) {
+      //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+      // },
+      success: function(data) {
+        alert("Submitted!");
+        if (typeof success != 'undefined') {
+          // jQuery.parseJSON(doc.responseJSON.documents.toSource());
+          success(data);
+        }
+      },
+      fail: function(data) {
+        alert('No!');
+        alert(data.error);
+        console.log('Fail!');
+        if (typeof fail != 'undefined') {
+          fail(data);
+        }
+      }
+    })
+
   }
 })
 
