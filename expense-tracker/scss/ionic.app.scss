@@ -21,3 +21,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+// Colors
+// -------------------------------
+
+$light:                 #fff !default;
+$stable:                #f8f8f8 !default;
+$positive:              #50d2c2 !default; //#4a87ee;
+$calm:                  #b6b6b9 !default; //#43cee6;
+$balanced:              #a2c57a !default; //#66cc33
+$energized:             #f0b840 !default;
+$assertive:             #ef4e3a !default;
+$royal:                 #8a6de9 !default;
+$dark:                  #1d1d26 !default;
