@@ -1,4 +1,13 @@
-/* Empty. Add your own CSS if you like */
-.contact-name {
-	text-align: left;
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
+
+.tabs-group {
+	text-transform: uppercase;
+	cursor: pointer;
+	word-spacing: 25px;
+}
+
+.day:hover, .week:hover, .month:hover {
+	text-decoration: underline;
 }
