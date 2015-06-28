@@ -53,7 +53,7 @@ angular.module('ionicApp', ['ionic'])
       url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert/2',
       type: 'POST',
       dataType: 'json',
-      data: '{"id":"2","name":"Multicare","img_p":"multicare.png","date":"July 25th","time":"4","zone":"pm"}',
+      data: '{"id":"2","name":"Multicare","img_p":"multicare.png","date":"June 28th","time":"4","zone":"pm"}',
       beforeSend: function(xhr) {
         xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       },
