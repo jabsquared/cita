@@ -11,6 +11,11 @@ angular.module('ionicApp', ['ionic'])
     .state('schedule', {
       url: '/schedule',
       templateUrl: 'templates/schedule.html'
+    })
+    .state('form', {
+      url: '/form',
+      templateUrl: 'templates/app-form.html',
+      controller: 'FormCtrl'
     });
 
   $urlRouterProvider.otherwise('/sign-in');
@@ -40,6 +45,36 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('HomeTabCtrl', function($scope) {
   console.log('HomeTabCtrl');
+})
+
+.controller('FormCtrl', function($scope) {
+  $scope.go = function() {
+    alert("Go called!");
+    $.ajax({
+      url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert/2',
+      type: 'POST',
+      dataType: 'json',
+      data: '{"id":"2","name":"Multicare","img_p":"multicare.png","date":"July 25th","time":"4","zone":"pm"}',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+      },
+      success: function(data) {
+        alert("We did it!");
+        if (typeof success != 'undefined') {
+          // jQuery.parseJSON(doc.responseJSON.documents.toSource());
+          success(data);
+        }
+      },
+      fail: function(data) {
+        alert('No!');
+        alert(data.error);
+        console.log('Fail!');
+        if (typeof fail != 'undefined') {
+          fail(data);
+        }
+      }
+    })
+  }
 })
 
 .controller('MainCtrl', function($http, $scope) {
