@@ -1,6 +1,7 @@
 console.log("called database script!");
 
 var doc;
+var info;
 
 console.log("Ended database script!");
 setInterval(function(){
@@ -14,9 +15,10 @@ setInterval(function(){
     },
     success   : function (data) {
       if (typeof success != 'undefined') {
-        success(data);
-        console.log(data);
 
+
+        // jQuery.parseJSON(doc.responseJSON.documents.toSource());
+        success(data);
       }
     },
     fail      : function (data) {
@@ -27,4 +29,8 @@ setInterval(function(){
       }
     }
   });
-},10000);
+
+  doc.done (function (data) {
+    info = data.documents;
+  });
+},999);
