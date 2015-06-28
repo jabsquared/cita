@@ -1,5 +1,17 @@
 /* Empty. Add your own CSS if you like */
 
+}
+#back{
+  color: #50D2C2;
+  margin-right: 10px;
+  padding-left: 10px;
+
+}
+
+.back-bar{
+  color: #50D2C2;
+}
+
 .appForm input{
   color: #50D2C2;
 }
