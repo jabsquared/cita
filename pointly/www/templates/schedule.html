@@ -1,0 +1,26 @@
+<ion-view view-title="Schedule" ng-controller='MainCtrl as main'>
+
+  <ion-header-bar class="bar-light">
+      <button class="button button-icon icon"></button>
+      <p id='header-title'>June 1st </p>
+      <button class="button icon ion-plus"></button>
+    </ion-header-bar>
+
+  <ion-content padding="true">
+    <img id='calendar' src="/img/cal.png" alt="Calendar" />
+    <div class="appointments">
+      <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
+      <div class="events" ng-repeat="a in appointments">
+              <a class="item slot" href="#" ng-style="">
+                <div class="app-title">
+                  <p>Meeting with</p>
+                  <p id='biz-name'>{{a.name}}</p>
+                </div>
+                <div class="app-info">
+                  <i class="ion-ios-clock-outline"></i>{{a.date}} {{a.time}}{{a.zone}}
+                </div>
+              </a>
+       </div>
+    </div>
+  </ion-content>
+</ion-view>

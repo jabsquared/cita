@@ -6,6 +6,10 @@
     max-width: 20em;
 }
 
+.padding{
+  padding: 0;
+}
+
 /*Header*/
 
 .bar {
@@ -14,13 +18,15 @@
 }
 
 #header-title {
-  font-size: 1.5em;
+  font-size: 1.3em;
   height: 30px;
   margin: 0.5em auto;
 }
 
-.ion-plus-circled {
+.ion-plus {
   border: none;
+  border-bottom: 1px solid #EEEEEE;
+  margin-right: 5px;
 }
 
 .button .button-icon .icon .ion-navicon {
@@ -52,6 +58,23 @@
 .app-info{
   font-size: .8em;
   font-weight: 600;
+}
+
+#calendar {
+  height: 55px;
+  margin: 0;
+  width: 100%;
+  max-width: 700px;
+  max-height: 150px;
+}
+
+.appointments{
+  margin: 0 10px;
+}
+
+.events{
+  border-left: none;
+  border-right: none;
 }
 
 /*Sign-up Page*/

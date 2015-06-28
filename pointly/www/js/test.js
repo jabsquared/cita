@@ -12,9 +12,9 @@ angular.module('ionicApp', ['ionic'])
       url: '/forgot-password',
       templateUrl: 'templates/forgot-password.html'
     })
-    .state('test', {
-      url: '/test',
-      templateUrl: 'templates/test.html'
+    .state('schedule', {
+      url: '/schedule',
+      templateUrl: 'templates/schedule.html'
     })
     .state('tabs', {
       url: '/tab',
@@ -80,7 +80,7 @@ angular.module('ionicApp', ['ionic'])
 
   $scope.signIn = function(user) {
     console.log('Sign-In', user);
-    $state.go('test');
+    $state.go('schedule');
   };
 
 })
