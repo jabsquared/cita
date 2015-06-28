@@ -3,12 +3,13 @@
  */
 
 .text-center {
-  text-align : center;
+  text-align: center;
 }
 
 .light-grey {
   color: #666;
 }
+
 
 /*
  * Wijmo Customization
@@ -56,6 +57,7 @@
 
 .custom-form-list .item, .custom-form-list .wj-control {
   margin: 5px 0;
+
 }
 
 .custom-form-list .item:first-child, .custom-form-list .wj-control:first-child {
