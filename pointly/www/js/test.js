@@ -49,7 +49,6 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('FormCtrl', function($scope) {
   $scope.go = function() {
-    alert("Go called!");
     $.ajax({
       url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert/2',
       type: 'POST',
@@ -59,7 +58,7 @@ angular.module('ionicApp', ['ionic'])
         xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       },
       success: function(data) {
-        alert("We did it!");
+        alert("Submitted!");
         if (typeof success != 'undefined') {
           // jQuery.parseJSON(doc.responseJSON.documents.toSource());
           success(data);
