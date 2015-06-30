@@ -54,7 +54,7 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_img_p='multicare.png';
     $scope.app_date='06/08/2015';
     $scope.app_time;
-    $scope.app_zone=;
+    $scope.app_zone;
 
   $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
 
