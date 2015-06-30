@@ -54,7 +54,6 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_img_p='multicare.png';
     $scope.app_date = new Date();
     $scope.app_time = new Date();
-
   $scope.go = function(app_id, app_date, app_name, app_time) {
     app_date = app_date.toString();
     app_time = app_time.toString();
@@ -155,7 +154,6 @@ angular.module('ionicApp', ['ionic'])
   }
 
 })
-
 .controller('MainCtrl', function($http, $scope) {
   $scope.test = 'Scope Works!';
 
