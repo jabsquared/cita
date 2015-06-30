@@ -49,15 +49,12 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('FormCtrl', function($scope) {
 
-
-
     $scope.app_id;
     $scope.app_name;
     $scope.app_img_p='multicare.png';
     $scope.app_date='06/08/2015';
     $scope.app_time;
     $scope.app_zone=;
-
 
   $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
 
@@ -106,8 +103,8 @@ angular.module('ionicApp', ['ionic'])
     $.ajax({
       url: 'http://appointlysmsserver.mybluemix.net/data',
       type: 'POST',
-      dataType: 'json',
-      data: '{"txt":"Test! I works! Yeaaaaa! I love life!"}',
+      dataType: 'text',
+      data: send.name + " scheduled an appoinment with you at " + send.time + " on " + send.date + ", location: The Church",
       // beforeSend: function(xhr) {
       //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       // },
