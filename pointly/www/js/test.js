@@ -48,20 +48,44 @@ angular.module('ionicApp', ['ionic'])
 })
 
 .controller('FormCtrl', function($scope) {
+
+
+
+    $scope.app_id='9999999';
+    $scope.app_name='default';
+    $scope.app_img_p='multicare.png';
+    $scope.app_date='June 8th, 2015';
+    $scope.app_time='9';
+    $scope.app_zone='am';
+
+
   $scope.go = function() {
+
+    var send = {
+      "id"    : angular.copy($scope.app_id),
+      "name"  : $scope.app_name,
+      "img_p" : $scope.app_img_p,
+      "date"  : $scope.app_date,
+      "time"  : $scope.app_time,
+      "zone"  : $scope.app_zone
+    }
+
+    console.log(send);
+
+
     $.ajax({
       url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert/2',
       type: 'POST',
       dataType: 'json',
-      data: '{"id":"2","name":"Multicare","img_p":"multicare.png","date":"June 28th","time":"4","zone":"pm"}',
+      data: JSON.stringify(send),
       beforeSend: function(xhr) {
         xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       },
       success: function(data) {
-        alert("Submitted!");
         if (typeof success != 'undefined') {
           // jQuery.parseJSON(doc.responseJSON.documents.toSource());
           success(data);
+          alert("Submitted!");
         }
       },
       fail: function(data) {
@@ -73,6 +97,7 @@ angular.module('ionicApp', ['ionic'])
         }
       }
     })
+
 
     $.ajax({
       url: 'http://appointlysmsserver.mybluemix.net/data',

@@ -9,24 +9,31 @@
             <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
           </label>
         </a>
+        <label style="" name="app_id" class="item item-input">
+          <span class="input-label">ID</span>
+          <input name="name" placeholder="app_id" type="text" ng-model="app_id">
+        </label>
         <label style="" name="name" class="item item-input">
           <span class="input-label">Business</span>
-          <input name="date" value="Multicare" type="date">
+          <input name="name" placeholder="Multicare" type="text" ng-model="app_name">
         </label>
         <label style="" name="date" class="item item-input">
           <span class="input-label">Date</span>
-          <input name="date" placeholder="June 28, 2015" type="date">
+          <input name="date" placeholder="June 28, 2015" type="text" ng-model="app_date">
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
-          <input placeholder="8:00am" type="date">
+          <input placeholder="8" type="datetime" ng-model="app_time">
         </label>
         <label style="" name="location" class="item item-input">
-          <span class="input-label" >Location</span>
+          <span class="input-label">Location</span>
           <input value="222 State Ave N Kent, WA 98030" type="text">
         </label>
       </ion-list>
     </form>
+    <div class="">
+      {{app_id}}
+    </div>
     <div style="#50D2C2" class="button-bar"></div>
     <button ng-click="go()" style="background-color: #50D2C2; color: #fff;" class="button button-block ">Submit Request</button>
   </ion-content>
