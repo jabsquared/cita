@@ -49,15 +49,12 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('FormCtrl', function($scope) {
 
-
-
-    $scope.app_id='9999999';
-    $scope.app_name='JABBB';
-    $scope.app_img_p='multicare.png';
-    $scope.app_date='June 30th, 2015';
-    $scope.app_time='9';
-    $scope.app_zone='am';
-
+    $scope.app_id     = '9999999';
+    $scope.app_name   = 'JABBB';
+    $scope.app_img_p  = 'multicare.png';
+    $scope.app_date   = 'June 30th, 2015';
+    $scope.app_time   = '9';
+    $scope.app_zone   = 'am';
 
   $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
 
