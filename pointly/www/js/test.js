@@ -51,15 +51,19 @@ angular.module('ionicApp', ['ionic'])
 
 
 
-    $scope.app_id='9999999';
-    $scope.app_name='default';
+    $scope.app_id;
+    $scope.app_name;
     $scope.app_img_p='multicare.png';
-    $scope.app_date='June 8th, 2015';
-    $scope.app_time='9';
-    $scope.app_zone='am';
+    $scope.app_date='06/08/2015';
+    $scope.app_time;
+    $scope.app_zone=;
 
 
   $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
+
+    var fullTime = app_time.split(" ");
+    app_time = fullTime[0];
+    app_zone = fullTime[1];
 
     var send = {
       "id"    : app_id,
