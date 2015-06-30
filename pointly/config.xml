@@ -39,4 +39,6 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
+  <!-- Allow links to cluterpoing -->
+  <allow-navigation href="https://api-us.clusterpoint.com//100600/Appointly/*" /> 
 </widget>
