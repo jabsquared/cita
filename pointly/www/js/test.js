@@ -47,7 +47,7 @@ angular.module('ionicApp', ['ionic'])
   console.log('HomeTabCtrl');
 })
 
-.controller('FormCtrl', function($scope) {
+.controller('FormCtrl', function($scope, $ionicPopup) {
 
     $scope.app_id;
     $scope.app_name;
@@ -86,6 +86,16 @@ angular.module('ionicApp', ['ionic'])
 
     console.log(send);
 
+    $scope.showAlert = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'All done!',
+       template: 'Appointment Requested'
+     });
+     alertPopup.then(function(res) {
+       console.log('Thank you for not eating my delicious ice cream cone');
+     });
+   };
+
 
     $.ajax({
       //removed the /2 from url.
@@ -99,9 +109,11 @@ angular.module('ionicApp', ['ionic'])
       success: function(data) {
         if (typeof success != 'undefined') {
           // jQuery.parseJSON(doc.responseJSON.documents.toSource());
+
+
           success(data);
-          alert("Submitted!");
         }
+        $scope.showAlert();
       },
       fail: function(data) {
         alert('No!');
@@ -117,8 +129,9 @@ angular.module('ionicApp', ['ionic'])
     $.ajax({
       url: 'http://appointlysmsserver.mybluemix.net/data',
       type: 'POST',
+      contentType: "text/plain; charset=utf-8",
       dataType: 'text',
-      data: send.name + " scheduled an appoinment with you at " + send.time + " on " + send.date + ", location: The Church",
+      data: send.name + " scheduled an appoinment with you at " + send.time + send.zone + " on " + send.date + ", location: The Church",
       // beforeSend: function(xhr) {
       //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       // },
@@ -140,6 +153,7 @@ angular.module('ionicApp', ['ionic'])
     })
 
   }
+
 })
 
 .controller('MainCtrl', function($http, $scope) {
