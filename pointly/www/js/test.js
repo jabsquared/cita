@@ -52,15 +52,28 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_id;
     $scope.app_name;
     $scope.app_img_p='multicare.png';
-    $scope.app_date='06/08/2015';
-    $scope.app_time;
-    $scope.app_zone;
+    $scope.app_date = new Date();
+    $scope.app_time = new Date();
 
-  $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
-
+  $scope.go = function(app_id, app_date, app_name, app_time) {
+    app_date = app_date.toString();
+    app_time = app_time.toString();
+    console.log('Passed into function:');
+    console.log(app_id);
+    console.log(app_date);
+    console.log(app_name);
+    console.log(app_time);
     var fullTime = app_time.split(" ");
     app_time = fullTime[0];
-    app_zone = fullTime[1];
+    var app_zone = fullTime[1];
+    app_date(new Date(), "mmmm dS, yyyy");
+
+    console.log('Fulltime: ');
+    console.log(fullTime);
+    console.log('Time: ');
+    console.log(app_time);
+    console.log('Zone: ');
+    console.log(app_zone);
 
     var send = {
       "id"    : app_id,
@@ -68,14 +81,15 @@ angular.module('ionicApp', ['ionic'])
       "img_p" : $scope.app_img_p,
       "date"  : app_date,
       "time"  : app_time,
-      "zone"  : $scope.app_zone
+      "zone"  : app_zone
     }
 
     console.log(send);
 
 
     $.ajax({
-      url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert/2',
+      //removed the /2 from url.
+      url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
       type: 'POST',
       dataType: 'json',
       data: JSON.stringify(send),

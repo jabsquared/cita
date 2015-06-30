@@ -9,7 +9,7 @@
         </a>
         <label style="" name="app_id" class="item item-input">
           <span class="input-label">ID</span>
-          <input name="name" placeholder="app_id" type="text" ng-model="app_id">
+          <input name="name" placeholder="22" type="text" ng-model="app_id">
         </label>
         <label style="" name="name" class="item item-input">
           <span class="input-label">Business</span>
@@ -17,11 +17,12 @@
         </label>
         <label style="" name="date" class="item item-input">
           <span class="input-label">Date</span>
-          <input name="date" placeholder="" type="date" ng-model="app_date">
+          <input id="date" name="date" placeholder="June 5th, 2016" type="date"
+           ng-model="app_date">
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
-          <input placeholder="8" type="time" ng-model="app_time">
+          <input placeholder="8:25 AM" type="time" ng-model="app_time">
         </label>
         <label style="" name="location" class="item item-input">
           <span class="input-label">Location</span>
@@ -30,6 +31,11 @@
       </ion-list>
     </form>
     <div style="#50D2C2" class="button-bar"></div>
-    <button ng-click="go(app_id, app_date, app_name, app_zone, app_time)" style="background-color: #50D2C2; color: #fff;" class="button button-block ">Submit Request</button>
+    <button ng-click="go(app_id, app_date, app_name, app_time)" style="background-color: #50D2C2; color: #fff;" class="button button-block ">Submit Request</button>
+    <script>
+    jQuery(function($){
+       $("#date").mask("June 22nd, 1014,{placeholder:"mmmm dS, yyyy"});
+      });
+    </script>
   </ion-content>
 </ion-view>
