@@ -59,14 +59,14 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_zone='am';
 
 
-  $scope.go = function() {
+  $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
 
     var send = {
-      "id"    : angular.copy($scope.app_id),
-      "name"  : $scope.app_name,
+      "id"    : app_id,
+      "name"  : app_name,
       "img_p" : $scope.app_img_p,
-      "date"  : $scope.app_date,
-      "time"  : $scope.app_time,
+      "date"  : app_date,
+      "time"  : app_time,
       "zone"  : $scope.app_zone
     }
 
