@@ -47,14 +47,14 @@ angular.module('ionicApp', ['ionic'])
   console.log('HomeTabCtrl');
 })
 
-.controller('FormCtrl', function($scope) {
+.controller('FormCtrl', function($scope, $ionicPopup) {
 
-    $scope.app_id     = '9999999';
-    $scope.app_name   = 'JABBB';
-    $scope.app_img_p  = 'multicare.png';
-    $scope.app_date   = 'June 30th, 2015';
-    $scope.app_time   = '9';
-    $scope.app_zone   = 'am';
+  $scope.app_id = '9999999';
+  $scope.app_name = 'JABBB';
+  $scope.app_img_p = 'multicare.png';
+  $scope.app_date = 'June 30th, 2015';
+  $scope.app_time = 9;
+  $scope.app_zone = 'am';
 
   $scope.go = function(app_id, app_date, app_name, app_zone, app_time) {
 
@@ -63,11 +63,21 @@ angular.module('ionicApp', ['ionic'])
       "name"  : app_name,
       "img_p" : $scope.app_img_p,
       "date"  : app_date,
-      "time"  : app_time,
+      "time"  : parseInt(app_time),
       "zone"  : $scope.app_zone
     }
 
     console.log(send);
+
+    $scope.showAlert = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'All done!',
+       template: 'Appointment Requested'
+     });
+     alertPopup.then(function(res) {
+       console.log('Thank you for not eating my delicious ice cream cone');
+     });
+   };
 
 
     $.ajax({
@@ -81,9 +91,11 @@ angular.module('ionicApp', ['ionic'])
       success: function(data) {
         if (typeof success != 'undefined') {
           // jQuery.parseJSON(doc.responseJSON.documents.toSource());
+
+
           success(data);
-          alert("Submitted!");
         }
+        $scope.showAlert();
       },
       fail: function(data) {
         alert('No!');
@@ -123,6 +135,7 @@ angular.module('ionicApp', ['ionic'])
     })
 
   }
+
 })
 
 .controller('MainCtrl', function($http, $scope) {
