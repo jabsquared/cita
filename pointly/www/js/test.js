@@ -56,13 +56,13 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_time = new Date();
 
   $scope.go = function(app_id, app_date, app_name, app_time) {
-    app_date = app_date.toString();
-    app_time = app_time.toString();
     console.log('Passed into function:');
     console.log(app_id);
     console.log(app_date);
     console.log(app_name);
     console.log(app_time);
+    app_date = app_date.toString();
+    app_time = app_time.toString();
     var fullTime = app_time.split(" ");
     app_time = fullTime[0];
     var app_zone = fullTime[1];
