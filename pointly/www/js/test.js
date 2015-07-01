@@ -22,24 +22,73 @@ angular.module('ionicApp', ['ionic'])
 
 })
 
-.controller('SignInCtrl', function($http, $scope, $state) {
+.controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {
+
+
+  $scope.showAlert = function(title, body) {
+   var alertPopup = $ionicPopup.alert({
+     title: title,
+     template: body
+   });
+   alertPopup.then(function(res) {
+     console.log('Error');
+   });
+ };
+
   console.log('Enter SingInCtrl');
+  $scope.url = '#';
+  $scope.acc_number = '';
+  $scope.acc_password = '';
+  $scope.login = function (number, password){
+    console.log('Enter login function');
+    console.log('number: ' + number);
+    console.log('password: ' + password);
+    var users = $.ajax({
+      url       : 'https://api-us.clusterpoint.com/100600/User_Accounts/_list_last',
+      type      : 'GET',
+      dataType  : 'json',
+      // data      : '{"query": "<name>Test</name>"}',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+      },
+      success   : function (data) {
+        console.log('Retrived Users!');
+        if (typeof success != 'undefined') {
+          // jQuery.parseJSON(doc.responseJSON.documents.toSource();
+          success(data);
+        }
 
-  // $http.get('https://api-us.clusterpoint.com/100600/Appointly/_list_last.json').success(function(response) {
-  //   console.log('Start Route!');
-  //   angular.forEach(documents.children, function(child) {
-  //     // $scope.stories.push(child.data);
-  //     console.log(child.name);
-  //   })
-  //   }).error(function(response) {
-  //   console.log('fuck.');
-  //   // body...
-  // });
+      },
+      fail      : function (data) {
+        alert(data.error);
+        console.log('Fail!');
+        if (typeof fail != 'undefined') {
+          fail(data);
+        }
+      }
+    });
 
-  $scope.signIn = function(user) {
-    console.log('Sign-In', user);
-    $state.go('schedule');
-  };
+    users.done (function (data) {
+      var d = data.documents;
+      //----------------------------------------------------------
+      console.log(d);
+      var result = $.grep(d, function(e){ return e.id == number && e.password == password; });
+      console.log(result);
+      if (result.length == 0) {
+        $scope.showAlert('Error', 'Incorrect Number or Password!');
+      } else if (result.length == 1) {
+        $state.go('schedule');
+      } else {
+        $scope.showAlert('Error', 'Duplicate Users Found!');
+      }
+    });
+
+  }
+
+  // $scope.signIn = function(user) {
+  //   console.log('Sign-In', user);
+  //   $state.go('schedule');
+  // };
 
 })
 
