@@ -2,7 +2,7 @@
   <ion-content scroll="false" padding="false">
     <form class="appForm">
       <ion-list style="">
-        <a href="/schedule" style="text-decoration: none;">
+        <a ng-href="#/schedule" style="text-decoration: none;">
           <label style="" name="search" class="back-bar">
             <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
           </label>
@@ -23,7 +23,7 @@
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
-          <input placeholder="8:25 AM" type="text" ng-model="app_time">
+          <input placeholder="8:25 AM" type="time" ng-model="app_time">
         </label>
         <label style="" name="location" class="item item-input">
           <span class="input-label">Location</span>

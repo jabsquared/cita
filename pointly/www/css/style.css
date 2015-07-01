@@ -1,11 +1,9 @@
 /* Empty. Add your own CSS if you like */
 
-}
 #back{
   color: #50D2C2;
-  margin-right: 10px;
-  padding-left: 10px;
-
+  margin-right: 9px;
+  padding-left: 9px;
 }
 
 .back-bar{
@@ -17,9 +15,9 @@
 }
 
 .content{
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 20em;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 20em;
 }
 
 .padding{
@@ -100,6 +98,12 @@
   font-weight: 500;
   padding-bottom: 15px;
 }
+
+.loc-info {
+  color: gray;
+
+}
+
 .all-info {
   display: inline;
   float: left;;
@@ -124,8 +128,6 @@
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
   color: #50D2C2;
 }
 
@@ -135,16 +137,11 @@
 
 #logo {
     display: block;
-    width: 55px;
+    width: 63px;
     margin-top: 20px;
     margin-bottom: 2.2em;
     margin-left: auto;
     margin-right: auto;
-}
-
-.sign-in-btn{
-  color: #fff;
-  background-color: #50D2C2;
 }
 
 .input {
@@ -177,4 +174,14 @@
 
 .popup-body {
   text-align: center;
+}
+
+.user-icon {
+  display: block;
+  width: 27vw;
+  max-width: 180px;
+  margin-top: 20px;
+  margin-bottom: 2.2em;
+  margin-left: auto;
+  margin-right: auto;
 }
