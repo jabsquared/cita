@@ -57,22 +57,22 @@ angular.module('ionicApp', ['ionic'])
   $scope.go = function(app_id, app_date, app_name, app_time) {
     app_date = app_date.toString();
     app_time = app_time.toString();
-    console.log('Passed into function:');
-    console.log(app_id);
-    console.log(app_date);
-    console.log(app_name);
-    console.log(app_time);
-    var fullTime = app_time.split(" ");
-    app_time = fullTime[0];
-    var app_zone = fullTime[1];
-    app_date(new Date(), "mmmm dS, yyyy");
-
-    console.log('Fulltime: ');
-    console.log(fullTime);
-    console.log('Time: ');
-    console.log(app_time);
-    console.log('Zone: ');
-    console.log(app_zone);
+    // console.log('Passed into function:');
+    // console.log(app_id);
+    // console.log(app_date);
+    // console.log(app_name);
+    // console.log(app_time);
+    // var fullTime = app_time.split(" ");
+    // app_time = fullTime[0];
+    // var app_zone = fullTime[1];
+    // app_date(new Date(), "mmmm dS, yyyy");
+    //
+    // console.log('Fulltime: ');
+    // console.log(fullTime);
+    // console.log('Time: ');
+    // console.log(app_time);
+    // console.log('Zone: ');
+    // console.log(app_zone);
 
     var send = {
       "id"    : app_id,
@@ -80,7 +80,7 @@ angular.module('ionicApp', ['ionic'])
       "img_p" : $scope.app_img_p,
       "date"  : app_date,
       "time"  : app_time,
-      "zone"  : app_zone
+      "zone"  : "AM"
     }
 
     console.log(send);
