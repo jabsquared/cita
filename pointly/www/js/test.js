@@ -74,6 +74,7 @@ angular.module('ionicApp', ['ionic'])
     // console.log('Zone: ');
     // console.log(app_zone);
 
+
     var send = {
       "id"    : app_id,
       "name"  : app_name,
