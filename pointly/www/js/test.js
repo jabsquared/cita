@@ -18,7 +18,7 @@ angular.module('ionicApp', ['ionic'])
       templateUrl: 'templates/app-form.html',
       controller: 'FormCtrl'
     })
-    .state('signup'.{
+    .state('signup',{
       url: '/sign-up',
       templateUrl : 'templates/sign-up.html',
       controller : 'SignUpCtrl'
