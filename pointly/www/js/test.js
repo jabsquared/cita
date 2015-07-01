@@ -10,7 +10,8 @@ angular.module('ionicApp', ['ionic'])
     })
     .state('schedule', {
       url: '/schedule',
-      templateUrl: 'templates/schedule.html'
+      templateUrl: 'templates/schedule.html',
+      controller: 'ScheduleCtrl'
     })
     .state('form', {
       url: '/form',
@@ -20,6 +21,22 @@ angular.module('ionicApp', ['ionic'])
 
   $urlRouterProvider.otherwise('/sign-in');
 
+})
+
+.controller('ScheduleCtrl', function($scope, $http){
+  $scope.stories = [];
+  $scope.appointments = info;
+  $scope.doRefresh = function() {
+    $http.get('#/schedules')
+     .success(function(/*newItems*/) {
+      //  $scope.items = newItems;
+      $scope.appointments = info;
+     })
+     .finally(function() {
+       // Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.refreshComplete');
+     });
+    };
 })
 
 .controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {
@@ -96,7 +113,7 @@ angular.module('ionicApp', ['ionic'])
   console.log('HomeTabCtrl');
 })
 
-.controller('FormCtrl', function($scope, $ionicPopup) {
+.controller('FormCtrl', function($http, $scope, $state, $timeout, $ionicPopup) {
 
     $scope.app_id;
     $scope.app_name;
@@ -143,6 +160,7 @@ angular.module('ionicApp', ['ionic'])
        template: 'Appointment Requested'
      });
      alertPopup.then(function(res) {
+       $state.go('schedule');
        console.log('Thank you for not eating my delicious ice cream cone');
      });
    };
@@ -165,6 +183,7 @@ angular.module('ionicApp', ['ionic'])
           success(data);
         }
         $scope.showAlert();
+
       },
       fail: function(data) {
         alert('No!');
@@ -210,9 +229,9 @@ angular.module('ionicApp', ['ionic'])
 .controller('MainCtrl', function($http, $scope) {
   $scope.test = 'Scope Works!';
 
-  $scope.stories = [];
-
-  $scope.appointments = info;
+  // $scope.stories = [];
+  //
+  // $scope.appointments = info;
 
   // [{
   //   name: 'Green Valley Clinic',
