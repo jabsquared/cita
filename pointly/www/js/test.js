@@ -30,7 +30,7 @@ angular.module('ionicApp', ['ionic'])
   $scope.stories = [];
   $scope.appointments = info;
   $scope.doRefresh = function() {
-    $http.get('/schedules')
+    $http.get('/schedule')
      .success(function(/*newItems*/) {
       //  $scope.items = newItems;
       $scope.appointments = info;
@@ -52,8 +52,6 @@ angular.module('ionicApp', ['ionic'])
      console.log('Error');
    });
  };
-
-
 })
 
 .controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {

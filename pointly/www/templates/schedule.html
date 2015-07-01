@@ -1,20 +1,27 @@
 <ion-view view-title="Schedule">
 
-  <ion-header-bar class="bar-light">
+  <ion-header-bar class="bar bar-header bar-light">
+    <a ng-href="#/sign-in" style="text-decoration: none;">
+      <label style="" name="search" class="back-bar">
+        <h4 style="color: #50D2C2; text-decoration: none;" id="back">Back</h4>
+      </label>
+    </a>
       <a class="button button-icon icon"></a>
-      <p id='header-title'>June 28th </p>
-      <a href="/form" class="button icon ion-plus"></a>
-    </ion-header-bar>
+      <p id='header-title' style="text-align: center">June 28th </p>
+      <a ng-href="#/form" class="button icon ion-plus"></a>
+      <div class="bar bar-subheader">
+        <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
+      </div>
+  </ion-header-bar>
 
-  <ion-content padding="true">
+  <ion-content class="has-subheader" padding="true">
+
     <ion-refresher
         pulling-text="Pull to refresh..."
         on-refresh="doRefresh()">
     </ion-refresher>
     <!-- <img id='calendar' ng-src="img/cal.png" alt="Calendar" /> -->
-    <div class="">
-      <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
-    </div>
+
     <ion-list class="appointments" show-delete="false" can-swipe="true">
       <ion-item class="events" ng-repeat="a in appointments | orderBy:'-date'">
               <a class="" href="#" ng-style="">
@@ -25,7 +32,12 @@
                   </div>
                   <div class="app-info">
                     <i class="ion-ios-clock-outline"></i>
-                      <div class='date-info'>{{a.date}} {{a.time}} {{a.zone}}</div>
+                      <div class='date-info'>
+                        {{a.date}} {{a.time.getTime()}}
+                      </div>
+                      <div class='loc-info'>
+                        {{a.location}}
+                      </div>
                   </div>
                 </div>
                 <div class="biz-logo">
