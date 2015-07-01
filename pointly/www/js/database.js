@@ -5,6 +5,7 @@ var info;
 
 console.log("Ended database script!");
 setInterval(function(){
+
   doc = $.ajax({
     url       : 'https://api-us.clusterpoint.com//100600/Appointly/_list_last',
     type      : 'GET',

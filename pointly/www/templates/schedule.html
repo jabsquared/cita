@@ -1,17 +1,23 @@
-<ion-view view-title="Schedule" ng-controller='MainCtrl as main'>
+<ion-view view-title="Schedule">
 
   <ion-header-bar class="bar-light">
       <a class="button button-icon icon"></a>
       <p id='header-title'>June 28th </p>
-      <a href="#/form" class="button icon ion-plus"></a>
+      <a href="/form" class="button icon ion-plus"></a>
     </ion-header-bar>
 
   <ion-content padding="true">
-    <img id='calendar' ng-src="img/cal.png" alt="Calendar" />
-    <div class="appointments">
+    <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+    </ion-refresher>
+    <!-- <img id='calendar' ng-src="img/cal.png" alt="Calendar" /> -->
+    <div class="">
       <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
-      <div class="events" ng-repeat="a in appointments">
-              <a class="item slot" href="#" ng-style="">
+    </div>
+    <ion-list class="appointments" show-delete="false" can-swipe="true">
+      <ion-item class="events" ng-repeat="a in appointments | orderBy:'-date'">
+              <a class="" href="#" ng-style="">
                 <div class="all-info">
                   <div class="app-title">
                     <p>Meeting with</p>
@@ -26,7 +32,9 @@
                   <img ng-src="img/biz-icons/{{a.img_p}}" alt="" />
                 </div>
               </a>
-       </div>
-    </div>
+              <ion-option-button class="button-assertive icon ion-trash-a" ng-click="edit(item)">
+              </ion-option-button>
+       </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>
