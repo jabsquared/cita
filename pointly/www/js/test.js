@@ -27,7 +27,7 @@ angular.module('ionicApp', ['ionic'])
   $scope.stories = [];
   $scope.appointments = info;
   $scope.doRefresh = function() {
-    $http.get('#/schedules')
+    $http.get('/schedules')
      .success(function(/*newItems*/) {
       //  $scope.items = newItems;
       $scope.appointments = info;
