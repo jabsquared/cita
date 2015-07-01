@@ -38,16 +38,16 @@
                 </label> -->
                 <label class="item item-input item-floating-label input">
                   <!-- <span class="input-label">First Name</span> -->
-                  <input type="text" placeholder="Your Name" ng-model="user.username">
+                  <input type="tel" placeholder="Your Phone Number" ng-model="acc_number">
                 </label>
                 <label class="item item-input item-floating-label input">
                   <!-- <span class="input-label">Last Name</span> -->
-                  <input type="tel" placeholder="Your Phone Number" ng-model="user.tel">
+                  <input type="password" placeholder="Your Password" ng-model="acc_password">
                 </label>
             </ion-list>
             <div style="height: 20px;" class="spacer"></div>
-            <button class="button button-positive button-block sign-in-btn" ng-click="signIn(user)" >Sign in</button>
-            <a style="" class="button button-stable button-clear button-block " href="#/signup">Or create an account</a>
+            <button class="button button-positive button-block sign-in-btn" ng-click="login(acc_number, acc_password)" >Sign in</button>
+            <button style="" class="button button-stable button-clear button-block " >Or create an account</button>
         </form>
     </ion-content>
 </ion-view>

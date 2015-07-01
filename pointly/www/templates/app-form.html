@@ -2,7 +2,7 @@
   <ion-content scroll="false" padding="false">
     <form class="appForm">
       <ion-list style="">
-        <a href="#/schedule" style="text-decoration: none;">
+        <a href="/schedule" style="text-decoration: none;">
           <label style="" name="search" class="back-bar">
             <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
           </label>
@@ -17,19 +17,20 @@
         </label>
         <label style="" name="date" class="item item-input">
           <span class="input-label">Date</span>
-          <input id="date" name="date" placeholder="June 5th, 2016" type="text"
-           ng-model="app_date">
+
+          <input id="date" name="date" placeholder="June 5th, 2016" type="date" ng-model="app_date">
+
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
-          <input placeholder="8:25 AM" type="time" ng-model="app_time">
+          <input placeholder="8:25 AM" type="text" ng-model="app_time">
         </label>
         <label style="" name="location" class="item item-input">
           <span class="input-label">Location</span>
-          <input value="222 State Ave N Kent, WA 98030" type="text">
+          <input value="222 State Ave N Kent, WA 98030" type="text" ng-model="app_location">
         </label>
       </ion-list>
     </form>
-    <button ng-click="go(app_id, app_date, app_name, app_time)" class="button button-block button-positive">Submit Request</button>
+    <button ng-click="go(app_id, app_date, app_name, app_time, app_location)" class="button button-block button-positive">Submit Request</button>
   </ion-content>
 </ion-view>
