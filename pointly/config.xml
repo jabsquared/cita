@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.pointly551247" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>pointly</name>
+  <name>Cita</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Your Appointment, in 4 letters
     </description>
   <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+      JABBB
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -39,6 +39,6 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
-  <!-- Allow links to cluterpoing -->
-  <allow-navigation href="https://api-us.clusterpoint.com//100600/Appointly/*" /> 
+  <!-- Allow links to clusterpoint -->
+  <allow-navigation href="https://api-us.clusterpoint.com//100600/Appointly/*" />
 </widget>

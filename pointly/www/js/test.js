@@ -118,10 +118,8 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_id;
     $scope.app_name;
     $scope.app_img_p='multicare.png';
-    $scope.app_date = 'December 7th, 1996';
-    $scope.app_time = '2:22';
-    // $scope.app_date = new Date();
-    // $scope.app_time = new Date();
+    $scope.app_date = new Date();
+    $scope.app_time = new Date();
 
   $scope.go = function(app_id, app_date, app_name, app_time) {
     console.log('Passed into function:');
@@ -225,7 +223,6 @@ angular.module('ionicApp', ['ionic'])
   }
 
 })
-
 .controller('MainCtrl', function($http, $scope) {
   $scope.test = 'Scope Works!';
 
