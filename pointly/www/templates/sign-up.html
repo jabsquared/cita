@@ -1,4 +1,4 @@
-<ion-view style="" title="Signup">
+<ion-view style="" view-title="Signup">
   <a ng-href="#/sign-in" style="text-decoration: none;">
     <label name="search" class="back-bar">
       <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
@@ -14,26 +14,22 @@
             <ion-list style="">
                 <label style="" class="item item-input">
                     <span class="input-label">Full Name</span>
-                    <input placeholder="WALTER WHITE" type="text">
+                    <input placeholder="WALTER WHITE" type="text" ng-model="name">
                 </label>
                 <label style="" class="item item-input">
                     <span class="input-label">Email</span>
-                    <input placeholder="walterwhite@meth.com" type="email">
+                    <input placeholder="walterwhite@meth.com" type="email" ng-model="email">
                 </label>
                 <label style="" class="item item-input">
                     <span class="input-label">Phone</span>
-                    <input placeholder="9999999999" type="tel">
+                    <input placeholder="9999999999" type="tel" ng-model="phone">
                 </label>
                 <label style="" class="item item-input">
                     <span class="input-label">Password</span>
-                    <input placeholder="" type="password">
+                    <input placeholder="" type="password" ng-model="pass">
                 </label>
             </ion-list>
-            <a ng-href="#/sign-in" style="text-decoration: none;">
-              <button style="" class="button button-positive button-block">
-                Sign up
-              </button>
-            </a>
+            <button ng-click="signup(name, email, phone, pass)" class="button button-block button-positive">Sign up</button>
         </form>
     </ion-content>
 </ion-view>
