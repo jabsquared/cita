@@ -41,7 +41,8 @@ angular.module('ionicApp', ['ionic'])
  };
 
   $scope.doRefresh = function() {
-    $http.get('/schedule')
+    console.log('called refresh!');
+    $http.get('#/schedule')
      .success(function(/*newItems*/) {
       //  $scope.items = newItems;
       $scope.appointments = info;
