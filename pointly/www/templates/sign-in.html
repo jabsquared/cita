@@ -25,7 +25,7 @@
         <div id="logo-name">
             <p>APPOINTLY</p>
         </div>
-        <img id='logo' ng-src="img/AppIcon.png" alt="Appointly" />
+        <img id='logo' class="icon ion-image" ng-src="img/AppIcon.png" alt="Appointly" />
         <form style="">
             <ion-list style="">
                 <!-- <label style="" class="item item-input">
@@ -46,8 +46,10 @@
                 </label>
             </ion-list>
             <div style="height: 20px;" class="spacer"></div>
-            <button class="button button-positive button-block sign-in-btn" ng-click="login(acc_number, acc_password)" >Sign in</button>
-            <button style="" class="button button-stable button-clear button-block " >Or create an account</button>
+            <button class="button button-positive button-block" ng-click="login(acc_number, acc_password)" >Sign in</button>
+            <a style="" class="button button-clear button-block" ng-href="#/sign-up">
+              Or create an account
+            </a>
         </form>
     </ion-content>
 </ion-view>

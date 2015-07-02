@@ -17,17 +17,20 @@ angular.module('ionicApp', ['ionic'])
       url: '/form',
       templateUrl: 'templates/app-form.html',
       controller: 'FormCtrl'
+    })
+    .state('signup',{
+      url: '/sign-up',
+      templateUrl : 'templates/sign-up.html',
+      controller : 'SignUpCtrl'
     });
-
   $urlRouterProvider.otherwise('/sign-in');
-
 })
 
 .controller('ScheduleCtrl', function($scope, $http){
   $scope.stories = [];
   $scope.appointments = info;
   $scope.doRefresh = function() {
-    $http.get('/schedules')
+    $http.get('/schedule')
      .success(function(/*newItems*/) {
       //  $scope.items = newItems;
       $scope.appointments = info;
@@ -39,8 +42,19 @@ angular.module('ionicApp', ['ionic'])
     };
 })
 
-.controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {
+.controller('SignUpCtrl', function($http, $scope, $state, $ionicPopup){
+  $scope.showAlert = function(title, body) {
+   var alertPopup = $ionicPopup.alert({
+     title: title,
+     template: body
+   });
+   alertPopup.then(function(res) {
+     console.log('Error');
+   });
+ };
+})
 
+.controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {
 
   $scope.showAlert = function(title, body) {
    var alertPopup = $ionicPopup.alert({
@@ -74,7 +88,6 @@ angular.module('ionicApp', ['ionic'])
           // jQuery.parseJSON(doc.responseJSON.documents.toSource();
           success(data);
         }
-
       },
       fail      : function (data) {
         alert(data.error);

@@ -1,7 +1,14 @@
 <ion-view style="" title="Signup">
+  <a ng-href="#/sign-in" style="text-decoration: none;">
+    <label name="search" class="back-bar">
+      <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
+    </label>
+  </a>
     <ion-content class="has-header" scroll="false" padding="true">
+
         <div style="line-height: 250px; background-color: rgb(255, 255, 255); border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; width: 100%; height: auto;">
-            <i style="font-size: 64px; vertical-align: middle;" class="icon ion-image" ng-src="img/biz-icons/hb.png"></i>
+            <img class="user-icon"
+            ng-src="img/biz-icons/hb.png"/>
         </div>
         <form style="">
             <ion-list style="">
@@ -22,7 +29,11 @@
                     <input placeholder="" type="password">
                 </label>
             </ion-list>
-            <button style="" class="button button-positive button-block ">Sign up</button>
+            <a ng-href="#/sign-in" style="text-decoration: none;">
+              <button style="" class="button button-positive button-block">
+                Sign up
+              </button>
+            </a>
         </form>
     </ion-content>
 </ion-view>
