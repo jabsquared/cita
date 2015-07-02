@@ -26,9 +26,20 @@ angular.module('ionicApp', ['ionic'])
   $urlRouterProvider.otherwise('/sign-in');
 })
 
-.controller('ScheduleCtrl', function($scope, $http){
+.controller('ScheduleCtrl', function($scope, $http, $ionicPopup){
   $scope.stories = [];
   $scope.appointments = info;
+
+  $scope.showAlert = function(title, body) {
+   var alertPopup = $ionicPopup.alert({
+     title: title,
+     template: body
+   });
+   alertPopup.then(function(res) {
+     console.log('Error');
+   });
+ };
+
   $scope.doRefresh = function() {
     $http.get('/schedule')
      .success(function(/*newItems*/) {
@@ -40,6 +51,36 @@ angular.module('ionicApp', ['ionic'])
        $scope.$broadcast('scroll.refreshComplete');
      });
     };
+
+  $scope.removeApp = function(id){
+    //Works! Logs correct id :D
+    console.log(id);
+    $.ajax({
+      //removed the /2 from url.
+      url: ('https://api-us.clusterpoint.com//100600/Appointly/' + id),
+      type: 'DELETE',
+      dataType: 'json',
+      // data: ("{'id'=" + id + "}"),
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+      },
+      success: function(data) {
+        if (typeof success != 'undefined') {
+          success(data);
+        }
+        $scope.showAlert("Success!", "Appointment has been delete!");
+      },
+        fail: function(data) {
+          alert(data.error);
+          console.log('Fail!');
+          if (typeof fail != 'undefined') {
+            fail(data);
+          }
+          $scope.showAlert("Error!", "Appointment could not be deleted!");
+        }
+      })
+  }
+
 })
 
 .controller('SignUpCtrl', function($http, $scope, $state, $ionicPopup){
