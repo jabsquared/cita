@@ -119,16 +119,17 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_name;
     $scope.app_img_p='multicare.png';
     $scope.app_date = new Date();
-    $scope.app_time = new Date();
+    $scope.app_time = $scope.app_date;
 
-  $scope.go = function(app_id, app_date, app_name, app_time) {
-    console.log('Passed into function:');
-    console.log(app_id);
-    console.log(app_date);
-    console.log(app_name);
-    console.log(app_time);
-    // app_date = app_date.toString();
-    // app_time = app_time.toString();
+  $scope.go = function(app_id, app_date, app_name, app_time, app_location) {
+    app_date = app_date.toString();
+    app_time = app_time.toString();
+
+    // console.log('Passed into function:');
+    // console.log(app_id);
+    // console.log(app_date);
+    // console.log(app_name);
+    // console.log(app_time);
     // var fullTime = app_time.split(" ");
     // app_time = fullTime[0];
     // var app_zone = fullTime[1];
@@ -141,48 +142,43 @@ angular.module('ionicApp', ['ionic'])
     // console.log('Zone: ');
     // console.log(app_zone);
 
-    var send = {
-      "id"    : app_id,
-      "name"  : app_name,
-      "img_p" : $scope.app_img_p,
-      "date"  : $scope.app_date,
-      "time"  : $scope.app_time,
-      "zone"  : 'PM'
-    }
+  var send = {
+    "id"        : app_id,
+    "name"      : app_name,
+    "img_p"     : $scope.app_img_p,
+    "date"      : app_date,
+    "time"      : app_time,
+    "location"  : app_location
+  }
 
-    console.log(send);
+  console.log(send);
 
-    $scope.showAlert = function() {
-     var alertPopup = $ionicPopup.alert({
-       title: 'All done!',
-       template: 'Appointment Requested'
-     });
-     alertPopup.then(function(res) {
-       $state.go('schedule');
-       console.log('Thank you for not eating my delicious ice cream cone');
-     });
-   };
+  $scope.showAlert = function() {
+   var alertPopup = $ionicPopup.alert({
+     title: 'All done!',
+     template: 'Appointment Requested'
+   });
+   alertPopup.then(function(res) {
+     $state.go('schedule');
+     console.log('Thank you for not eating my delicious ice cream cone');
+    });
+  };
 
-
-    $.ajax({
-      //removed the /2 from url.
-      url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
-      type: 'POST',
-      dataType: 'json',
-      data: JSON.stringify(send),
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
-      },
-      success: function(data) {
-        if (typeof success != 'undefined') {
-          // jQuery.parseJSON(doc.responseJSON.documents.toSource());
-
-
-          success(data);
-        }
-        $scope.showAlert();
-
-      },
+  $.ajax({
+    //removed the /2 from url.
+    url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
+    type: 'POST',
+    dataType: 'json',
+    data: JSON.stringify(send),
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+    },
+    success: function(data) {
+      if (typeof success != 'undefined') {
+        success(data);
+      }
+      $scope.showAlert();
+    },
       fail: function(data) {
         alert('No!');
         alert(data.error);
@@ -199,7 +195,7 @@ angular.module('ionicApp', ['ionic'])
       type: 'POST',
       contentType: "text/plain; charset=utf-8",
       dataType: 'text',
-      data: send.name + " scheduled an appoinment with you at " + send.time + send.zone + " on " + send.date + ", location: The Church",
+      data: send.name + " scheduled an appoinment with you at " + send.time + " on " + send.date + ", location: " + send.location,
       // beforeSend: function(xhr) {
       //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       // },
@@ -219,9 +215,7 @@ angular.module('ionicApp', ['ionic'])
         }
       }
     })
-
   }
-
 })
 .controller('MainCtrl', function($http, $scope) {
   $scope.test = 'Scope Works!';

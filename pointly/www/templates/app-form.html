@@ -17,8 +17,9 @@
         </label>
         <label style="" name="date" class="item item-input">
           <span class="input-label">Date</span>
-          <input name="date" placeholder="June 5th, 2016" type="text"
-           ng-model="app_date">
+
+          <input id="date" name="date" placeholder="June 5th, 2016" type="date" ng-model="app_date">
+
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
@@ -26,11 +27,10 @@
         </label>
         <label style="" name="location" class="item item-input">
           <span class="input-label">Location</span>
-          <input value="222 State Ave N Kent, WA 98030" type="text">
+          <input value="222 State Ave N Kent, WA 98030" type="text" ng-model="app_location">
         </label>
       </ion-list>
     </form>
-    <div style="#50D2C2" class="button-bar"></div>
-    <button ng-click="go(app_id, app_date, app_name, app_time)" style="background-color: #50D2C2; color: #fff;" class="button button-block ">Submit Request</button>
+    <button ng-click="go(app_id, app_date, app_name, app_time, app_location)" class="button button-block button-positive">Submit Request</button>
   </ion-content>
 </ion-view>
