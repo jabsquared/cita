@@ -80,6 +80,12 @@ angular.module('ionicApp', ['ionic'])
           $scope.showAlert("Error!", "Appointment could not be deleted!");
         }
       })
+
+      setTimeout(function()
+      {
+          $scope.doRefresh();
+
+      }, 2000);
   }
 
 })
@@ -236,6 +242,19 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_date = new Date();
     $scope.app_time = $scope.app_date;
 
+    $scope.doRefresh = function() {
+      console.log('called refresh!');
+      $http.get('#/schedule')
+       .success(function(/*newItems*/) {
+        //  $scope.items = newItems;
+        $scope.appointments = info;
+       })
+       .finally(function() {
+         // Stop the ion-refresher from spinning
+         $scope.$broadcast('scroll.refreshComplete');
+       });
+      };
+
     $scope.go = function(app_id, app_date, app_name, app_time, app_location) {
       app_date = app_date.toString();
       app_time = app_time.toString();
@@ -304,7 +323,6 @@ angular.module('ionicApp', ['ionic'])
         }
       })
 
-
       $.ajax({
         url: 'http://appointlysmsserver.mybluemix.net/data',
         type: 'POST',
@@ -330,6 +348,13 @@ angular.module('ionicApp', ['ionic'])
           }
         }
       })
+
+      setTimeout(function()
+      {
+          $scope.doRefresh();
+
+      }, 2000);
+
     }
   })
   .controller('MainCtrl', function($http, $scope) {
