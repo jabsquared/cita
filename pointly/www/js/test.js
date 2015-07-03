@@ -295,33 +295,13 @@ angular.module('ionicApp', ['ionic'])
         alertPopup.then(function(res) {
           $state.go('schedule');
           console.log('Thank you for not eating my delicious ice cream cone');
+          setTimeout(function()
+          {
+              $scope.doRefresh();
+
+          }, 2000);
         });
       };
-
-      $.ajax({
-        //removed the /2 from url.
-        url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify(send),
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
-        },
-        success: function(data) {
-          if (typeof success != 'undefined') {
-            success(data);
-          }
-          $scope.showAlert();
-        },
-        fail: function(data) {
-          alert('No!');
-          alert(data.error);
-          console.log('Fail!');
-          if (typeof fail != 'undefined') {
-            fail(data);
-          }
-        }
-      })
 
       $.ajax({
         url: 'http://appointlysmsserver.mybluemix.net/data',
@@ -349,11 +329,30 @@ angular.module('ionicApp', ['ionic'])
         }
       })
 
-      setTimeout(function()
-      {
-          $scope.doRefresh();
-
-      }, 2000);
+      $.ajax({
+        //removed the /2 from url.
+        url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(send),
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+        },
+        success: function(data) {
+          if (typeof success != 'undefined') {
+            success(data);
+          }
+          $scope.showAlert();
+        },
+        fail: function(data) {
+          alert('No!');
+          alert(data.error);
+          console.log('Fail!');
+          if (typeof fail != 'undefined') {
+            fail(data);
+          }
+        }
+      })
 
     }
   })
