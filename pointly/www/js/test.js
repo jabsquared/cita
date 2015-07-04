@@ -280,7 +280,7 @@ angular.module('ionicApp', ['ionic'])
       // console.log('Zone: ');
       // console.log(app_zone);
 
-      $scope.app_id = userid + Date.now().toString();
+      var app_id = userid + Date.now().toString();
 
       var send = {
         "id"      :   app_id,
