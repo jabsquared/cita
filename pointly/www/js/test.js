@@ -181,6 +181,7 @@ angular.module('ionicApp', ['ionic'])
   $scope.acc_number = '';
   $scope.acc_password = '';
   $scope.login = function(number, password) {
+    console.log(number);
     console.log('Enter login function');
     console.log('number: ' + number);
     console.log('password: ' + password);
@@ -220,7 +221,8 @@ angular.module('ionicApp', ['ionic'])
         $scope.showAlert('Error', 'Incorrect Number or Password!');
       } else if (result.length == 1) {
         userid = number;
-
+        console.log('user id:');
+        console.log(userid);
         $state.go('schedule');
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
@@ -281,11 +283,11 @@ angular.module('ionicApp', ['ionic'])
       // console.log(app_time);
       // console.log('Zone: ');
       // console.log(app_zone);
-
-      var app_id = userid + Date.now().toString();
-
+      console.log('User ID: ' + userid);
+      $scope.app_id = userid + Date.now().toString();
+      console.log($scope.app_id);
       var send = {
-        "id"      :   app_id,
+        "id"      :   $scope.app_id,
         "numb"    :   app_numb,
         "name"    :   app_name,
         "img_p"   :   $scope.app_img_p,
