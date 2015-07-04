@@ -43,7 +43,7 @@ angular.module('ionicApp', ['ionic'])
  };
 
   $scope.doRefresh = function() {
-    console.log('called refresh!');
+    //console.log('called refresh!');
     $http.get('#/schedule')
      .success(function(/*newItems*/) {
       //  $scope.items = newItems;
@@ -176,15 +176,15 @@ angular.module('ionicApp', ['ionic'])
     });
   };
 
-  console.log('Enter SingInCtrl');
+  //console.log('Enter SingInCtrl');
   $scope.url = '#';
   $scope.acc_number = '';
   $scope.acc_password = '';
   $scope.login = function(number, password) {
-    console.log(number);
-    console.log('Enter login function');
-    console.log('number: ' + number);
-    console.log('password: ' + password);
+    // console.log(number);
+    // console.log('Enter login function');
+    // console.log('number: ' + number);
+    // console.log('password: ' + password);
     var users = $.ajax({
       url: 'https://api-us.clusterpoint.com/100600/User_Accounts/_list_last',
       type: 'GET',
@@ -194,7 +194,7 @@ angular.module('ionicApp', ['ionic'])
         xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
       },
       success: function(data) {
-        console.log('Retrived Users!');
+        //console.log('Retrived Users!');
         if (typeof success != 'undefined') {
           // jQuery.parseJSON(doc.responseJSON.documents.toSource();
           success(data);
@@ -202,7 +202,7 @@ angular.module('ionicApp', ['ionic'])
       },
       fail: function(data) {
         alert(data.error);
-        console.log('Fail!');
+        //console.log('Fail!');
         if (typeof fail != 'undefined') {
           fail(data);
         }
@@ -325,7 +325,7 @@ angular.module('ionicApp', ['ionic'])
       success(function(data, status, headers, config) {
         // this callback will be called asynchronously
         // when the response is available
-        console.log('MSG sent to phone!');
+        //console.log('MSG sent to phone!');
       }).
       error(function(data, status, headers, config) {
         // called asynchronously if an error occurs

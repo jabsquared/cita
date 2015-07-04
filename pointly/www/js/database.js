@@ -1,9 +1,9 @@
-console.log("called database script!");
+//console.log("called database script!");
 
 var doc;
 var info;
 
-console.log("Ended database script!");
+//console.log("Ended database script!");
 setInterval(function(){
 
   doc = $.ajax({
