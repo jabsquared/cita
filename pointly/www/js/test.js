@@ -71,7 +71,7 @@ angular.module('ionicApp', ['ionic'])
         if (typeof success != 'undefined') {
           success(data);
         }
-        $scope.showAlert("Success!", "Appointment has been delete!");
+        $scope.showAlert("Success!", "Appointment has been canceled!");
       },
         fail: function(data) {
           alert(data.error);
@@ -280,12 +280,13 @@ angular.module('ionicApp', ['ionic'])
       // console.log('Zone: ');
       // console.log(app_zone);
 
-      var id = userid + Date.now().toString();
+      $scope.app_id = userid + Date.now().toString();
 
       var send = {
-        "id"      :   id,
+        "id"      :   app_id,
         "numb"    :   app_numb,
         "name"    :   app_name,
+        "img_p"   :   $scope.app_img_p,
         "date"    :   app_date.toString(),
         "time"    :   app_time.toString(),
         "location":   app_location
@@ -313,7 +314,7 @@ angular.module('ionicApp', ['ionic'])
     var test_time = $filter('date')(app_time, "HH:mm a");
 
       // Simple GET request example :
-    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' on ' + test_time + '.').
+    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' at ' + test_time + '.').
       success(function(data, status, headers, config) {
         // this callback will be called asynchronously
         // when the response is available
