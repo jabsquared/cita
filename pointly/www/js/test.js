@@ -72,6 +72,7 @@ angular.module('ionicApp', ['ionic'])
           success(data);
         }
         $scope.showAlert("Success!", "Appointment has been canceled!");
+        console.log("Delete Succeded!");
       },
         fail: function(data) {
           alert(data.error);
@@ -80,6 +81,7 @@ angular.module('ionicApp', ['ionic'])
             fail(data);
           }
           $scope.showAlert("Error!", "Appointment could not be deleted!");
+          console.log("Delte Failed!");
         }
       })
 
