@@ -1,5 +1,5 @@
 var userid = null;
-
+var bimgs =  ['multicare.png','hb.png','health.png','dental.png'];;
 angular.module('ionicApp', ['ionic'])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -71,7 +71,8 @@ angular.module('ionicApp', ['ionic'])
         if (typeof success != 'undefined') {
           success(data);
         }
-        $scope.showAlert("Success!", "Appointment has been delete!");
+        $scope.showAlert("Success!", "Appointment has been canceled!");
+        console.log("Delete Succeded!");
       },
         fail: function(data) {
           alert(data.error);
@@ -80,6 +81,7 @@ angular.module('ionicApp', ['ionic'])
             fail(data);
           }
           $scope.showAlert("Error!", "Appointment could not be deleted!");
+          console.log("Delte Failed!");
         }
       })
 
@@ -179,6 +181,7 @@ angular.module('ionicApp', ['ionic'])
   $scope.acc_number = '';
   $scope.acc_password = '';
   $scope.login = function(number, password) {
+    console.log(number);
     console.log('Enter login function');
     console.log('number: ' + number);
     console.log('password: ' + password);
@@ -218,7 +221,8 @@ angular.module('ionicApp', ['ionic'])
         $scope.showAlert('Error', 'Incorrect Number or Password!');
       } else if (result.length == 1) {
         userid = number;
-
+        console.log('user id:');
+        console.log(userid);
         $state.go('schedule');
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
@@ -242,8 +246,7 @@ angular.module('ionicApp', ['ionic'])
 
     $scope.app_numb;
     $scope.app_name;
-    $scope.app_img_p = 'multicare.png';
-    // ['multicare.png','hb.png','health.png','dental.png'];
+    $scope.app_img_p = bimgs[Math.floor(Math.random()*bimgs.length)];
     $scope.app_date = new Date();
     $scope.app_time = $scope.app_date;
 
@@ -279,13 +282,18 @@ angular.module('ionicApp', ['ionic'])
       // console.log(app_time);
       // console.log('Zone: ');
       // console.log(app_zone);
+      if (userid == null){
+        $state.go("signin");
+        return;
+      }
 
-      var id = userid + Date.now().toString();
+      var app_id = "a" + userid + Date.now().toString();
 
       var send = {
-        "id"      :   id,
+        "id"      :   app_id.toString(),
         "numb"    :   app_numb,
         "name"    :   app_name,
+        "img_p"   :   $scope.app_img_p,
         "date"    :   app_date.toString(),
         "time"    :   app_time.toString(),
         "location":   app_location
@@ -313,7 +321,7 @@ angular.module('ionicApp', ['ionic'])
     var test_time = $filter('date')(app_time, "HH:mm a");
 
       // Simple GET request example :
-    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' on ' + test_time + '.').
+    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' at ' + test_time + '.').
       success(function(data, status, headers, config) {
         // this callback will be called asynchronously
         // when the response is available
