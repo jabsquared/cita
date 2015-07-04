@@ -1,5 +1,5 @@
 var userid = null;
-
+var bimgs =  ['multicare.png','hb.png','health.png','dental.png'];;
 angular.module('ionicApp', ['ionic'])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -246,8 +246,7 @@ angular.module('ionicApp', ['ionic'])
 
     $scope.app_numb;
     $scope.app_name;
-    $scope.app_img_p = 'multicare.png';
-    // ['multicare.png','hb.png','health.png','dental.png'];
+    $scope.app_img_p = bimgs[Math.floor(Math.random()*bimgs.length)];
     $scope.app_date = new Date();
     $scope.app_time = $scope.app_date;
 
