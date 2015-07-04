@@ -279,11 +279,15 @@ angular.module('ionicApp', ['ionic'])
       // console.log(app_time);
       // console.log('Zone: ');
       // console.log(app_zone);
+      if (userid == null){
+        $state.go("signin");
+        return;
+      }
 
       var app_id = userid + Date.now().toString();
 
       var send = {
-        "id"      :   app_id,
+        "id"      :   app_id.toString(),
         "numb"    :   app_numb,
         "name"    :   app_name,
         "img_p"   :   $scope.app_img_p,
