@@ -72,6 +72,7 @@ angular.module('ionicApp', ['ionic'])
           success(data);
         }
         $scope.showAlert("Success!", "Appointment has been canceled!");
+        console.log("Delete Succeded!");
       },
         fail: function(data) {
           alert(data.error);
@@ -80,6 +81,7 @@ angular.module('ionicApp', ['ionic'])
             fail(data);
           }
           $scope.showAlert("Error!", "Appointment could not be deleted!");
+          console.log("Delte Failed!");
         }
       })
 
@@ -179,6 +181,7 @@ angular.module('ionicApp', ['ionic'])
   $scope.acc_number = '';
   $scope.acc_password = '';
   $scope.login = function(number, password) {
+    console.log(number);
     console.log('Enter login function');
     console.log('number: ' + number);
     console.log('password: ' + password);
@@ -218,7 +221,8 @@ angular.module('ionicApp', ['ionic'])
         $scope.showAlert('Error', 'Incorrect Number or Password!');
       } else if (result.length == 1) {
         userid = number;
-
+        console.log('user id:');
+        console.log(userid);
         $state.go('schedule');
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
@@ -284,7 +288,7 @@ angular.module('ionicApp', ['ionic'])
         return;
       }
 
-      var app_id = userid + Date.now().toString();
+      var app_id = "a" + userid + Date.now().toString();
 
       var send = {
         "id"      :   app_id.toString(),
