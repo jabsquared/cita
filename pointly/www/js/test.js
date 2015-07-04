@@ -82,6 +82,12 @@ angular.module('ionicApp', ['ionic'])
           $scope.showAlert("Error!", "Appointment could not be deleted!");
         }
       })
+
+      setTimeout(function()
+      {
+          $scope.doRefresh();
+
+      }, 2000);
   }
 
 })
@@ -232,7 +238,7 @@ angular.module('ionicApp', ['ionic'])
   console.log('HomeTabCtrl');
 })
 
-.controller('FormCtrl', function($http, $scope, $state, $timeout, $ionicPopup) {
+.controller('FormCtrl', function($http, $scope, $state, $timeout, $ionicPopup, $filter) {
 
     $scope.app_numb;
     $scope.app_name;
@@ -241,10 +247,22 @@ angular.module('ionicApp', ['ionic'])
     $scope.app_date = new Date();
     $scope.app_time = $scope.app_date;
 
-    $scope.go = function(app_numb, app_date, app_name, app_time, app_location) {
-      app_date = app_date.toString();
-      app_time = app_time.toString();
+    $scope.doRefresh = function() {
+      console.log('called refresh!');
+      $http.get('#/schedule')
+       .success(function(/*newItems*/) {
+        //  $scope.items = newItems;
+        $scope.appointments = info;
+       })
+       .finally(function() {
+         // Stop the ion-refresher from spinning
+         $scope.$broadcast('scroll.refreshComplete');
+       });
+      };
 
+    $scope.go = function(app_numb, app_date, app_name, app_time, app_location) {
+      // app_date = app_date.toString();
+      // app_time = app_time.toString();
       // console.log('Passed into function:');
       // console.log(app_id);
       // console.log(app_date);
@@ -268,10 +286,9 @@ angular.module('ionicApp', ['ionic'])
         "id"      :   id,
         "numb"    :   app_numb,
         "name"    :   app_name,
-        "img_p"   :   $scope.app_img_p,
-        "date"    :   app_date,
-        "time"    :   app_time,
-        "location":   app_location
+        "date": app_date.toString(),
+        "time": app_time.toString(),
+        "location": app_location
       }
 
       console.log(send);
@@ -284,8 +301,54 @@ angular.module('ionicApp', ['ionic'])
         alertPopup.then(function(res) {
           $state.go('schedule');
           console.log('Thank you for not eating my delicious ice cream cone');
+          setTimeout(function()
+          {
+              $scope.doRefresh();
+
+          }, 2000);
         });
       };
+
+      var test_date = $filter('date')(app_date, "dd/MM/yyyy");
+      var test_time = $filter('date')(app_time, "HH:mm a");
+
+      // Simple GET request example :
+    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_id + '&message=An appointment has been requested on ' + test_date + ' on ' + test_time + '.').
+      success(function(data, status, headers, config) {
+        // this callback will be called asynchronously
+        // when the response is available
+        console.log('MSG sent to phone!');
+      }).
+      error(function(data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+
+      // $.ajax({
+      //   url: 'http://appointly.mybluemix.net/',
+      //   type: 'GET',
+      //   contentType: "text/plain; charset=utf-8",
+      //   dataType: 'text',
+      //   data: send.name + " scheduled an appoinment with you at " + send.time + " on " + send.date + ", location: " + send.location,
+      //   // beforeSend: function(xhr) {
+      //   //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+      //   // },
+      //   success: function(data) {
+      //     alert("Submitted!");
+      //     if (typeof success != 'undefined') {
+      //       // jQuery.parseJSON(doc.responseJSON.documents.toSource());
+      //       success(data);
+      //     }
+      //   },
+      //   fail: function(data) {
+      //     alert('No!');
+      //     alert(data.error);
+      //     console.log('Fail!');
+      //     if (typeof fail != 'undefined') {
+      //       fail(data);
+      //     }
+      //   }
+      // })
 
       $.ajax({
         //removed the /2 from url.
@@ -312,32 +375,6 @@ angular.module('ionicApp', ['ionic'])
         }
       })
 
-
-      $.ajax({
-        url: 'http://appointlysmsserver.mybluemix.net/data',
-        type: 'POST',
-        contentType: "text/plain; charset=utf-8",
-        dataType: 'text',
-        data: send.name + " scheduled an appoinment with you at " + send.time + " on " + send.date + ", location: " + send.location,
-        // beforeSend: function(xhr) {
-        //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
-        // },
-        success: function(data) {
-          alert("Submitted!");
-          if (typeof success != 'undefined') {
-            // jQuery.parseJSON(doc.responseJSON.documents.toSource());
-            success(data);
-          }
-        },
-        fail: function(data) {
-          alert('No!');
-          alert(data.error);
-          console.log('Fail!');
-          if (typeof fail != 'undefined') {
-            fail(data);
-          }
-        }
-      })
     }
   })
   .controller('MainCtrl', function($http, $scope) {
