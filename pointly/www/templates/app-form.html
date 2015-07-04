@@ -7,19 +7,17 @@
             <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
           </label>
         </a>
-        <label style="" name="app_id" class="item item-input">
+        <label style="" name="app_numb" class="item item-input">
           <span class="input-label">Phone#</span>
-          <input name="name" placeholder="Business Number" type="tel" ng-model="app_id">
+          <input placeholder="Business Number" type="tel" ng-model="app_numb">
         </label>
-        <label style="" name="name" class="item item-input">
+        <label style="" class="item item-input">
           <span class="input-label">Business</span>
-          <input name="name" placeholder="Multicare" type="text" ng-model="app_name">
+          <input placeholder="Multicare" type="text" ng-model="app_name">
         </label>
         <label style="" name="date" class="item item-input">
           <span class="input-label">Date</span>
-
           <input id="date" name="date" placeholder="June 5th, 2016" type="date" ng-model="app_date">
-
         </label>
         <label style="" name="time" class="item item-input">
           <span class="input-label">Time</span>
@@ -31,6 +29,6 @@
         </label>
       </ion-list>
     </form>
-    <button ng-click="go(app_id, app_date, app_name, app_time, app_location)" class="button button-block button-positive">Submit Request</button>
+    <button ng-click="go(app_numb, app_date, app_name, app_time, app_location)" class="button button-block button-positive">Submit Request</button>
   </ion-content>
 </ion-view>

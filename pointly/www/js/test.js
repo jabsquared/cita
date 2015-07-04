@@ -1,3 +1,5 @@
+var userid = null;
+
 angular.module('ionicApp', ['ionic'])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -97,12 +99,14 @@ angular.module('ionicApp', ['ionic'])
 
   $scope.signup = function(name, email, phone, pass) {
 
+    userid = phone;
+
     var send = {
         // "name"      : name,
         // "email"     : email,
         // "phone"     : phone,
         // "pass"      : pass,
-        "id"     : phone,
+        "id"            : phone,
         "password"      : pass,
     }
 
@@ -230,13 +234,14 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('FormCtrl', function($http, $scope, $state, $timeout, $ionicPopup) {
 
-    $scope.app_id;
+    $scope.app_numb;
     $scope.app_name;
     $scope.app_img_p = 'multicare.png';
+    // ['multicare.png','hb.png','health.png','dental.png'];
     $scope.app_date = new Date();
     $scope.app_time = $scope.app_date;
 
-    $scope.go = function(app_id, app_date, app_name, app_time, app_location) {
+    $scope.go = function(app_numb, app_date, app_name, app_time, app_location) {
       app_date = app_date.toString();
       app_time = app_time.toString();
 
@@ -257,13 +262,16 @@ angular.module('ionicApp', ['ionic'])
       // console.log('Zone: ');
       // console.log(app_zone);
 
+      id = userid + Date.now().toString();
+
       var send = {
-        "id": app_id,
-        "name": app_name,
-        "img_p": $scope.app_img_p,
-        "date": app_date,
-        "time": app_time,
-        "location": app_location
+        "id"      :   id,
+        "numb"    :   app_numb,
+        "name"    :   app_name,
+        "img_p"   :   $scope.app_img_p,
+        "date"    :   app_date,
+        "time"    :   app_time,
+        "location":   app_location
       }
 
       console.log(send);
