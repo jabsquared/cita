@@ -105,8 +105,6 @@ angular.module('ionicApp', ['ionic'])
 
   $scope.signup = function(name, email, phone, pass) {
 
-    userid = phone;
-
     var send = {
         // "name"      : name,
         // "email"     : email,
@@ -219,6 +217,8 @@ angular.module('ionicApp', ['ionic'])
       if (result.length == 0) {
         $scope.showAlert('Error', 'Incorrect Number or Password!');
       } else if (result.length == 1) {
+        userid = number;
+
         $state.go('schedule');
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
@@ -280,15 +280,15 @@ angular.module('ionicApp', ['ionic'])
       // console.log('Zone: ');
       // console.log(app_zone);
 
-      id = userid + Date.now().toString();
+      var id = userid + Date.now().toString();
 
       var send = {
         "id"      :   id,
         "numb"    :   app_numb,
         "name"    :   app_name,
-        "date": app_date.toString(),
-        "time": app_time.toString(),
-        "location": app_location
+        "date"    :   app_date.toString(),
+        "time"    :   app_time.toString(),
+        "location":   app_location
       }
 
       console.log(send);
@@ -309,11 +309,11 @@ angular.module('ionicApp', ['ionic'])
         });
       };
 
-      var test_date = $filter('date')(app_date, "dd/MM/yyyy");
-      var test_time = $filter('date')(app_time, "HH:mm a");
+    var test_date = $filter('date')(app_date, "dd/MM/yyyy");
+    var test_time = $filter('date')(app_time, "HH:mm a");
 
       // Simple GET request example :
-    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_id + '&message=An appointment has been requested on ' + test_date + ' on ' + test_time + '.').
+    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' on ' + test_time + '.').
       success(function(data, status, headers, config) {
         // this callback will be called asynchronously
         // when the response is available
