@@ -1,9 +1,18 @@
 /* Empty. Add your own CSS if you like */
 
-#back{
+#logout{
   color: #50D2C2;
   margin-right: 9px;
-  padding-left: 9px;
+  margin-top: .5em;
+  padding-left: 1em;
+  border: none;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+/* Not doig anything at the moment. */
+#logout:focus{
+  outline: none;
 }
 
 .back-bar{
