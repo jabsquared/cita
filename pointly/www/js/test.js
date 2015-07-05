@@ -291,6 +291,7 @@ angular.module('ionicApp', ['ionic'])
 
       var send = {
         "id"      :   app_id.toString(),
+        "user_id" :   userid,
         "numb"    :   app_numb,
         "name"    :   app_name,
         "img_p"   :   $scope.app_img_p,
