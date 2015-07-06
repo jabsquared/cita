@@ -307,12 +307,12 @@ angular.module('ionicApp', ['ionic'])
           template: 'Appointment Requested'
         });
         alertPopup.then(function(res) {
-          $state.go('schedule');
+
           console.log('Thank you for not eating my delicious ice cream cone');
           setTimeout(function()
           {
               $scope.doRefresh();
-
+              $state.go('schedule');
           }, 2000);
         });
       };
