@@ -28,7 +28,7 @@ angular.module('ionicApp', ['ionic'])
   $urlRouterProvider.otherwise('/sign-in');
 })
 
-.controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state){
+.controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state, $timeout){
   $scope.stories = [];
   $scope.appointments = info;
 
@@ -169,7 +169,20 @@ angular.module('ionicApp', ['ionic'])
 
 })
 
-.controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {
+.controller('SignInCtrl', function($http, $scope, $rootScope, $state, $ionicPopup, $timeout) {
+
+  $rootScope.goToSchedule = function() {
+    console.log('called goToSchedule!');
+    $http.get('#/schedule')
+     .success(function(/*newItems*/) {
+      //  $scope.items = newItems;
+      $scope.appointments = info;
+     })
+     .finally(function() {
+       // Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.refreshComplete');
+     });
+    };
 
   $scope.showAlert = function(title, body) {
     var alertPopup = $ionicPopup.alert({
@@ -177,7 +190,7 @@ angular.module('ionicApp', ['ionic'])
       template: body
     });
     alertPopup.then(function(res) {
-      console.log('Error');
+
     });
   };
 
@@ -229,6 +242,11 @@ angular.module('ionicApp', ['ionic'])
         console.log('user id:');
         console.log(userid);
         $state.go('schedule');
+        setTimeout(function()
+        {
+            $rootScope.goToSchedule();
+
+        }, 2000);
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
       }
