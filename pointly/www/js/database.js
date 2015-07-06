@@ -30,6 +30,9 @@ setInterval(function(){
   });
 
   doc.done (function (data) {
-    info = data.documents;
+    info = $.grep( data.documents, function( n, i ) {
+      return n.user_id===userid;
+    });
+
   });
 },999);

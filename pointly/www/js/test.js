@@ -28,7 +28,7 @@ angular.module('ionicApp', ['ionic'])
   $urlRouterProvider.otherwise('/sign-in');
 })
 
-.controller('ScheduleCtrl', function($scope, $http, $ionicPopup){
+.controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state){
   $scope.stories = [];
   $scope.appointments = info;
 
@@ -54,6 +54,11 @@ angular.module('ionicApp', ['ionic'])
        $scope.$broadcast('scroll.refreshComplete');
      });
     };
+
+  $scope.logout = function() {
+    userid = null;
+    $state.go('signin');
+  }
 
   $scope.removeApp = function(id){
     //Works! Logs correct id :D
@@ -291,6 +296,7 @@ angular.module('ionicApp', ['ionic'])
 
       var send = {
         "id"      :   app_id.toString(),
+        "user_id" :   userid,
         "numb"    :   app_numb,
         "name"    :   app_name,
         "img_p"   :   $scope.app_img_p,
