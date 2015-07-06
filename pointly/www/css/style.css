@@ -3,11 +3,12 @@
 #logout{
   color: #50D2C2;
   margin-right: 9px;
-  margin-top: .5em;
+  margin-top: .7em;
   padding-left: 1em;
   border: none;
   font-size: 1em;
   font-weight: 600;
+  float: left;
 }
 
 /* Not doig anything at the moment. */
@@ -50,6 +51,7 @@
   border: none;
   border-bottom: 1px solid #EEEEEE;
   margin-right: 5px;
+  float: right;
 }
 
 .button .button-icon .icon .ion-navicon {
@@ -78,11 +80,6 @@
   color: black;
 }
 
-.app-info{
-  font-size: .8em;
-  font-weight: 600;
-}
-
 #calendar {
   height: 55px;
   margin: 0;
@@ -100,6 +97,11 @@
   border-right: none;
 }
 
+.app-info{
+  font-size: .8em;
+  font-weight: 600;
+}
+
 .date-info {
   display: inline;
   color: gray;
@@ -115,21 +117,23 @@
 
 .all-info {
   display: inline;
-  float: left;;
+  float: left;
+  position: relative;
 }
 
 .biz-logo {
   display: inline;
   float: right;
+  position: relative;
   margin-right: .5em;
   margin-top: .5em;
+  height: auto;
 }
 
 .biz-logo img {
-  height: 30px;
-  width: 30px;
+  height: 2em;
+  width: 2em;
 }
-
 /*Sign-up Page*/
 
 #logo-name{

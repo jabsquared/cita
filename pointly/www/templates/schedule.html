@@ -2,16 +2,15 @@
 
   <ion-header-bar class="bar bar-header bar-light">
     <a ng-click='logout()' style="text-decoration: none;">
-      <label style="" name="search" class="back-bar">
-        <button style="color: #50D2C2; text-decoration: none;" class="button icon" id="logout" >logout</button>
+      <label id="logout" name="search" class="back-bar">
+        Back
       </label>
     </a>
-      <a class="button button-icon icon"></a>
-      <p id='header-title' style="text-align: center">June 28th </p>
-      <a ng-href="#/form" class="button icon ion-plus"></a>
-      <div class="bar bar-subheader">
-        <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
-      </div>
+      <p id='header-title' style="text-align: center">Hello!</p>
+    <a ng-href="#/form" class="button icon ion-plus"></a>
+    <div class="bar bar-subheader">
+      <h4 style="text-align: center; color: #50D2C2">{{appointments.length}} Appointments</h4>
+    </div>
   </ion-header-bar>
 
   <ion-content class="has-subheader" padding="true">

@@ -1,5 +1,6 @@
 var userid = null;
-var bimgs =  ['multicare.png','hb.png','health.png','dental.png'];;
+var bimgs = ['multicare.png', 'hb.png', 'health.png', 'dental.png'];
+var reload = true;
 angular.module('ionicApp', ['ionic'])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -28,39 +29,39 @@ angular.module('ionicApp', ['ionic'])
   $urlRouterProvider.otherwise('/sign-in');
 })
 
-.controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state){
+.controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state, $timeout) {
   $scope.stories = [];
   $scope.appointments = info;
 
   $scope.showAlert = function(title, body) {
-   var alertPopup = $ionicPopup.alert({
-     title: title,
-     template: body
-   });
-   alertPopup.then(function(res) {
-     console.log('Error');
-   });
- };
+    var alertPopup = $ionicPopup.alert({
+      title: title,
+      template: body
+    });
+    alertPopup.then(function(res) {
+      console.log('Error');
+    });
+  };
 
   $scope.doRefresh = function() {
     //console.log('called refresh!');
     $http.get('#/schedule')
-     .success(function(/*newItems*/) {
-      //  $scope.items = newItems;
-      $scope.appointments = info;
-     })
-     .finally(function() {
-       // Stop the ion-refresher from spinning
-       $scope.$broadcast('scroll.refreshComplete');
-     });
-    };
+      .success(function( /*newItems*/ ) {
+        //  $scope.items = newItems;
+        $scope.appointments = info;
+      })
+      .finally(function() {
+        // Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+  };
 
   $scope.logout = function() {
     userid = null;
     $state.go('signin');
   }
 
-  $scope.removeApp = function(id){
+  $scope.removeApp = function(id) {
     //Works! Logs correct id :D
     console.log(id);
     $.ajax({
@@ -79,22 +80,21 @@ angular.module('ionicApp', ['ionic'])
         $scope.showAlert("Success!", "Appointment has been canceled!");
         console.log("Delete Succeded!");
       },
-        fail: function(data) {
-          alert(data.error);
-          console.log('Fail!');
-          if (typeof fail != 'undefined') {
-            fail(data);
-          }
-          $scope.showAlert("Error!", "Appointment could not be deleted!");
-          console.log("Delte Failed!");
+      fail: function(data) {
+        alert(data.error);
+        console.log('Fail!');
+        if (typeof fail != 'undefined') {
+          fail(data);
         }
-      })
+        $scope.showAlert("Error!", "Appointment could not be deleted!");
+        console.log("Delte Failed!");
+      }
+    })
 
-      setTimeout(function()
-      {
-          $scope.doRefresh();
+    setTimeout(function() {
+      $scope.doRefresh();
 
-      }, 2000);
+    }, 1800);
   }
 
 })
@@ -113,12 +113,12 @@ angular.module('ionicApp', ['ionic'])
   $scope.signup = function(name, email, phone, pass) {
 
     var send = {
-        // "name"      : name,
-        // "email"     : email,
-        // "phone"     : phone,
-        // "pass"      : pass,
-        "id"            : phone,
-        "password"      : pass,
+      // "name"      : name,
+      // "email"     : email,
+      // "phone"     : phone,
+      // "pass"      : pass,
+      "id": phone,
+      "password": pass,
     }
 
     console.log(JSON.stringify(send));
@@ -136,7 +136,7 @@ angular.module('ionicApp', ['ionic'])
           success(data);
         }
         console.log(data);
-        $scope.showAlert('Done!','You are in!');
+        $scope.showAlert('Done!', 'You are in!');
       },
       fail: function(data) {
         alert('No!');
@@ -169,7 +169,20 @@ angular.module('ionicApp', ['ionic'])
 
 })
 
-.controller('SignInCtrl', function($http, $scope, $state, $ionicPopup) {
+.controller('SignInCtrl', function($http, $scope, $state, $ionicPopup, $timeout) {
+
+  $scope.goToSchedule = function() {
+    //console.log('called goToSchedule!');
+    $http.get('#/schedule')
+      .success(function( /*newItems*/ ) {
+        //  $scope.items = newItems;
+        $scope.appointments = info;
+      })
+      .finally(function() {
+        // Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+  };
 
   $scope.showAlert = function(title, body) {
     var alertPopup = $ionicPopup.alert({
@@ -177,7 +190,7 @@ angular.module('ionicApp', ['ionic'])
       template: body
     });
     alertPopup.then(function(res) {
-      console.log('Error');
+
     });
   };
 
@@ -217,18 +230,21 @@ angular.module('ionicApp', ['ionic'])
     users.done(function(data) {
       var d = data.documents;
       //----------------------------------------------------------
-      console.log(d);
+      // console.log(d);
       var result = $.grep(d, function(e) {
         return e.id == number && e.password == password;
       });
-      console.log(result);
+      // console.log(result);
       if (result.length == 0) {
         $scope.showAlert('Error', 'Incorrect Number or Password!');
       } else if (result.length == 1) {
         userid = number;
-        console.log('user id:');
-        console.log(userid);
-        $state.go('schedule');
+        // console.log('user id:');
+        // console.log(userid);
+        setTimeout(function() {
+          $scope.goToSchedule();
+          $state.go('schedule');
+        }, 1800);
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
       }
@@ -249,173 +265,118 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('FormCtrl', function($http, $scope, $state, $timeout, $ionicPopup, $filter) {
 
-    $scope.app_numb;
-    $scope.app_name;
-    $scope.app_img_p = bimgs[Math.floor(Math.random()*bimgs.length)];
-    $scope.app_date = new Date();
-    $scope.app_time = $scope.app_date;
+  $scope.app_numb;
+  $scope.app_name;
+  $scope.app_img_p = bimgs[Math.floor(Math.random() * bimgs.length)];
+  $scope.app_date = new Date();
+  $scope.app_time = $scope.app_date;
 
-    $scope.doRefresh = function() {
-      console.log('called refresh!');
-      $http.get('#/schedule')
-       .success(function(/*newItems*/) {
+  $scope.doRefresh = function() {
+    // console.log('called refresh!');
+    $http.get('#/schedule')
+      .success(function( /*newItems*/ ) {
         //  $scope.items = newItems;
         $scope.appointments = info;
-       })
-       .finally(function() {
-         // Stop the ion-refresher from spinning
-         $scope.$broadcast('scroll.refreshComplete');
-       });
-      };
+      })
+      .finally(function() {
+        // Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+  };
 
-    $scope.go = function(app_numb, app_date, app_name, app_time, app_location) {
-      // app_date = app_date.toString();
-      // app_time = app_time.toString();
-      // console.log('Passed into function:');
-      // console.log(app_id);
-      // console.log(app_date);
-      // console.log(app_name);
-      // console.log(app_time);
-      // var fullTime = app_time.split(" ");
-      // app_time = fullTime[0];
-      // var app_zone = fullTime[1];
-      // app_date(new Date(), "mmmm dS, yyyy");
+  $scope.showAlert = function() {
+    var alertPopup = $ionicPopup.alert({
+      title: 'All done!',
+      template: 'Appointment Requested'
+    });
+    alertPopup.then(function(res) {
+      console.log('Thank you for not eating my delicious ice cream cone');
+      $state.go('schedule');
+    });
+  };
 
-      // console.log('Fulltime: ');
-      // console.log(fullTime);
-      // console.log('Time: ');
-      // console.log(app_time);
-      // console.log('Zone: ');
-      // console.log(app_zone);
-      if (userid == null){
-        $state.go("signin");
-        return;
-      }
+  $scope.go = function(app_numb, app_date, app_name, app_time, app_location) {
+    // app_date = app_date.toString();
+    // app_time = app_time.toString();
+    // console.log('Passed into function:');
+    // console.log(app_id);
+    // console.log(app_date);
+    // console.log(app_name);
+    // console.log(app_time);
+    // var fullTime = app_time.split(" ");
+    // app_time = fullTime[0];
+    // var app_zone = fullTime[1];
+    // app_date(new Date(), "mmmm dS, yyyy");
 
-      var app_id = "a" + userid + Date.now().toString();
+    // console.log('Fulltime: ');
+    // console.log(fullTime);
+    // console.log('Time: ');
+    // console.log(app_time);
+    // console.log('Zone: ');
+    // console.log(app_zone);
+    if (userid == null) {
+      $state.go("signin");
+      return;
+    }
 
-      var send = {
-        "id"      :   app_id.toString(),
-        "user_id" :   userid,
-        "numb"    :   app_numb,
-        "name"    :   app_name,
-        "img_p"   :   $scope.app_img_p,
-        "date"    :   app_date.toString(),
-        "time"    :   app_time.toString(),
-        "location":   app_location
-      }
+    var app_id = "a" + userid + Date.now().toString();
 
-      console.log(send);
+    var send = {
+      "id": app_id.toString(),
+      "user_id": userid,
+      "numb": app_numb,
+      "name": app_name,
+      "img_p": $scope.app_img_p,
+      "date": app_date.toString(),
+      "time": app_time.toString(),
+      "location": app_location
+    }
 
-      $scope.showAlert = function() {
-        var alertPopup = $ionicPopup.alert({
-          title: 'All done!',
-          template: 'Appointment Requested'
-        });
-        alertPopup.then(function(res) {
-          $state.go('schedule');
-          console.log('Thank you for not eating my delicious ice cream cone');
-          setTimeout(function()
-          {
-              $scope.doRefresh();
-
-          }, 2000);
-        });
-      };
+    // console.log(send);
 
     var test_date = $filter('date')(app_date, "dd/MM/yyyy");
     var test_time = $filter('date')(app_time, "HH:mm a");
 
-      // Simple GET request example :
-    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' at ' + test_time + '.').
-      success(function(data, status, headers, config) {
-        // this callback will be called asynchronously
-        // when the response is available
-        //console.log('MSG sent to phone!');
-      }).
-      error(function(data, status, headers, config) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-      });
+    // Simple GET request example :
+    $http.get('http://appointly.mybluemix.net/twiliouth?number=+1' + app_numb + '&message=An appointment has been requested on ' + test_date + ' at ' + test_time + '. Business : ' + app_name + '. Number : ' + userid).
+    success(function(data, status, headers, config) {
+      // this callback will be called asynchronously
+      // when the response is available
+      //console.log('MSG sent to phone!');
+    }).
+    error(function(data, status, headers, config) {
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
 
-      // $.ajax({
-      //   url: 'http://appointly.mybluemix.net/',
-      //   type: 'GET',
-      //   contentType: "text/plain; charset=utf-8",
-      //   dataType: 'text',
-      //   data: send.name + " scheduled an appoinment with you at " + send.time + " on " + send.date + ", location: " + send.location,
-      //   // beforeSend: function(xhr) {
-      //   //   xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
-      //   // },
-      //   success: function(data) {
-      //     alert("Submitted!");
-      //     if (typeof success != 'undefined') {
-      //       // jQuery.parseJSON(doc.responseJSON.documents.toSource());
-      //       success(data);
-      //     }
-      //   },
-      //   fail: function(data) {
-      //     alert('No!');
-      //     alert(data.error);
-      //     console.log('Fail!');
-      //     if (typeof fail != 'undefined') {
-      //       fail(data);
-      //     }
-      //   }
-      // })
-
-      $.ajax({
-        //removed the /2 from url.
-        url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify(send),
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
-        },
-        success: function(data) {
-          if (typeof success != 'undefined') {
-            success(data);
-          }
-          $scope.showAlert();
-        },
-        fail: function(data) {
-          alert('No!');
-          alert(data.error);
-          console.log('Fail!');
-          if (typeof fail != 'undefined') {
-            fail(data);
-          }
+    var submitApp = $.ajax({
+      //removed the /2 from url.
+      url: 'https://api-us.clusterpoint.com//100600/Appointly/_insert',
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(send),
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('bpshonyak@live.com:Password01'));
+      },
+      success: function(data) {
+        if (typeof success != 'undefined') {
+          success(data);
         }
-      })
-
-    }
-  })
-  .controller('MainCtrl', function($http, $scope) {
-    $scope.test = 'Scope Works!';
-
-    // $scope.stories = [];
-    //
-    // $scope.appointments = info;
-
-    // [{
-    //   name: 'Green Valley Clinic',
-    //   img_p: 'health.png',
-    //   date: 'June 30th',
-    //   time: 10,
-    //   zone: 'am'
-    // }, {
-    //   name: 'Silver Point Dental',
-    //   img_p: 'dental.png',
-    //   date: 'July 16th',
-    //   time: 2,
-    //   zone: 'pm'
-    // }, {
-    //   name: 'Multicare',
-    //   img_p: 'multicare.png',
-    //   date: 'July 25th',
-    //   time: 4,
-    //   zone: 'pm'
-    // }];
-
-  });
+        $scope.showAlert();
+      },
+      fail: function(data) {
+        alert('No!');
+        alert(data.error);
+        console.log('Fail!');
+        if (typeof fail != 'undefined') {
+          fail(data);
+        }
+      }
+    });
+    submitApp.done(function(data) {
+      setTimeout(function() {
+        $scope.doRefresh();
+      }, 1800);
+    })
+  }
+});
