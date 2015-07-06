@@ -3,13 +3,13 @@
   <ion-header-bar class="bar bar-header bar-light">
     <a ng-click='logout()' style="text-decoration: none;">
       <label id="logout" name="search" class="back-bar">
-        logout
+        Back
       </label>
     </a>
-      <p id='header-title' style="text-align: center">June 28th </p>
+      <p id='header-title' style="text-align: center">Hello!</p>
     <a ng-href="#/form" class="button icon ion-plus"></a>
     <div class="bar bar-subheader">
-      <h4 style="text-align: center; color: #50D2C2">Appointments</h4>
+      <h4 style="text-align: center; color: #50D2C2">{{appointments.length}} Appointments</h4>
     </div>
   </ion-header-bar>
 
@@ -43,8 +43,8 @@
                   <img ng-src="img/biz-icons/{{a.img_p}}" alt="" />
                 </div>
               </a>
-              <!-- <ion-option-button class="button-assertive icon ion-trash-a" ng-click="removeApp(a.id)">
-              </ion-option-button> -->
+              <ion-option-button class="button-assertive icon ion-trash-a" ng-click="removeApp(a.id)">
+              </ion-option-button>
        </ion-item>
     </ion-list>
   </ion-content>
