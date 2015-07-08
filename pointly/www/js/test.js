@@ -1,6 +1,6 @@
 var userid = null;
 var bimgs = ['multicare.png', 'hb.png', 'health.png', 'dental.png'];
-var reload = true;
+var needRefresh = 3;
 angular.module('ionicApp', ['ionic'])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -30,8 +30,22 @@ angular.module('ionicApp', ['ionic'])
 })
 
 .controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state, $timeout) {
-  $scope.stories = [];
-  $scope.appointments = info;
+  $scope.doRefresh();
+  $scope.intervalFunction = function() {
+    $timeout(function() {
+      if (needRefresh > 0) {
+        $scope.doRefresh();
+        needRefresh--;
+      }
+      if ($scope.appointments == null) {
+        $scope.doRefresh();
+      }
+      $scope.intervalFunction();
+    }, 999)
+  };
+
+  // Kick off the interval
+  $scope.intervalFunction();
 
   $scope.showAlert = function(title, body) {
     var alertPopup = $ionicPopup.alert({
@@ -39,7 +53,7 @@ angular.module('ionicApp', ['ionic'])
       template: body
     });
     alertPopup.then(function(res) {
-      console.log('Error');
+      needRefresh = 2;
     });
   };
 
@@ -58,12 +72,13 @@ angular.module('ionicApp', ['ionic'])
 
   $scope.logout = function() {
     userid = null;
+    $scope.appointments = null;
     $state.go('signin');
   }
 
   $scope.removeApp = function(id) {
     //Works! Logs correct id :D
-    console.log(id);
+    //console.log(id);
     $.ajax({
       //removed the /2 from url.
       url: ('https://api-us.clusterpoint.com//100600/Appointly/' + id),
@@ -78,7 +93,7 @@ angular.module('ionicApp', ['ionic'])
           success(data);
         }
         $scope.showAlert("Success!", "Appointment has been canceled!");
-        console.log("Delete Succeded!");
+        //console.log("Delete Succeded!");
       },
       fail: function(data) {
         alert(data.error);
@@ -90,13 +105,7 @@ angular.module('ionicApp', ['ionic'])
         console.log("Delte Failed!");
       }
     })
-
-    setTimeout(function() {
-      $scope.doRefresh();
-
-    }, 1800);
   }
-
 })
 
 .controller('SignUpCtrl', function($http, $scope, $state, $ionicPopup) {
@@ -171,19 +180,6 @@ angular.module('ionicApp', ['ionic'])
 
 .controller('SignInCtrl', function($http, $scope, $state, $ionicPopup, $timeout) {
 
-  $scope.goToSchedule = function() {
-    //console.log('called goToSchedule!');
-    $http.get('#/schedule')
-      .success(function( /*newItems*/ ) {
-        //  $scope.items = newItems;
-        $scope.appointments = info;
-      })
-      .finally(function() {
-        // Stop the ion-refresher from spinning
-        $scope.$broadcast('scroll.refreshComplete');
-      });
-  };
-
   $scope.showAlert = function(title, body) {
     var alertPopup = $ionicPopup.alert({
       title: title,
@@ -241,10 +237,8 @@ angular.module('ionicApp', ['ionic'])
         userid = number;
         // console.log('user id:');
         // console.log(userid);
-        setTimeout(function() {
-          $scope.goToSchedule();
-          $state.go('schedule');
-        }, 1800);
+        needRefresh = 3;
+        $state.go('schedule');
       } else {
         $scope.showAlert('Error', 'Duplicate Users Found!');
       }
@@ -259,10 +253,6 @@ angular.module('ionicApp', ['ionic'])
 
 })
 
-.controller('HomeTabCtrl', function($scope) {
-  console.log('HomeTabCtrl');
-})
-
 .controller('FormCtrl', function($http, $scope, $state, $timeout, $ionicPopup, $filter) {
 
   $scope.app_numb;
@@ -271,19 +261,6 @@ angular.module('ionicApp', ['ionic'])
   $scope.app_date = new Date();
   $scope.app_time = $scope.app_date;
 
-  $scope.doRefresh = function() {
-    // console.log('called refresh!');
-    $http.get('#/schedule')
-      .success(function( /*newItems*/ ) {
-        //  $scope.items = newItems;
-        $scope.appointments = info;
-      })
-      .finally(function() {
-        // Stop the ion-refresher from spinning
-        $scope.$broadcast('scroll.refreshComplete');
-      });
-  };
-
   $scope.showAlert = function() {
     var alertPopup = $ionicPopup.alert({
       title: 'All done!',
@@ -291,6 +268,7 @@ angular.module('ionicApp', ['ionic'])
     });
     alertPopup.then(function(res) {
       console.log('Thank you for not eating my delicious ice cream cone');
+      needRefresh = 3;
       $state.go('schedule');
     });
   };
