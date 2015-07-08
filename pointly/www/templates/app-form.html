@@ -1,12 +1,16 @@
 <ion-view style="" title="Schedule Appointment">
   <ion-content scroll="false" padding="false">
+    <ion-header-bar class="bar bar-header bar-light" >
+      <a ng-href="#/schedule" style="text-decoration: none;">
+        <label id="logout" class="back-bar">
+          Back
+        </label>
+      </a>
+        <p id='header-title' style="text-align: center">Request Appointment</p>
+    </ion-header-bar>
+
     <form class="appForm">
       <ion-list style="">
-        <a ng-href="#/schedule" style="text-decoration: none;">
-          <label style="" name="search" class="back-bar">
-            <h4 style="margin-left: 5px; color: #50D2C2; text-decoration: none;" id="back">Back</h4>
-          </label>
-        </a>
         <label style="" name="app_numb" class="item item-input">
           <span class="input-label">Phone#</span>
           <input placeholder="Business Number" type="tel" ng-model="app_numb">
