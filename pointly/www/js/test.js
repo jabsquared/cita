@@ -30,7 +30,6 @@ angular.module('ionicApp', ['ionic'])
 })
 
 .controller('ScheduleCtrl', function($scope, $http, $ionicPopup, $state, $timeout) {
-  $scope.doRefresh();
   $scope.intervalFunction = function() {
     $timeout(function() {
       if (needRefresh > 0) {
