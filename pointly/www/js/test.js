@@ -350,10 +350,5 @@ angular.module('ionicApp', ['ionic'])
         }
       }
     });
-    submitApp.done(function(data) {
-      setTimeout(function() {
-        $scope.doRefresh();
-      }, 1800);
-    })
   }
 });
