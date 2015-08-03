@@ -1,13 +1,24 @@
 {
-  "name": "cloudant_boilerplate_nodejs",
+  "name": "cita-beau-barbershop",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.2.6",
+    "body-parser": "^1.13.3",
+    "cfenv": "1.0.x",
+    "cloudant": "*",
     "ejs": "*",
-    "cloudant": "*"
+    "errorhandler": "^1.4.2",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "https": "^1.0.0",
+    "jade": "^1.11.0",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "multer": "^1.0.1",
+    "serve-favicon": "^2.3.0",
+    "twilio": "^2.2.1"
   }
 }
