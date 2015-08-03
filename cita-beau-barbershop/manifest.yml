@@ -1,0 +1,12 @@
+applications:
+- services:
+  - cita-beau-barbershop-cloudantNoSQLDB
+  - cita-beau-barbershop-MonitoringAndAnalytics
+  disk_quota: 1024M
+  host: cita-beau-barbershop
+  name: cita-beau-barbershop
+  command: node app.js
+  path: .
+  domain: mybluemix.net
+  instances: 1
+  memory: 512M
