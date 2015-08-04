@@ -11,11 +11,13 @@ var
   fs = require('fs'),
   cfenv = require('cfenv'),
 
-	favicon = require('serve-favicon'),
+  favicon = require('serve-favicon'),
   bodyParser = require('body-parser'),
   logger = require('morgan'),
-	methodOverride = require('method-override'),
-	session = require('express-session');
+  methodOverride = require('method-override'),
+  session = require('express-session'),
+  multer = require('multer'),
+  errorHandler = require('errorhandler');
 
 var app = express();
 
@@ -40,13 +42,14 @@ services['user-provided'].forEach(function(service) {
   }
 });
 
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.use(logger('dev'));
 
@@ -60,13 +63,19 @@ app.use(bodyParser.json())
 
 app.use(methodOverride('X-Method-Override'));
 
-app.use(app.router);
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: 'FunnyGuyWearingAHat'
+}));
+
+// app.use(multer());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/style', express.static(path.join(__dirname, '/views/style')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorHandler());
 }
 
 function initDBConnection() {
@@ -119,7 +128,7 @@ function createResponseData(id, name, value, attachments) {
     var attachmentData = {
       content_type: item.type,
       key: item.key,
-      url: 'http://' + dbCredentials.user + ":" + dbCredentials.password + '@' + dbCredentials.host + '/' + dbCredentials.dbName + "/" + id + '/' + item.key
+      url: 'https://' + dbCredentials.user + ":" + dbCredentials.password + '@' + dbCredentials.host + '/' + dbCredentials.dbName + "/" + id + '/' + item.key
     };
     responseData.attachements.push(attachmentData);
 
@@ -277,7 +286,7 @@ app.post('/api/favorites', function(request, response) {
 
 });
 
-app.del('/api/favorites', function(request, response) {
+app.delete('/api/favorites', function(request, response) {
 
   console.log("Delete Invoked..");
   var id = request.query.id;
@@ -420,6 +429,14 @@ app.get('/api/favorites', function(request, response) {
 
 });
 
-https.createServer(app).listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+// https.createServer(app).listen(app.get('port'), function() {
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
+
+var appEnv = cfenv.getAppEnv();
+
+var server = app.listen(appEnv.port, appEnv.bind, function() {
+
+  // print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
 });
