@@ -9,24 +9,12 @@ var
   https = require('https'),
   path = require('path'),
   fs = require('fs'),
-  cfenv = require('cfenv'),
-
-  favicon = require('serve-favicon'),
-  bodyParser = require('body-parser'),
-  logger = require('morgan'),
-  methodOverride = require('method-override'),
-  session = require('express-session'),
-  multer = require('multer'),
-  errorHandler = require('errorhandler');
+  cfenv = require('cfenv');
 
 var app = express();
 
 var db;
-
 var cloudant;
-
-var fileToUpload;
-
 var dbCredentials = {
   dbName: 'my_sample_db'
 };
@@ -49,8 +37,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-// app.use(favicon(__dirname + '/public/favicon.ico'));
-
 app.use(logger('dev'));
 
 // parse application/x-www-form-urlencoded
@@ -62,6 +48,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 app.use(methodOverride('X-Method-Override'));
+
+app.use(multer({ dest: './uploads/'}).single('');
 
 app.use(session({
   resave: true,
