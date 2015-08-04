@@ -21,6 +21,8 @@ var dbCredentials = {
 
 var twilio = require('twilio');
 
+var port = (process.env.VCAP_APP_PORT || 3000);
+
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 var twilioSid, twilioToken;
 services['user-provided'].forEach(function(service) {
@@ -29,6 +31,7 @@ services['user-provided'].forEach(function(service) {
     twilioToken = service.credentials.authToken;
   }
 });
+
 
 
 // all environments
@@ -59,6 +62,9 @@ app.use(session({
 
 // app.use(multer());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use(express.static(__dirname + '/front-end'));
+
 app.use('/style', express.static(path.join(__dirname, '/views/style')));
 
 // development only
@@ -415,6 +421,44 @@ app.get('/api/favorites', function(request, response) {
     }
   });
 
+});
+
+
+app.get('/twiliouth', function(req, res) {
+  var toNum = req.param("number");
+  var twilioMessage = req.param("message");
+
+  // var toNum = "+12536422707";
+  // var twilioMessage = "FROM BLUEMIX";
+  var fromNum = '+13602343448';
+  var client = new twilio.RestClient(twilioSid, twilioToken);
+
+  // http://appointly.mybluemix.net/twiliouth?number=+12536422707&message=FROMBLUEMIXMOTHERFUCKER
+  // client.messages.create({
+  //     body: "FROM BLUEMIX",
+  //     to  : "+12067909711",
+  //     from: "+14696152255"
+  //   }, function(err, message) {
+  //   process.stdout.write(message.sid);
+  // });
+
+  client.sendMessage({
+         to   : toNum,
+         from : fromNum,
+         body : twilioMessage
+      }, function(err, message) {
+         if (err) {
+            console.error("Problem: " + message);
+            res.send("Error: "+ message);
+            return;
+         } else {
+            res.send("Done");
+            console.log("Twilio msg sent from " +
+              fromNum + " to " +
+              toNum + ": " + twilioMessage);
+         }
+      }
+   );
 });
 
 // https.createServer(app).listen(app.get('port'), function() {
