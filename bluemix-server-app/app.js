@@ -4,8 +4,6 @@
 
 var
   express = require('express'),
-  routes = require('./routes'),
-  user = require('./routes/user'),
   https = require('https'),
   path = require('path'),
   fs = require('fs'),
@@ -16,41 +14,20 @@ var app = express();
 var db;
 var cloudant;
 var dbCredentials = {
-  dbName: 'my_sample_db'
+  dbName: 'appointments'
 };
-
-var twilio = require('twilio');
 
 var port = (process.env.VCAP_APP_PORT || 3000);
 
-var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
-var twilioSid, twilioToken;
-services['user-provided'].forEach(function(service) {
-  if (service.name == 'Twilio-9n') {
-    twilioSid = service.credentials.accountSID;
-    twilioToken = service.credentials.authToken;
-  }
-});
+var vcapServices = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: 'FunnyGuyWearingAHat'
-}));
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use(express.static(__dirname + '/front-end'));
-
-// development only
-if ('development' == app.get('env')) {
-  app.use(errorHandler());
-}
 
 function initDBConnection() {
 
   if (process.env.VCAP_SERVICES) {
-    var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+
     if (vcapServices.cloudantNoSQLDB) {
       dbCredentials.host = vcapServices.cloudantNoSQLDB[0].credentials.host;
       dbCredentials.port = vcapServices.cloudantNoSQLDB[0].credentials.port;
@@ -81,43 +58,58 @@ function initDBConnection() {
 
 initDBConnection();
 
+app.get('/twilio', function(req, res) {
 
-app.get('/twiliouth', function(req, res) {
-  var toNum = req.param("number");
-  var twilioMessage = req.param("message");
+  // https://cita-beau-barbershop.mybluemix.net/twilio
 
-  // var toNum = "+12536422707";
-  // var twilioMessage = "FROM BLUEMIX";
-  var fromNum = '+13602343448';
+
+});
+
+//TODO: After established the server with stuffs, we will have this twilio module up and running.
+/*
+var twilio = require('twilio');
+
+var twilioSid, twilioToken;
+vcapServices['user-provided'].forEach(function(service) {
+  // if (service.name == 'Twilio-9n') { // Release Twilio
+  if (service.name == 'Twilio-79') {  // Test Twilio
+    twilioSid = service.credentials.accountSID;
+    twilioToken = service.credentials.authToken;
+  }
+});
+
+var sendsms = function(id, toNum) {
+  // var fromNum = '+13602343448';  // Bryan's #
+  var fromNum = '+14696152255'; // LAB's free #
+
+  if (toNum == null)
+    // toNum = "+12067909711"; // Bogdan's #
+    toNum = "+12536422707"; // LAB's #
+
+
+  var twilioMessage = "FROM BLUEMIX";
+
   var client = new twilio.RestClient(twilioSid, twilioToken);
 
-  // http://appointly.mybluemix.net/twiliouth?number=+12536422707&message=FROMBLUEMIXMOTHERFUCKER
-  // client.messages.create({
-  //     body: "FROM BLUEMIX",
-  //     to  : "+12067909711",
-  //     from: "+14696152255"
-  //   }, function(err, message) {
-  //   process.stdout.write(message.sid);
-  // });
-
   client.sendMessage({
-         to   : toNum,
-         from : fromNum,
-         body : twilioMessage
-      }, function(err, message) {
-         if (err) {
-            console.error("Problem: " + message);
-            res.send("Error: "+ message);
-            return;
-         } else {
-            res.send("Done");
-            console.log("Twilio msg sent from " +
-              fromNum + " to " +
-              toNum + ": " + twilioMessage);
-         }
-      }
-   );
-});
+    to: toNum,
+    from: fromNum,
+    body: twilioMessage
+  }, function(err, message) {
+    if (err) {
+      console.error("Problem: " + message);
+      console.log("Error: " + message);
+      return;
+    } else {
+      console.log("Done");
+    }
+  });
+}
+
+sendsms(0, "+12067909711");
+sendsms(1, null);
+
+*/
 
 // https.createServer(app).listen(app.get('port'), function() {
 //   console.log('Express server listening on port ' + app.get('port'));
