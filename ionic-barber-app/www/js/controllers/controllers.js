@@ -43,7 +43,7 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberListene
 
 });
 
-app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener) {
+app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate) {
 
   //Feilds
   $scope.appointments = [];
@@ -52,6 +52,11 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener
   $scope.today = new Date();
 
   //Functions
+
+  $scope.toggleRight = function() {
+    $ionicSideMenuDelegate.toggleRight();
+  };
+
   $scope.submitData = function() {
     $scope.schedule_info.date = new Date($scope.schedule_info.date);
     if ($scope.hasOwnProperty("appointments") !== true) {
@@ -60,7 +65,7 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener
     remoteAptDB.post({
       client_name: $scope.schedule_info.client_name,
       client_phone: $scope.schedule_info.number,
-      barber: 'Barber Name',
+      barber: 'Bogdan',
       time: $scope.schedule_info.date,
       alarm: $scope.schedule_info.alarm,
       done: false
