@@ -7,66 +7,74 @@ var
   https = require('https'),
   path = require('path'),
   fs = require('fs'),
-  cfenv = require('cfenv');
+  cfenv = require('cfenv'),
+  PouchDB = require('pouchdb');
 
 var app = express();
-
-var db;
-var cloudant;
-var dbCredentials = {
-  dbName: 'appointments'
-};
 
 var port = (process.env.VCAP_APP_PORT || 3000);
 
 var vcapServices = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-function initDBConnection() {
-
-  if (process.env.VCAP_SERVICES) {
-
-    if (vcapServices.cloudantNoSQLDB) {
-      dbCredentials.host = vcapServices.cloudantNoSQLDB[0].credentials.host;
-      dbCredentials.port = vcapServices.cloudantNoSQLDB[0].credentials.port;
-      dbCredentials.user = vcapServices.cloudantNoSQLDB[0].credentials.username;
-      dbCredentials.password = vcapServices.cloudantNoSQLDB[0].credentials.password;
-      dbCredentials.url = vcapServices.cloudantNoSQLDB[0].credentials.url;
-    }
-    console.log('VCAP Services: ' + JSON.stringify(process.env.VCAP_SERVICES));
-  } else {
-    dbCredentials.host = "af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com";
-    dbCredentials.port = 443;
-    dbCredentials.user = "hislyedifterecoverandily";
-    dbCredentials.password = "tS4ndjROhtDlJ2LECkcNvikl";
-    dbCredentials.url = "https://hislyedifterecoverandily:tS4ndjROhtDlJ2LECkcNvikl@af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com";
-
+var localAptDB = new PouchDB('appointments', {
+  localAptDB : require('memdown')
+});
+var remoteAptDB = new PouchDB('https://patestediescruslyindowne:t8txxKMPF3MBDRWqmCndXc5d @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments/', {
+  auth: {
+    username: 'patestediescruslyindowne',
+    password: 't8txxKMPF3MBDRWqmCndXc5d'
   }
-
-  cloudant = require('cloudant')(dbCredentials.url);
-
-  //check if DB exists if not create
-  cloudant.db.create(dbCredentials.dbName, function(err, res) {
-    if (err) {
-      console.log('could not create db ', err);
-    }
-  });
-  db = cloudant.use(dbCredentials.dbName);
-}
-
-initDBConnection();
+});
 
 app.get('/twilio', function(req, res) {
 
   // https://cita-beau-barbershop.mybluemix.net/twilio
 
-
+  remoteAptDB.allDocs({
+    include_docs: true,
+    attachments: true
+  }, function(err, response) {
+    if (err) {
+      return console.log(err);
+    }
+    // handle result
+    res.send(response);
+  });
 });
+
+var sync = PouchDB.sync(localAptDB, remoteAptDB, {
+  live: true,
+  retry: true
+}).on('change', function(info) {
+  // handle change
+  console.log(info);
+}).on('paused', function() {
+  // replication paused (e.g. user went offline)
+}).on('active', function() {
+  // replicate resumed (e.g. user went back online)
+}).on('denied', function(info) {
+  // a document failed to replicate, e.g. due to permissions
+}).on('complete', function(info) {
+  // handle complete
+}).on('error', function(err) {
+  // handle error
+});
+
+
+
+
 
 //TODO: After established the server with stuffs, we will have this twilio module up and running.
 /*
+
+var cred = vcapServices.cloudantNoSQLDB[0].credentials;
+
+dbCredentials.host = vcapServices.cloudantNoSQLDB[0].credentials.host;
+dbCredentials.port = vcapServices.cloudantNoSQLDB[0].credentials.port;
+dbCredentials.user = vcapServices.cloudantNoSQLDB[0].credentials.username;
+dbCredentials.password = vcapServices.cloudantNoSQLDB[0].credentials.password;
+dbCredentials.url = vcapServices.cloudantNoSQLDB[0].credentials.url;
+
 var twilio = require('twilio');
 
 var twilioSid, twilioToken;
