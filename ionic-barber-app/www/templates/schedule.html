@@ -1,39 +1,53 @@
 <ion-view name="schedule-view">
   <ion-content class="padding">
 <!-- <flex-calendar options="options" events="events" style="padding-top: 2em"></flex-calendar> -->
-
     <div class="list list-inset" style="margin-top: 2em">
       <label class="item item-input">
-        <input ng-model="schedule_info.barber" placeholder="Name of Barber" type="text">
+        <input ng-model="schedule_info.client_name" placeholder="Name of Client" type="text">
       </label>
       <div class="padding">
         <!-- safe yo -->
       </div>
       <label class="item item-input">
-        <input ng-model="schedule_info.date" placeholder="Date & Time" type="datetime">
+        <input ng-model="schedule_info.number" placeholder="Clients Phone Number" type="tel">
       </label>
+      <div class="padding">
+        <!-- safe yo -->
+      </div>
+      <label class="item item-input">
+        <input ng-model="schedule_info.date" type="datetime-local" placeholder="Date & Time">
+      </label>
+      <div class="padding">
+        <!-- safe yo -->
+      </div>
+      <ul class="list">
+        <li class="item item-toggle">
+           Enable Reminder
+           <label class="toggle toggle-assertive">
+             <input ng-model="schedule_info.alarm" type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+    </ul>
     </div>
     <div class="" style="margin-top: 3em">
-        <button class="button button-block button-assertive" ng-click="submitData()">Submit Data</button>
-        <ul class="list">
-          <li class="item item-toggle">
-             Enable Reminder
-             <label class="toggle toggle-assertive">
-               <input ng-model="schedule_info.alarm" type="checkbox">
-               <div class="track">
-                 <div class="handle"></div>
-               </div>
-             </label>
-          </li>
-      </ul>
+        <button class="button button-block button-assertive" ng-click="submitData()">Schedule Haircut</button>
     </div>
     <div class="padding">
       <!-- safe yo -->
     </div>
-    <h3 style="text-align: center">Appointment Stream</h3>
+    <h3 style="text-align: center">Appointments</h3>
+    <div class="padding">
+      <!-- safe yo -->
+    </div>
     <ion-list>
-      <ion-item ng-repeat="a in appointments">
-        <h4 ng-bind="a.time | date:'MM/dd/yyyy'"></h4>
+      <h4 style="text-align: center">Today</h4>
+      <ion-item ng-repeat="a in appointments | orderBy:'time'" style="margin-bottom: 1em">
+        <h4 ng-bind="a.time | date:'medium'"></h4>
+        <p>Client: {{a.client_name}}</p>
+        <p>Phone: {{a.client_phone}}</p>
         <p>Barber: {{a.barber}}</p>
         <p>Alarm: {{a.alarm}}</p>
       </ion-item>

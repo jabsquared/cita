@@ -1,4 +1,4 @@
-var app = angular.module('starter', ['ionic', 'flexcalendar', 'pascalprecht.translate']);
+var app = angular.module('starter', ['ionic','ionic.service.core', 'flexcalendar', 'pascalprecht.translate']);
 
 //instanciate databases
 var localAptDB = new PouchDB("appointments");
@@ -16,10 +16,6 @@ var remoteBarberDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU
     password: 'U7vFQNN2joOhU03Mw0iUx3SN'
   }
 });
-
-//Local user database
-var localUserDB = new PouchDB("users");
-
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -40,18 +36,6 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
 	$stateProvider
 
-	.state('login', {
-		url: '/login',
-		templateUrl: 'templates/login.html',
-		controller: 'LoginCtrl'
-	})
-
-  .state('signup', {
-		url: '/signup',
-		templateUrl: 'templates/signup.html',
-		controller: 'SignupCtrl'
-	})
-
 	.state('account', {
 		url: '/account',
 		templateUrl: 'templates/account.html',
@@ -64,7 +48,7 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 		controller: 'ScheduleCtrl'
 	});
 
-	$urlRouterProvider.otherwise('/login');
+	$urlRouterProvider.otherwise('/account');
 
   // Flex Calendar Language Options
 
