@@ -8,6 +8,7 @@
   "dependencies": {
     "ionic-service-core": "~0.1.9",
     "ngCordova": "~0.1.17-alpha",
-    "flex-calendar": "*"
+    "flex-calendar": "*",
+    "pouchdb": "~4.0.0"
   }
 }
