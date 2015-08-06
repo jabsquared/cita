@@ -2,16 +2,6 @@
  * Module dependencies.
  */
 
-var
-  express = require('express'),
-  https = require('https'),
-  path = require('path'),
-  fs = require('fs'),
-  cfenv = require('cfenv'),
-  PouchDB = require('pouchdb');
-
-var app = express();
-
 var port = (process.env.VCAP_APP_PORT || 3000);
 
 var vcapServices = JSON.parse(process.env.VCAP_SERVICES || "{}");
@@ -181,25 +171,9 @@ var changes = aptDB.changes({
   console.log(err);
 });
 
-//TODO: After established the server with stuffs, we will have this twilio module up and running.
-
-/*
-
-var cred = vcapServices.cloudantNoSQLDB[0].credentials;
-
-dbCredentials.host = vcapServices.cloudantNoSQLDB[0].credentials.host;
-dbCredentials.port = vcapServices.cloudantNoSQLDB[0].credentials.port;
-dbCredentials.user = vcapServices.cloudantNoSQLDB[0].credentials.username;
-dbCredentials.password = vcapServices.cloudantNoSQLDB[0].credentials.password;
-dbCredentials.url = vcapServices.cloudantNoSQLDB[0].credentials.url;
-
-*/
-
-
 var twilio = require('twilio');
 
 var twilioSid, twilioToken;
-
 
 vcapServices['user-provided'].forEach(function(service) {
   // if (service.name == 'Twilio-9n') { // Release Twilio
