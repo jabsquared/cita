@@ -15,9 +15,9 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state) {
 
   //Functions
 
-    $scope.schedule = function() {
-      console.log('hit!');
-      $state.go('schedule');
+    $scope.schedule = function(name) {
+      $rootScope.barber = name;
+      $state.go('appointments');
     }
 
 });
@@ -26,7 +26,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   // Feilds
   $scope.appointments = [];
-
+  $scope.barber = $rootScope.barber;
+  
   //Functions
 
   //Event Listeners
@@ -43,7 +44,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   });
 });
 
-app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate) {
+app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate) {
 
   //Feilds
   $scope.schedule_info = {};
@@ -58,10 +59,10 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener
       $scope.appointments = [];
     }
     remoteAptDB.put({
-      _id: 'Bogdan' + $scope.schedule_info.date,
+      _id: $rootScope.barber + $scope.schedule_info.date,
       client_name: $scope.schedule_info.client_name,
       client_phone: $scope.schedule_info.number,
-      barber: 'Bogdan',
+      barber: $rootScope.barber,
       time: $scope.schedule_info.date,
       alarm: $scope.schedule_info.alarm,
       sms_0:  false,
