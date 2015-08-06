@@ -65,28 +65,39 @@ var changes = aptDB.changes({
   console.log(err);
 });
 
+aptDB.allDocs({
+  include_docs: true,
+  attachments: true
+}, function(err, response) {
+  if (err) {
+    return console.log(err);
+  }
+  // handle result
+  console.log(response);
+});
+
 // Put a design doc into the db
+var InfiniteLoop = require('infinite-loop');
 
-var smsLoop = function() {
+var il = new InfiniteLoop;
 
-  setTimeout(function() {
+var ReminderBot = function() {
+  console.log(Date.now());
+  // Filtered by Date with a view
 
-    // Filtered by Date with a view
+  // If Date.now is 6AM: && 1st reminder == false
 
-    // If Date.now is 6AM: && 1st reminder == false
-    console.log(Date.now());
-    // Send Reminder SMS
 
-    // If Date.now is 30 minutes away && 2nd reminder == false
+  // Send Reminder SMS
 
-    // Send Reminder SMS
+  // If Date.now is 30 minutes away && 2nd reminder == false
 
-    // If Date.now is the time, Mark the status as Done
+  // Send Reminder SMS
 
-    smsLoop(); //Call itself
-  }, 3000);
+  // If Date.now is the time, Mark the status as Done
 }
-smsLoop();
+
+// il.add(ReminderBot,[]).setInterval(2700).run();
 
 
 
