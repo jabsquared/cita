@@ -48,11 +48,15 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope,
   // $scope.appointments = [];
 
   $scope.appointments = remoteAptDB.createIndex({
-    index: {fields: ['alarm']}
-  }).then(function () {
+    index: {
+      fields: ['alarm']
+    }
+  }).then(function() {
     return remoteAptDB.find({
       selector: {
-        "alarm" : {$eq: true}
+        "alarm": {
+          $eq: true
+        }
       }
       // sort: ['barber']
     });
@@ -73,14 +77,22 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope,
     if ($scope.hasOwnProperty("appointments") !== true) {
       $scope.appointments = [];
     }
-    remoteAptDB.post({
+    remoteAptDB.put({
+      _id: 'Bogdan' + $scope.schedule_info.date,
       client_name: $scope.schedule_info.client_name,
       client_phone: $scope.schedule_info.number,
       barber: 'Bogdan',
       time: $scope.schedule_info.date,
       alarm: $scope.schedule_info.alarm,
-      done: false
-    });
+      sms_0:  false,
+      sms_1: false,
+      done: false,
+    }).then(function(response) {
+      // Show some pops up fancy stuffs here, also go back to login.
+      console.log(response);
+    }).catch(function(err) {
+      console.log(err);
+    });;
   }
 
   $scope.logout = function() {
