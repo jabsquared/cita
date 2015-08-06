@@ -1,4 +1,3 @@
-
 app.controller("AccountCtrl", function($scope, $rootScope, $state, barberListener) {
   console.log('in account controller');
   //Feilds
@@ -43,10 +42,22 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberListene
 
 });
 
-app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate) {
+app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope, aptListener, $ionicSideMenuDelegate) {
 
   //Feilds
-  $scope.appointments = [];
+  // $scope.appointments = [];
+
+  $scope.appointments = remoteAptDB.createIndex({
+    index: {fields: ['alarm']}
+  }).then(function () {
+    return remoteAptDB.find({
+      selector: {
+        "alarm" : {$eq: true}
+      }
+      // sort: ['barber']
+    });
+  });
+
   $scope.schedule_info = {};
   $scope.schedule_info.alarm = true;
   $scope.today = new Date();
@@ -73,12 +84,12 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener
   }
 
   $scope.logout = function() {
-    $state.go('account');
+    $state.go('login');
   }
 
   //Event Listeners
   $scope.$on('add', function(event, apt) {
-    $scope.appointments.push(apt);
+    // $scope.appointments.push(apt);
   });
 
   $scope.$on('delete', function(event, id) {
