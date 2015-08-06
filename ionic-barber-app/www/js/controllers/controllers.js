@@ -1,7 +1,18 @@
-app.controller("AccountCtrl", function($scope, $rootScope, $state, barberListener) {
+app.controller("AccountCtrl", function($scope, $rootScope, $state) {
   console.log('in account controller');
+  
   //Feilds
-  $scope.barbers = [];
+  $scope.barbers = [{
+    name: "Gabino",
+    desc: "Profesional Barber"
+  }, {
+    name: "Matt",
+    desc: "Profesional Barber"
+  }, {
+    name: "Antonio",
+    desc: "Profesional Barber"
+  }];
+
   $scope.drop = false;
   $scope.drop2 = false;
 
@@ -28,35 +39,24 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberListene
   // }
 
   //Event Listeners
-  $scope.$on('add', function(event, apt) {
-    $scope.barbers.push(apt);
-  });
-
-  $scope.$on('delete', function(event, id) {
-    for (var i = 0; i < $scope.barbers.length; i++) {
-      if ($scope.barbers[i]._id === id) {
-        $scope.barbers.splice(i, 1);
-      }
-    }
-  });
+  // $scope.$on('add', function(event, apt) {
+  //   $scope.barbers.push(apt);
+  // });
+  //
+  // $scope.$on('delete', function(event, id) {
+  //   for (var i = 0; i < $scope.barbers.length; i++) {
+  //     if ($scope.barbers[i]._id === id) {
+  //       $scope.barbers.splice(i, 1);
+  //     }
+  //   }
+  // });
 
 });
 
 app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope, aptListener, $ionicSideMenuDelegate) {
 
   //Feilds
-  // $scope.appointments = [];
-
-  $scope.appointments = remoteAptDB.createIndex({
-    index: {fields: ['alarm']}
-  }).then(function () {
-    return remoteAptDB.find({
-      selector: {
-        "alarm" : {$eq: true}
-      }
-      // sort: ['barber']
-    });
-  });
+  $scope.appointments = [];
 
   $scope.schedule_info = {};
   $scope.schedule_info.alarm = true;
@@ -89,7 +89,7 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope,
 
   //Event Listeners
   $scope.$on('add', function(event, apt) {
-    // $scope.appointments.push(apt);
+    $scope.appointments.push(apt);
   });
 
   $scope.$on('delete', function(event, id) {
