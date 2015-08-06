@@ -73,7 +73,7 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener
   }
 
   $scope.logout = function() {
-    $state.go('login');
+    $state.go('account');
   }
 
   //Event Listeners
