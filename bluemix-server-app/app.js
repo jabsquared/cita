@@ -67,7 +67,9 @@ var changes = aptDB.changes({
 
 // Put a design doc into the db
 
-var smsLoop = setTimeout(function() {
+var smsLoop = function() {
+
+  setTimeout(function() {
 
     // Filtered by Date with a view
 
@@ -80,10 +82,11 @@ var smsLoop = setTimeout(function() {
     // Send Reminder SMS
 
     // If Date.now is the time, Mark the status as Done
-  smsLoop;
 
-}, 3000);
-
+    smsLoop(); //Call itself
+  }, 3000);
+}
+smsLoop();
 
 
 
