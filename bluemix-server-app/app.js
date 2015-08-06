@@ -74,6 +74,7 @@ var smsLoop = function() {
     // Filtered by Date with a view
 
     // If Date.now is 6AM: && 1st reminder == false
+
     console.log(Date.now());
     // Send Reminder SMS
 
