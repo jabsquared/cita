@@ -16,30 +16,28 @@ var port = (process.env.VCAP_APP_PORT || 3000);
 
 var vcapServices = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
-// var aptDB = new PouchDB('https://patestediescruslyindowne:t8txxKMPF3MBDRWqmCndXc5d @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments/', {
+var aptDB =
+//  new PouchDB('https://patestediescruslyindowne:t8txxKMPF3MBDRWqmCndXc5d @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments/', {
 //   auth: {
 //     username: 'patestediescruslyindowne',
 //     password: 't8txxKMPF3MBDRWqmCndXc5d'
 //   }
 // });
-
-var aptDB = new PouchDB("test");
+  new PouchDB("test"); // Local testing
 
 var tDate = new Date();
 
-console.log(tDate.getTime());
+tDate.setTime(tDate.getTime() + 18000);
 
-tDate.setTime(tDate.getTime() + 3000);
+var barbers = ['Mores', 'Yolos', 'Bamas']
 
-// var barber = 'Moritos'
-
-var barber = ['Mores', 'Yolos', 'Bamas']
+var barber = barbers[Math.floor(Math.random() * barbers.length)];
 
 aptDB.put({
-  _id: tDate.toISOString() + '-' + barber[1],
+  _id: tDate.toISOString() + '-' + barber,
   client_name: "Trix",
   client_phone: "0123456789",
-  barber: barber[1],
+  barber: barber,
   time: tDate,
   alarm: true,
   sms_0: false,
@@ -66,7 +64,11 @@ var il = new InfiniteLoop;
 
 var ReminderBot = function() {
   var nao = new Date();
-  var naoymdh = nao.toISOString().substring(0, 14);
+
+  var naoymdh =
+  // nao.toISOString().substring(0, 14); // YMDH
+    nao.toISOString().substring(0, 17);
+
   // Filter by YMDH, client-side
   aptDB.allDocs({
     include_docs: true,
@@ -77,27 +79,45 @@ var ReminderBot = function() {
       return console.log(err);
     }
     // handle result
-    console.log(response);
+    // console.log("All The Responses:"); console.log(response);
 
     for (var i = 0; i < response.rows.length; i++) {
-      console.log(response.rows[i]);
+
+      // console.log("Responses on row " + i + " :");
+        //   console.log(response.rows[i]);
+      var theD = response.rows[i].doc;
+
+      // console.log(theD);
+
+      // If done return;
+      if(theD.done){
+        return;
+      }
+
+      var ad = new Date(theD.time);
+        // console.log(ad);
+
+      // If nao is > 6AM && 1st reminder == false
+
+        // if sms0 is not done
+          // Send Reminder SMS && sms0 = true
+
+      // If nao is 30 minutes away && 2nd reminder == false
+      // If the date greater than (AppointmentTime - 30 MIN)
+        // If sms1 is not done
+          // Send Reminder SMS && sms1 = true
+
+      // If Date.now is greater than appTime, Done = true
+      // *****************************
+
     }
 
   });
 
 
-  // If Date.now is 6AM: && 1st reminder == false
-
-  // Send Reminder SMS
-
-  // If Date.now is 30 minutes away && 2nd reminder == false
-
-  // Send Reminder SMS
-
-  // If Date.now is the time, Mark the status as Done
 }
 
-il.add(ReminderBot, []).setInterval(3000).run();
+il.add(ReminderBot, []).setInterval(1000).run();
 
 // 1800000 for 30 minutes
 
