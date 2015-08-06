@@ -1,7 +1,7 @@
 app.factory('aptListener', function($rootScope) {
 
   localAptDB.changes({
-    continuous: true,
+    live: true,
     onChange: function(change) {
       if (!change.deleted) {
         $rootScope.$apply(function() {

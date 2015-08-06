@@ -58,7 +58,7 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener
       $scope.appointments = [];
     }
     remoteAptDB.put({
-      _id: 'Bogdan' + $scope.schedule_info.date,
+      _id: 'Bogdan' + $scope.schedule_info.date.getTime(),
       client_name: $scope.schedule_info.client_name,
       client_phone: $scope.schedule_info.number,
       barber: 'Bogdan',
