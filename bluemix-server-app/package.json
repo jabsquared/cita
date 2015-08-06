@@ -15,9 +15,11 @@
     "express-session": "^1.11.3",
     "https": "^1.0.0",
     "jade": "^1.11.0",
+    "memdown": "^1.0.0",
     "method-override": "^2.3.5",
     "morgan": "^1.6.1",
     "multer": "^1.0.1",
+    "pouchdb": "^4.0.0",
     "serve-favicon": "^2.3.0",
     "twilio": "^2.2.1"
   }
