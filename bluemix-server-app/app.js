@@ -200,13 +200,14 @@ var twilio = require('twilio');
 
 var twilioSid, twilioToken;
 
-// vcapServices['user-provided'].forEach(function(service) {
-//   // if (service.name == 'Twilio-9n') { // Release Twilio
-//   if (service.name == 'Twilio-79') { // Test Twilio
-//     twilioSid = service.credentials.accountSID;
-//     twilioToken = service.credentials.authToken;
-//   }
-// });
+
+vcapServices['user-provided'].forEach(function(service) {
+  // if (service.name == 'Twilio-9n') { // Release Twilio
+  if (service.name == 'Twilio-79') { // Test Twilio
+    twilioSid = service.credentials.accountSID;
+    twilioToken = service.credentials.authToken;
+  }
+});
 
 var sendsms = function(id, toNum, msg) {
   // var fromNum = '+13602343448';  // Bryan's #
@@ -235,32 +236,3 @@ var sendsms = function(id, toNum, msg) {
     }
   });
 }
-
-// https.createServer(app).listen(app.get('port'), function() {
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
-
-
-// app.get('/twilio', function(req, res) {
-//
-//   // https://cita-beau-barbershop.mybluemix.net/twilio
-//
-//   aptDB.allDocs({
-//     include_docs: true,
-//     attachments: true
-//   }, function(err, response) {
-//     if (err) {
-//       return console.log(err);
-//     }
-//     // handle result
-//     res.send(response);
-//   });
-// });
-
-var appEnv = cfenv.getAppEnv();
-
-var server = app.listen(appEnv.port, appEnv.bind, function() {
-
-  // print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
-});
