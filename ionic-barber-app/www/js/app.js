@@ -16,6 +16,17 @@ var remoteBarberDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU
     password: 'U7vFQNN2joOhU03Mw0iUx3SN'
   }
 });
+PouchDB.debug.enable('pouchdb:find')
+remoteAptDB.createIndex({
+  index: {fields: ['alarm']}
+}).then(function () {
+  return remoteAptDB.find({
+    selector: {
+      "alarm" : {$eq: true}
+    }
+    // sort: ['barber']
+  });
+});
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
