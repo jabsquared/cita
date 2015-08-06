@@ -12,3 +12,13 @@
   min-width: 15em;
   max-width: 700px;
 }
+
+.apt-card {
+  margin: 0 auto;
+  margin-bottom: 1em;
+  background-color: #444444;
+}
+
+.apt-card p {
+  color: #fff;
+}

@@ -1,12 +1,37 @@
-<ion-view name="schedule-view">
+<ion-view name="appointments-view">
   <ion-header-bar class="bar-light">
-    <a class="button icon-left ion-chevron-left button-clear button-dark" ng-href="#/appointments"></a>
-    <p class="title">
-      Schdule Appointment
-    </p>
+    <a class="button icon-left ion-chevron-left button-clear button-dark" ng-href="#/account"></a>
+    <h1 class="title large" >Appointments</h1>
+    <a class="button icon-right ion-plus button-clear button-dark" ng-href="#/schedule"></a>
     </ion-header-bar>
   <ion-content class="padding">
 <!-- <flex-calendar options="options" events="events" style="padding-top: 2em"></flex-calendar> -->
+    <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false">
+      <ion-slide>
+        <div class="padding">
+<!-- safe yo -->
+        </div>
+        <ion-list>
+          <ion-item ng-repeat="a in appointments | orderBy:'time'" ng-if="a.barber === 'Bogdan'" class="apt-card">
+            <p>
+              At: {{a.time}}
+            </p>
+            <p>Client:
+              {{a.client_name}}</p>
+            <p>Phone:
+              {{a.client_phone}}</p>
+            <p>Barber:
+              {{a.barber}}</p>
+            <p>Alarm:
+              {{a.alarm}}</p>
+          </ion-item>
+        </ion-list>
+        <div class="padding">
+<!-- safe yo -->
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <h2 style="text-align:center"> Schedule Appointment </h2>
         <div class="list list-inset" style="margin-top: 2em">
           <label class="item item-input">
             <input ng-model="schedule_info.client_name" placeholder="Name of Client" type="text">
@@ -41,5 +66,7 @@
         <div class="" style="margin-top: 3em">
           <button class="button button-block button-assertive" ng-click="submitData()">Schedule Haircut</button>
         </div>
+      </ion-slide>
+    </ion-slide-box>
   </ion-content>
 </ion-view>

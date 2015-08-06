@@ -1,6 +1,6 @@
 app.controller("AccountCtrl", function($scope, $rootScope, $state) {
   console.log('in account controller');
-  
+
   //Feilds
   $scope.barbers = [{
     name: "Gabino",
@@ -53,7 +53,7 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state) {
 
 });
 
-app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope, aptListener, $ionicSideMenuDelegate) {
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, aptListener) {
 
   //Feilds
   $scope.appointments = [];
@@ -63,29 +63,6 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope,
   $scope.today = new Date();
 
   //Functions
-
-  $scope.toggleRight = function() {
-    $ionicSideMenuDelegate.toggleRight();
-  };
-
-  $scope.submitData = function() {
-    $scope.schedule_info.date = new Date($scope.schedule_info.date);
-    if ($scope.hasOwnProperty("appointments") !== true) {
-      $scope.appointments = [];
-    }
-    remoteAptDB.post({
-      client_name: $scope.schedule_info.client_name,
-      client_phone: $scope.schedule_info.number,
-      barber: 'Bogdan',
-      time: $scope.schedule_info.date,
-      alarm: $scope.schedule_info.alarm,
-      done: false
-    });
-  }
-
-  $scope.logout = function() {
-    $state.go('login');
-  }
 
   //Event Listeners
   $scope.$on('add', function(event, apt) {
@@ -99,4 +76,30 @@ app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, $rootScope,
       }
     }
   });
+});
+
+app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate) {
+
+  //Feilds
+
+
+  //Functions
+
+  $scope.submitData = function() {
+    $scope.schedule_info.date = new Date($scope.schedule_info.date);
+    if ($scope.hasOwnProperty("appointments") !== true) {
+      $scope.appointments = [];
+    }
+    remoteAptDB.post({
+      client_name: $scope.schedule_info.client_name,
+      client_phone: $scope.schedule_info.number,
+      barber: 'Bogdan',
+      time: $scope.schedule_info.date,
+      alarm: $scope.schedule_info.alarm,
+      done: false
+    }).then(function(){
+      $state.go('appointments');
+    });
+  }
+
 });
