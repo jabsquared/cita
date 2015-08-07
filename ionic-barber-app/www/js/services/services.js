@@ -14,7 +14,7 @@ app.factory('aptListener', function($rootScope) {
           });
           //55555555555555555555555555555555
         })
-      } else {
+      } else if (change.deleted) {
         $rootScope.$apply(function() {
           $rootScope.$broadcast('delete', change.id);
         });
@@ -22,4 +22,29 @@ app.factory('aptListener', function($rootScope) {
     }
   });
   return true;
+});
+
+app.factory('barberInfo', function($rootScope) {
+  var barbers = [{
+    name: "Gabino",
+    desc: "Profesional Barber"
+  }, {
+    name: "Matt",
+    desc: "Profesional Barber"
+  }, {
+    name: "Antonio",
+    desc: "Profesional Barber"
+  }];
+  var barber = '';
+  return {
+    setBaber: function(name){
+      barber = name;
+    },
+    getBarber: function(){
+      return barber;
+    },
+    getBarbers: function(){
+      return barbers;
+    }
+  }
 });
