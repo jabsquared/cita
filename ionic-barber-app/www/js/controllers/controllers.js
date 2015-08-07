@@ -62,13 +62,15 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   }
 
   $scope.reschedule = function(id) {
-    
+
   }
 
   //Event Listeners
   $scope.$on('add', function(event, apt) {
     console.log('Updating');
     appointments.push(apt);
+    console.log("appts:");
+    // console.log(appointments);
     console.log($scope.appointments);
   });
 

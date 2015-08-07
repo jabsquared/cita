@@ -21,12 +21,13 @@ app.factory('aptListener', function($rootScope) {
       //   });
       // }
     // }
-  }).on('create', function (change) {
+  }).on('change', function (change) {
     $rootScope.$apply(function() {
         //55555555555555555555555555555555
         localAptDB.get(change.id, function(err, doc) {
           $rootScope.$apply(function() {
             if (err) console.log(err);
+              console.log('about to broadcast!');
               $rootScope.$broadcast('add', doc);
           })
         });

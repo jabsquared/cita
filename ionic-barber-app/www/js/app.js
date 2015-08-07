@@ -28,7 +28,8 @@ app.run(function($ionicPlatform) {
     }
     //auto sync local and remote db's
     localAptDB.sync(remoteAptDB, {
-      live: true
+      live: true,
+      retry: true
     });
     // localBarberDB.sync(remoteBarberDB, { live:true });
   });
