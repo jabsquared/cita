@@ -6,6 +6,8 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "express": "^4.13.3",
+    "cfenv": "1.0.x",
     "infinite-loop": "^0.2.2",
     "pouchdb": "^4.0.0",
     "twilio": "^2.2.1"

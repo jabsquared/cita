@@ -2,6 +2,16 @@
  * Module dependencies.
  */
 
+
+
+
+var
+  express = require('express'),
+  cfenv = require('cfenv'),
+  PouchDB = require('pouchdb');
+
+var app = express();
+
 var port = (process.env.VCAP_APP_PORT || 3000);
 
 var vcapServices = JSON.parse(process.env.VCAP_SERVICES || "{}");
@@ -210,3 +220,11 @@ var sendsms = function(id, toNum, msg) {
     }
   });
 }
+
+var appEnv = cfenv.getAppEnv();
+
+var server = app.listen(appEnv.port, appEnv.bind, function() {
+
+  // print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
+});
