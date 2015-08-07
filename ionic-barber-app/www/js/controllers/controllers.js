@@ -20,6 +20,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   // Feilds
   $scope.appointments = appointments;
   $scope.barber = barberInfo.getBarber();
+  $scope.newDate = new Date();
 
   //Functions
   $scope.back = function() {
@@ -62,14 +63,57 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
          });
        } else {
          //canceled
-         console.log('cancled!');
+         console.log('canceled!');
        }
      });
   }
 
   $scope.reschedule = function(id) {
+    console.log('reschedule!');
 
-  }
+    // An elaborate, custom popup
+   var myPopup = $ionicPopup.show({
+     template: '<input type="datetime-local" ng-model="newDate">',
+     title: 'Choose new date and time.',
+     scope: $scope,
+     buttons: [
+       { text: 'Cancel' },
+       {
+         text: '<b>Confirm</b>',
+         type: 'button-assertive',
+         onTap: function(e) {
+           if (!$scope.newDate) {
+             //don't allow the user to close unless he enters wifi password
+             e.preventDefault();
+           } else {
+             return $scope.newDate;
+           }
+         }
+       },
+     ]
+   });
+   myPopup.then(function(res) {
+     remoteAptDB.get(id).then(function(doc) {
+       return remoteAptDB.put({
+         _id: doc._id,
+         _rev: doc._rev,
+         client_name: doc.client_name,
+         client_phone: doc.client_phone,
+         barber: doc.barber,
+         time: res,
+         alarm: doc.alarm,
+         sms_0:  doc.sms_0,
+         sms_1: doc.sms_1,
+         done: doc.done
+       });
+     }).then(function(response) {
+       // handle response
+       console.log('Reschedule Successful');
+     }).catch(function (err) {
+       console.log(err);
+     });
+   });
+  };
 
   //Event Listeners
   $scope.$on('add', function(event, apt) {
