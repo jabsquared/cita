@@ -2,11 +2,11 @@
  * Module dependencies.
  */
 
+
+
+
 var
   express = require('express'),
-  https = require('https'),
-  path = require('path'),
-  fs = require('fs'),
   cfenv = require('cfenv'),
   PouchDB = require('pouchdb');
 
@@ -124,7 +124,8 @@ var ReminderBot = function() {
           if (err) {
             return console.log(err);
           }
-          sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
+          // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
+          sendsms(0, theD.client_phone , "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
         });
 
       }
@@ -181,32 +182,17 @@ var changes = aptDB.changes({
   console.log(err);
 });
 
-//TODO: After established the server with stuffs, we will have this twilio module up and running.
-
-/*
-
-var cred = vcapServices.cloudantNoSQLDB[0].credentials;
-
-dbCredentials.host = vcapServices.cloudantNoSQLDB[0].credentials.host;
-dbCredentials.port = vcapServices.cloudantNoSQLDB[0].credentials.port;
-dbCredentials.user = vcapServices.cloudantNoSQLDB[0].credentials.username;
-dbCredentials.password = vcapServices.cloudantNoSQLDB[0].credentials.password;
-dbCredentials.url = vcapServices.cloudantNoSQLDB[0].credentials.url;
-
-*/
-
-
 var twilio = require('twilio');
 
 var twilioSid, twilioToken;
 
-// vcapServices['user-provided'].forEach(function(service) {
-//   // if (service.name == 'Twilio-9n') { // Release Twilio
-//   if (service.name == 'Twilio-79') { // Test Twilio
-//     twilioSid = service.credentials.accountSID;
-//     twilioToken = service.credentials.authToken;
-//   }
-// });
+vcapServices['user-provided'].forEach(function(service) {
+  // if (service.name == 'Twilio-9n') { // Release Twilio
+  if (service.name == 'Twilio-79') { // Test Twilio
+    twilioSid = service.credentials.accountSID;
+    twilioToken = service.credentials.authToken;
+  }
+});
 
 var sendsms = function(id, toNum, msg) {
   // var fromNum = '+13602343448';  // Bryan's #
@@ -235,27 +221,6 @@ var sendsms = function(id, toNum, msg) {
     }
   });
 }
-
-// https.createServer(app).listen(app.get('port'), function() {
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
-
-
-// app.get('/twilio', function(req, res) {
-//
-//   // https://cita-beau-barbershop.mybluemix.net/twilio
-//
-//   aptDB.allDocs({
-//     include_docs: true,
-//     attachments: true
-//   }, function(err, response) {
-//     if (err) {
-//       return console.log(err);
-//     }
-//     // handle result
-//     res.send(response);
-//   });
-// });
 
 var appEnv = cfenv.getAppEnv();
 

@@ -1,42 +1,26 @@
 app.factory('aptListener', function($rootScope) {
 
   localAptDB.changes({
-    // since: 'now',
     live: true
-    // onChange: function(change) {
-      // if (!change.deleted) {
-      //   $rootScope.$apply(function() {
-      //     //55555555555555555555555555555555
-      //     localAptDB.get(change.id, function(err, doc) {
-      //       $rootScope.$apply(function() {
-      //         if (err) console.log(err);
-      //           $rootScope.$broadcast('add', doc);
-      //       })
-      //     });
-      //     //55555555555555555555555555555555
-      //   })
-      // } else if (change.deleted) {
-      //   $rootScope.$apply(function() {
-      //     $rootScope.$broadcast('delete', change.id);
-      //   });
-      // }
-    // }
-  }).on('change', function (change) {
-    $rootScope.$apply(function() {
-        //55555555555555555555555555555555
+  }).on('change', function(change) {
+    if (change.deleted) {
+      $rootScope.$apply(function() {
+        $rootScope.$broadcast('delete', change.id);
+      });
+    } else {
+      $rootScope.$apply(function() {
         localAptDB.get(change.id, function(err, doc) {
           $rootScope.$apply(function() {
             if (err) console.log(err);
-              console.log('about to broadcast!');
-              $rootScope.$broadcast('add', doc);
+            $rootScope.$broadcast('add', doc);
           })
         });
-        //55555555555555555555555555555555
-      });
-  }).on('delete', function (change) {
-    $rootScope.$apply(function() {
-        $rootScope.$broadcast('delete', change.id);
-      });
+      })
+    }
+  }).on('create', function(change) {
+
+  }).on('delete', function(change) {
+
   });
   return true;
 });
@@ -54,13 +38,13 @@ app.factory('barberInfo', function($rootScope) {
   }];
   var barber = '';
   return {
-    setBaber: function(name){
+    setBaber: function(name) {
       barber = name;
     },
-    getBarber: function(){
+    getBarber: function() {
       return barber;
     },
-    getBarbers: function(){
+    getBarbers: function() {
       return barbers;
     }
   }

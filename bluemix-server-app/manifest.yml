@@ -3,6 +3,7 @@ applications:
   - cita-beau-barbershop-cloudantNoSQLDB
   - cita-beau-barbershop-MonitoringAndAnalytics
   - Twilio-9n
+  - Twilio-79
   disk_quota: 1024M
   host: cita-beau-barbershop
   name: cita-beau-barbershop

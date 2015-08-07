@@ -39,7 +39,7 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
   $stateProvider
 
-    .state('account', {
+  .state('account', {
     url: '/account',
     templateUrl: 'templates/account.html',
     controller: 'AccountCtrl'
