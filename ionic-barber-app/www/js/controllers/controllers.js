@@ -93,6 +93,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
      ]
    });
    myPopup.then(function(res) {
+     if (res){
      remoteAptDB.get(id).then(function(doc) {
        return remoteAptDB.put({
          _id: doc._id,
@@ -112,6 +113,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
      }).catch(function (err) {
        console.log(err);
      });
+   }
    });
   };
 
