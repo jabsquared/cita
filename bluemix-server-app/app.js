@@ -124,7 +124,8 @@ var ReminderBot = function() {
           if (err) {
             return console.log(err);
           }
-          sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
+          // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
+          sendsms(0, theD.client_phone , "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
         });
 
       }

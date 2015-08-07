@@ -62,7 +62,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   }
 
   $scope.reschedule = function(id) {
-    
+
   }
 
   //Event Listeners
@@ -80,6 +80,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       }
     }
   });
+
 });
 
 app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate, barberInfo) {
