@@ -1,25 +1,41 @@
 app.factory('aptListener', function($rootScope) {
 
   localAptDB.changes({
-    live: true,
-    onChange: function(change) {
-      if (!change.deleted) {
-        $rootScope.$apply(function() {
-          //55555555555555555555555555555555
-          localAptDB.get(change.id, function(err, doc) {
-            $rootScope.$apply(function() {
-              if (err) console.log(err);
-                $rootScope.$broadcast('add', doc);
-            })
-          });
-          //55555555555555555555555555555555
-        })
-      } else if (change.deleted) {
-        $rootScope.$apply(function() {
-          $rootScope.$broadcast('delete', change.id);
+    // since: 'now',
+    live: true
+    // onChange: function(change) {
+      // if (!change.deleted) {
+      //   $rootScope.$apply(function() {
+      //     //55555555555555555555555555555555
+      //     localAptDB.get(change.id, function(err, doc) {
+      //       $rootScope.$apply(function() {
+      //         if (err) console.log(err);
+      //           $rootScope.$broadcast('add', doc);
+      //       })
+      //     });
+      //     //55555555555555555555555555555555
+      //   })
+      // } else if (change.deleted) {
+      //   $rootScope.$apply(function() {
+      //     $rootScope.$broadcast('delete', change.id);
+      //   });
+      // }
+    // }
+  }).on('create', function (change) {
+    $rootScope.$apply(function() {
+        //55555555555555555555555555555555
+        localAptDB.get(change.id, function(err, doc) {
+          $rootScope.$apply(function() {
+            if (err) console.log(err);
+              $rootScope.$broadcast('add', doc);
+          })
         });
-      }
-    }
+        //55555555555555555555555555555555
+      });
+  }).on('delete', function (change) {
+    $rootScope.$apply(function() {
+        $rootScope.$broadcast('delete', change.id);
+      });
   });
   return true;
 });
