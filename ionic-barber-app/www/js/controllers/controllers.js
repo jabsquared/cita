@@ -42,11 +42,16 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
        {
          text: '<b>Yes</b>',
          type: 'button-assertive',
+         onTap: function(e){
+           return true;
+         }
        },
      ]
      });
      confirmPopup.then(function(res) {
+       console.log(res);
        if(res) {
+         console.log('about to delete');
          remoteAptDB.get(id).then(function(doc) {
            return remoteAptDB.remove(doc);
          }).then(function (result) {
@@ -57,6 +62,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
          });
        } else {
          //canceled
+         console.log('cancled!');
        }
      });
   }
@@ -68,6 +74,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   //Event Listeners
   $scope.$on('add', function(event, apt) {
     console.log('Updating');
+    for (var i = 0; i < appointments.length; i++) {
+      if (appointments[i]._id === apt._id){
+          appointments.splice(i, 1);
+      }
+    }
     appointments.push(apt);
     console.log("appts:");
     // console.log(appointments);

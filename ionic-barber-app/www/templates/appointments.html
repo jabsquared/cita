@@ -10,6 +10,10 @@
 <!-- safe yo -->
         </div>
         <div class="list card" ng-repeat="a in appointments" ng-if="a.barber === barber">
+          <!-- <a href="#" class="item item-icon-left">
+            <i class="icon ion-ios-clock"></i>
+            {{a.barber}}
+          </a> -->
           <a href="#" class="item item-icon-left">
             <i class="icon ion-ios-clock"></i>
             {{a.time | date:"MMM d, yyyy 'at' h:mm a"}}
