@@ -1,4 +1,4 @@
-var app = angular.module('starter', ['ionic', 'ionic.service.core', 'flexcalendar', 'pascalprecht.translate']);
+var app = angular.module('starter', ['ionic','ionic.service.core',  'flexcalendar', 'pascalprecht.translate']);
 
 //instanciate databases
 var localAptDB = new PouchDB("appointments");
