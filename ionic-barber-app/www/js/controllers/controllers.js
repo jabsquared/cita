@@ -20,7 +20,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   // Feilds
   $scope.appointments = appointments;
   $scope.barber = barberInfo.getBarber();
-  $scope.newDate = { date: new Date()};
+  $scope.newDate = { date: new Date(Date.now())};
 
   //Functions
   $scope.back = function() {
@@ -69,7 +69,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   }
 
   $scope.reschedule = function(apt) {
-    console.log('reschedule!');
+    // console.log('reschedule!');
     $scope.data = {}
     // An elaborate, custom popup
    var myPopup = $ionicPopup.show({
@@ -77,8 +77,9 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
      title: 'Choose new date and time.',
      scope: $scope,
      buttons: [
-       { text: 'Cancel',
-       onTap: function(e) {
+      {
+        text: 'Cancel',
+        onTap: function(e) {
            return 'cancel button'
          }
       },
@@ -124,20 +125,20 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   //Event Listeners
   $scope.$on('add', function(event, apt) {
-    console.log('Updating');
+    // console.log('Updating');
     for (var i = 0; i < appointments.length; i++) {
       if (appointments[i]._id === apt._id){
           appointments.splice(i, 1);
       }
     }
     appointments.push(apt);
-    console.log("appts:");
+    // console.log("appts:");
     // console.log(appointments);
-    console.log($scope.appointments);
+    // console.log($scope.appointments);
   });
 
   $scope.$on('delete', function(event, id) {
-    console.log('Deleting');
+    // console.log('Deleting');
     for (var i = 0; i < appointments.length; i++) {
       if (appointments[i]._id === id) {
         appointments.splice(i, 1);
@@ -152,7 +153,7 @@ app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup,
   //Feilds
   $scope.schedule_info = {};
   $scope.schedule_info.alarm = true;
-  $scope.today = new Date();
+  $scope.today = new Date(Date.now());
 
   //Functions
 
