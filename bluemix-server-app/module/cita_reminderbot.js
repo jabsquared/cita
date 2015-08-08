@@ -1,12 +1,24 @@
 // SMS BOT
-var InfiniteLoop = require('infinite-loop');
+
+var secret = require('./cita_secret');
+
 var PouchDB = require('pouchdb');
 
-var aptDB = new PouchDB("appointments"); // Local testing
+var aptDB = (secret.cloudantAuth.user==="lab") ?
+  new PouchDB("lab") : // Local testing
+  new PouchDB(secret.cloudantAuth.url, {
+    auth: {
+      username: secret.cloudantAuth.user,
+      password: secret.cloudantAuth.pass,
+  }
+});
+
+var InfiniteLoop = require('infinite-loop');
+var sender = require ('./cita_twilio');
 
 var il = new InfiniteLoop();
 
-var ReminderBot = function() {
+var SMSBot = function() {
   var nao = new Date();
 
   var naoymd =
@@ -79,9 +91,45 @@ var ReminderBot = function() {
       // *****************************
     }
   });
-
 };
 
-il.add(ReminderBot, []).setInterval(9000).run();
+il.add(SMSBot, []).setInterval(9000).run();
 
 // 1800000 for 30 minutes
+
+var changes = aptDB.changes({
+  since: 'now',
+  live: true,
+  include_docs: true
+}).on('create', function(change) {
+  // handle change
+  var apt = change.doc;
+
+  if (apt.barber === null){
+    return;
+  }
+
+  var ad = new Date(apt.time);
+
+  var msg = "From The Beau Barbershop: You scheduled a hair cut on " +
+    ad.toDateString() + " at " +
+    ad.toTimeString() +
+    // ad.toLocaleTimeString('en-US', {
+    //   hour: '2-digit',
+    //   minute: '2-digit'
+    // }) +
+    " with " +  apt.barber +
+    ". Have a nice day, " + apt.client_name + "!";
+
+  // sendsms(0, "+12067909711", msg);
+  // sendsms(0, apt.client_phone, msg);
+  console.log(msg);
+  // console.log(msg);
+  // console.log(change);
+}).on('update',function (change) {
+  console.log(change);
+}).on('complete', function(info) {
+  // changes() was canceled
+}).on('error', function(err) {
+  console.log(err);
+});

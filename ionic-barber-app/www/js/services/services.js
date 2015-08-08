@@ -13,9 +13,9 @@ app.factory('aptListener', function($rootScope) {
           $rootScope.$apply(function() {
             if (err) console.log(err);
             $rootScope.$broadcast('add', doc);
-          })
+          });
         });
-      })
+      });
     }
   }).on('create', function(change) {
 
@@ -47,5 +47,5 @@ app.factory('barberInfo', function($rootScope) {
     getBarbers: function() {
       return barbers;
     }
-  }
+  };
 });
