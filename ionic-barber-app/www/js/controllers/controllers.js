@@ -11,7 +11,7 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo) {
       barberInfo.setBaber(name);
       console.log(barberInfo.getBarber());
       $state.go('appointments');
-    }
+    };
 
 });
 
@@ -25,11 +25,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   //Functions
   $scope.back = function() {
     $state.go('account');
-  }
+  };
 
   $scope.schedule = function(){
     $state.go('schedule');
-  }
+  };
 
   $scope.delete = function(id){
      var confirmPopup = $ionicPopup.confirm({
@@ -66,11 +66,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
          console.log('canceled!');
        }
      });
-  }
+  };
 
   $scope.reschedule = function(apt) {
     // console.log('reschedule!');
-    $scope.data = {}
+    $scope.data = {};
     // An elaborate, custom popup
    var myPopup = $ionicPopup.show({
      template: '<input type="datetime-local" ng-model="newDate.date">',
@@ -80,7 +80,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       {
         text: 'Cancel',
         onTap: function(e) {
-           return 'cancel button'
+           return 'cancelled';
          }
       },
        {
@@ -182,6 +182,5 @@ app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup,
     }).catch(function(err) {
       console.log(err);
     });
-  }
-
+  };
 });

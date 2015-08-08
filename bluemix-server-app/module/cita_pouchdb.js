@@ -44,3 +44,55 @@ var changes = aptDB.changes({
 }).on('error', function(err) {
   console.log(err);
 });
+
+aptDB.put({
+  client_name: theD.client_name,
+  client_phone: theD.client_phone,
+  barber: theD.barber,
+  time: ad,
+  alarm: theD.alarm,
+  sms_0: true,
+  sms_1: theD.sms_1,
+  done: theD.done,
+}, theD._id, theD._rev, function(err, response) {
+  if (err) {
+    return console.log(err);
+  }
+  // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
+  sendsms(0, theD.client_phone, "From The Beau Barbershop: You have an appoinment with " + theD.barber + " on " + ad.toTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }));
+});
+
+aptDB.put({
+  client_name: theD.client_name,
+  client_phone: theD.client_phone,
+  barber: theD.barber,
+  time: ad,
+  alarm: theD.alarm,
+  sms_0: theD.sms_0,
+  sms_1: true,
+  done: theD.done,
+}, theD._id, theD._rev, function(err, response) {
+  if (err) {
+    return console.log(err);
+  }
+  // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
+  sendsms(0, theD.client_phone, "From The Beau Barbershop: You have an appoinment in 30 minutes with " +
+    theD.barber + " on " +
+    ad.toTimeString()
+    // ad.toLocaleTimeString('en-US', {
+    //   hour: '2-digit',
+    //   minute: '2-digit'
+    // })
+  );
+});
+
+aptDB.remove(thD, function(err, response) {
+  if (err) {
+    return console.log(err);
+  }
+  // handle response
+  sendsms(0, cp, "From The Beau Barbershop: thank you and have a nice day!");
+});

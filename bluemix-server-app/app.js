@@ -6,12 +6,9 @@ var
   express = require('express'),
   cfenv = require('cfenv');
 
-
 var app = express();
 
 var port = (process.env.VCAP_APP_PORT || 3000);
-
-var vcapServices = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
 var dev = true;
 
@@ -51,7 +48,9 @@ var cita_pouchdb = require('./module/cita_pouchdb');
 
 var cita_reminderbot = require('./module/cita_reminderbot');
 
-var cita_twilio= require('./module/cita_twilio');
+var cita_twilio = require('./module/cita_twilio');
+
+
 
 var appEnv = cfenv.getAppEnv();
 
@@ -60,7 +59,7 @@ var server = app.listen(appEnv.port, appEnv.bind, function() {
   console.log("server starting on " + appEnv.url);
 });
 
-setInterval(function(){
+setInterval(function() {
   global.gc();
   // console.log('GC done')
-}, 1000*30);
+}, 1000 * 30);
