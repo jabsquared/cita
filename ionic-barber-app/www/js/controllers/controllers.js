@@ -20,7 +20,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   // Feilds
   $scope.appointments = appointments;
   $scope.barber = barberInfo.getBarber();
-  $scope.newDate = new Date();
+  $scope.newDate = { date: new Date()};
 
   //Functions
   $scope.back = function() {
@@ -73,38 +73,41 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     $scope.data = {}
     // An elaborate, custom popup
    var myPopup = $ionicPopup.show({
-    //  template: '<input type="datetime-local" ng-model="newDate"> {{newDate}}',
-    templateUrl : 'popup-template.html',
+     template: '<input type="datetime-local" ng-model="newDate.date">',
      title: 'Choose new date and time.',
      scope: $scope,
      buttons: [
-       { text: 'Cancel' },
+       { text: 'Cancel',
+       onTap: function(e) {
+           return 'cancel button'
+         }
+      },
        {
          text: '<b>Confirm</b>',
          type: 'button-assertive',
          onTap: function(e) {
-           alert($scope.newDate);
-           if (!$scope.newDate) {
+          //  alert($scope.newDate.date);
+           if (!$scope.newDate.date) {
              //don't allow the user to close unless he enters wifi password
              e.preventDefault();
            } else {
-             return $scope.newDate;
+             return 'submit';
            }
          }
        },
      ]
    });
    myPopup.then(function(res) {
-    //  alert($scope.newDate);
+    //  alert($scope.newDate.date);
      console.log(res);
-    //  if (res){
+     if (res === 'submit'){
        remoteAptDB.put({
          _id: apt._id,
          _rev: apt._rev,
          client_name: apt.client_name,
          client_phone: apt.client_phone,
          barber: apt.barber,
-         time: $scope.newDate,
+         time: $scope.newDate.date,
          alarm: apt.alarm,
          sms_0:  apt.sms_0,
          sms_1: apt.sms_1,
@@ -115,7 +118,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
      }).catch(function (err) {
        console.log(err);
      });
-  //  }
+   }
    });
   };
 
