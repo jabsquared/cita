@@ -86,7 +86,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
          text: '<b>Confirm</b>',
          type: 'button-assertive',
          onTap: function(e) {
-           alert($scope.newDate.date);
+          //  alert($scope.newDate.date);
            if (!$scope.newDate.date) {
              //don't allow the user to close unless he enters wifi password
              e.preventDefault();
