@@ -1,16 +1,28 @@
-// SMS BOT
+'use strict';
+
+var secret = require('./cita_secret');
+
+var PouchUtils = require('./cita_pouchutils');
+
+var aptDB = PouchUtils.aptDB;
+
+var logDB = PouchUtils.logDB;
+
 var InfiniteLoop = require('infinite-loop');
 
-var il = new InfiniteLoop;
+var il = new InfiniteLoop();
 
-var ReminderBot = function() {
+var sender = require('./cita_twilio');
+
+var SMSBot = function() {
+  // Get the Current Date
   var nao = new Date();
-
+  // Extract the needed infomation from
   var naoymd =
-    nao.toISOString().substring(0, 11); // YMD
-  // nao.toISOString().substring(0, 13); // YMDH
-  // nao.toISOString().substring(0, 17); // YMDHM
-
+    // nao.toISOString().substring(0, 11); // YMD
+    // nao.toISOString().substring(0, 13); // YMDH
+    nao.toISOString().substring(0, 15); // YMDHm
+    // nao.toISOString().substring(0, 17); // YMDHM
   // Filter by YMDH, client-side
   aptDB.allDocs({
     include_docs: true,
@@ -20,13 +32,10 @@ var ReminderBot = function() {
     if (err) {
       return console.log(err);
     }
-    // handle result
     // console.log("All The Responses:"); console.log(response);
-
+    // Go through all messages for the last D || H || M
     for (var i = 0; i < response.rows.length; i++) {
-
-      // console.log("Responses on row " + i + " :");
-      //   console.log(response.rows[i]);
+      // console.log("Responses on row " + i + " :"); console.log(response.rows[i]);
       var theD = response.rows[i].doc;
 
       // console.log(theD);
@@ -37,88 +46,90 @@ var ReminderBot = function() {
       }
       // The Appointment Date parsed into a Date Object
       var ad = new Date(theD.time);
-      // console.log(ad);
-
+      // console.log(ad.getTime());
       // If nao is > 6AM && 1st reminder == false
-      if (nao.getHours() >= 6) {
-        if (theD.sms_0)
-          return;
-
-        aptDB.put({
-          client_name: theD.client_name,
-          client_phone: theD.client_phone,
-          barber: theD.barber,
-          time: ad,
-          alarm: theD.alarm,
-          sms_0: true,
-          sms_1: theD.sms_1,
-          done: theD.done,
-        }, theD._id, theD._rev, function(err, response) {
-          if (err) {
-            return console.log(err);
-          }
-          // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
-          sendsms(0, theD.client_phone, "From The Beau Barbershop: You have an appoinment with " + theD.barber + " on " + ad.toTimeString('en-US', {
+      if (nao.getHours() >= 6 && !theD.sms_0) { // Skip if sms_0 has been sent
+        console.log("From The Beau Barbershop: You have an appoinment with " + theD.barber + " on " +
+          ad.toTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
-          }));
-        });
+          })
+        );
+        // Toggle sms0
+        theD.sms_0 = true;
+        // Put to DB then Send Reminder SMS
+        PouchUtils.putAppointment(aptDB, theD);
       }
-      // if sms0 is not done
-      // Send Reminder SMS && sms0 = true
-
-      // If nao is 30 minutes away && 2nd reminder == false
       // If nao is greater than (AppointmentTime - 30 MIN)
-
-      if ((ad.getTime() - nao.getTime()) < 3 * 10 * 60 * 1000) { // In MILISEC TODO
-        if (theD.sms_1)
-          return;
-
-        aptDB.put({
-          client_name: theD.client_name,
-          client_phone: theD.client_phone,
-          barber: theD.barber,
-          time: ad,
-          alarm: theD.alarm,
-          sms_0: theD.sms_0,
-          sms_1: true,
-          done: theD.done,
-        }, theD._id, theD._rev, function(err, response) {
-          if (err) {
-            return console.log(err);
-          }
-          // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
-          sendsms(0, theD.client_phone, "From The Beau Barbershop: You have an appoinment in 30 minutes with " +
-            theD.barber + " on " +
-            ad.toTimeString()
-            // ad.toLocaleTimeString('en-US', {
-            //   hour: '2-digit',
-            //   minute: '2-digit'
-            // })
-          );
-        });
+      console.log(ad.getTime() - nao.getTime());
+      // TODO:
+      if ((ad.getTime() - nao.getTime()) < 999 && !theD.sms_1) { //Skip if sms_1 has been sent
+        console.log(theD.client_phone, "From The Beau Barbershop: You have an appoinment in 30 minutes with " +
+          theD.barber + " on " +
+          ad.toTimeString()
+        );
+        // Toggle sms1
+        theD.sms_1 = true;
+        // Put to DB then Send Reminder SMS
+        PouchUtils.putAppointment(aptDB, theD);
       }
-      // If sms1 is not done
-      // Send Reminder SMS && sms1 = true
 
       // If nao is greater than appTime, Done = true
-
       if (nao.getTime() > ad.getTime()) {
         var cp = theD.client_phone;
-        aptDB.remove(thD, function(err, response) {
-          if (err) {
-            return console.log(err);
-          }
-          // handle response
-          sendsms(0, cp, "From The Beau Barbershop: thank you and have a nice day!");
-        });
+
+        theD.done = true;
+
+        PouchUtils.deleteAppointment(aptDB, theD, logDB);
+
+        console.log("DONE");
       }
-      // *****************************
     }
   });
+};
 
-}
-
-il.add(ReminderBot, []).setInterval(9000).run();
+// Set Timer:
+il.add(SMSBot, []).setInterval(1000).run();
 
 // 1800000 for 30 minutes
+
+// Change Checker:
+var changes = aptDB.changes({
+  since: 'now',
+  live: true,
+  include_docs: true
+}).on('create', function(change) {
+  // handle change
+  var apt = change.doc;
+
+  if (apt.barber === null) {
+    return;
+  }
+
+  var ad = new Date(apt.time);
+
+  // console.log(ad.getTime());
+
+  var msg = "From The Beau Barbershop: You scheduled a hair cut on " +
+    ad.toDateString() + " at " +
+    ad.toTimeString() +
+    // ad.toLocaleTimeString('en-US', {
+    //   hour: '2-digit',
+    //   minute: '2-digit'
+    // }) +
+    " with " + apt.barber +
+    ". Have a nice day, " + apt.client_name + "!";
+
+  // sendsms(0, "+12067909711", msg);
+  // sendsms(0, apt.client_phone, msg);
+
+  console.log(msg);
+
+  // console.log(change);
+}).on('update', function(change) {
+  // console.log(change);
+}).on('complete', function(info) {
+  // changes() was canceled
+}).on('error', function(err) {
+  console.log(err);
+});

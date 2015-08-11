@@ -1,39 +1,34 @@
+'use strict';
+
+var secret = require('./cita_secret');
+
 var twilio = require('twilio');
 
-var twilioSid, twilioToken;
-
-if (!dev) {
-  vcapServices['user-provided'].forEach(function(service) {
-    // if (service.name == 'Twilio-9n') { // Release Twilio
-    if (service.name == 'Twilio-79') { // Test Twilio
-      twilioSid = service.credentials.accountSID;
-      twilioToken = service.credentials.authToken;
-    }
-  });
+if (secret.twilioAuth.sID!=="lab"){
+  var client = new twilio.RestClient(
+    secret.twilioAuth.sID, secret.twilioAuth.token);
 }
 
-var sendsms = function(id, toNum, msg) {
-
-  if (dev) {
+var sendSMS = function SendSMS(id, toNum, msg) {
+  if (secret.twilioAuth.sID==="lab") {
     console.log(msg);
     return;
   }
-
   // var fromNum = '+13602343448';  // Bryan's #
   var fromNum = '+14696152255'; // LAB's free #
-
-  if (!toNum)
-  // toNum = "+12067909711"; // Bogdan's #
+  if (!toNum) {
+    // toNum = "+12067909711"; // Bogdan's #
     toNum = "+12536422707"; // LAB's #
-
-  if (toNum[0] !== "+")
+  }
+  // Add Country Code
+  if (toNum[0] !== "+") {
     toNum = "+1" + toNum;
-
-  if (!msg)
-    msg = "From jabSquared";
-
-  var client = new twilio.RestClient(twilioSid, twilioToken);
-
+  }
+  // Blank Message?
+  if (!msg) {
+    msg = "From The Beau Barbershop: jabSquared!";
+  }
+  //
   client.sendMessage({
     to: toNum,
     from: fromNum,
@@ -42,10 +37,15 @@ var sendsms = function(id, toNum, msg) {
     if (err) {
       console.error("Problem: " + message);
       console.log("Error: " + message);
-      sendsms(1, null, msg);
+      sendSMS(0, null, msg);
+      sendSMS(1, null, msg);
       return;
     } else {
       console.log("Done");
     }
   });
-}
+};
+
+exports.SendSMS = sendSMS;
+
+module.exports = exports;

@@ -33,6 +33,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     $state.go('account');
   };
 
+
   $scope.schedule = function() {
     // An elaborate, custom popup
     var myPopup = $ionicPopup.show({
@@ -302,5 +303,4 @@ app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup,
       console.log(err);
     });
   };
-
 });
