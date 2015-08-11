@@ -4,7 +4,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   // Initailize Appointments
   // Feilds
-  $scope.appointments = appointments = appointmentData.getApts();
+  appointments = appointmentData.getApts();
+  $scope.appointments = appointments;
   $scope.barber = barberInfo.getBarber();
   $scope.schedule_info = {};
   $scope.schedule_info.alarm = true;
@@ -109,7 +110,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   var processData = function (apt) {
     for (var i = 0; i < apt.rows.length; i++) {
-      // console.log('Loop Date:');
+      console.log('Loop Date:');
       console.log(apt.rows[i].doc.date);
       // if (new moment(apt.rows[i].doc.date).format('YYYY-MM-DD') === $scope.data.date.format('YYYY-MM-DD')) {
         appointments[apt.rows[i].doc.slot_num].client_name = apt.rows[i].doc.client_name;
@@ -172,9 +173,17 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // console.log($scope.appointments);
     },
     dateClick: function(date_obj) {
+      console.log('Date Clicked');
       console.log(date_obj);
       $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
+      $scope.appointments = appointments = appointmentData.getApts();
+      console.log('Apts Before:');
+      console.log(appointments);
+      console.log('Returned:');
+      console.log(appointmentData.getDBApts($scope.data.date));
       processData(appointmentData.getDBApts($scope.data.date));
+      console.log('Apts After:');
+      console.log(appointments);
     },
     changeMonth: function(month, year) {
       console.log(month, year);
