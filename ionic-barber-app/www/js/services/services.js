@@ -1,43 +1,6 @@
 app.factory('aptListener', function(barberInfo, $rootScope) {
-  var appointments = [];
 
-  localAptDB.changes({
-    live: true
-  }).on('change', function(change) {
-    console.log("Changed!");
-    var nao = moment().format().substring(0, 13);
-    localAptDB.allDocs({
-      include_docs: true,
-      startkey: nao, //YMD
-      endkey: barberInfo.getBarber()
-    }, function(err, response) {
-      if (err) {
-        return console.log(err);
-      }
-      appointments = response.rows;
-      $rootScope.$apply(); // <--- better call this!
-    });
-  }).on('create', function(change) {
-
-  }).on('delete', function(change) {
-
-  });
   return true;
-});
-
-app.service('pouchService', function(){
-  this.localDB = new PouchDB("appointments");
-  this.remoteDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03Mw0iUx3SN @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments', {
-    auth: {
-      username: 'itchentleverturearywhers',
-      password: 'U7vFQNN2joOhU03Mw0iUx3SN'
-    }
-  });
-  //auto sync local and remote db's
-  this.localDB.sync(this.remoteDB, {
-    live: true,
-    retry: true
-  });
 });
 
 app.factory('barberInfo', function() {

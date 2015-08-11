@@ -1,5 +1,4 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData, pouchService) {
-
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
 
   $scope.data = {};
   $scope.data.date = new moment();
@@ -17,7 +16,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     $state.go('account');
   };
 
-  $scope.schedule = function(num) {
+  $scope.schedule = function(apm) {
     // An elaborate, custom popup
     var myPopup = $ionicPopup.show({
       template: '<input type="text" ng-model="data.name" placeholder="Full Name"> <br/> <input type="tel" ng-model="data.phone" placeholder="phone number">',
@@ -45,12 +44,12 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
     myPopup.then(function(res) {
       //  alert($scope.newDate.date);
-      console.log(res);
+      // console.log(res);
       if (res === 'submit') {
         console.log('putting data');
         localAptDB.put({
-          _id: moment().format() + '-' + barberInfo.getBarber(),
-          slot_num: num,
+          _id: moment(apm.start_time).format() + '-' + barberInfo.getBarber(),
+          slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
           barber: $scope.barber,
@@ -60,9 +59,9 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
           sms_1: false,
           done: false
         }).then(function(response) {
-          console.log('Complete!');
+          // console.log('Complete!');
           // Show some pops up fancy stuffs here, also go back to login.
-          console.log(response);
+          // console.log(response);
           $state.go('appointments');
         }).catch(function(err) {
           console.log(err);
@@ -105,16 +104,35 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
+  localAptDB.changes({
+    live: true
+  }).on('change', function(change) {
+    var nao = moment().format().substring(0, 13);
+    localAptDB.allDocs({
+      include_docs: true,
+      startkey: nao, //YMD
+      endkey: barberInfo.getBarber()
+    }, function(err, response) {
+      if (err) {
+        return console.log(err);
+      }
+      // appointments = response.rows;
+      console.log("Appointments:");console.log(response.rows);
+
+      $rootScope.$apply(); // <--- better call this!
+    });
+  }).on('create', function(change) {
+
+  }).on('delete', function(change) {
+
+  });
   // Flex Calendar-------------------------------------------------------
 
-  function populate(date) {
-    // body...
-    console.log(date);
-  }
 
-  // Process results and return completed appointments array***
-  var process = function(date_obj) {
-    $scope.data.date = date_obj;
+  var populate = function Populate(date) {
+    // body...
+    // console.log(date);
+    $scope.data.date = moment(date);
     var today = moment({
       hour: 9
     });
@@ -128,7 +146,12 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     }
   };
 
-  process(moment().format('YYYY-MM-DD'));
+  // Process results and return completed appointments array***
+  var process = function Process(date) {
+
+  };
+
+  populate(moment().format('YYYY-MM-DD'));
 
   $scope.options = {
     // defaultDate: new Date(yyyy, mm, dd),
@@ -137,8 +160,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     dayNamesLength: 3, // 1 for "M", 2 for "Mo", 3 for "Mon"; 9 will show full day names. Default is 1.
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
-      console.log(date_obj);
-      apts = process(moment(date_obj));
+      // Process data
+      process(date_obj);
       // Re-populate with Appointment
     },
     dateClick: function(date_obj) {
