@@ -1,8 +1,10 @@
-app.factory('aptListener', function(barberInfo) {
+app.factory('aptListener', function(barberInfo, $rootScope) {
   var appointments = [];
+
   localAptDB.changes({
     live: true
   }).on('change', function(change) {
+    console.log("Changed!");
     var nao = moment().format().substring(0, 13);
     localAptDB.allDocs({
       include_docs: true,
@@ -13,6 +15,7 @@ app.factory('aptListener', function(barberInfo) {
         return console.log(err);
       }
       appointments = response.rows;
+      $rootScope.$apply(); // <--- better call this!
     });
   }).on('create', function(change) {
 
@@ -66,7 +69,7 @@ app.service('appointmentData', function(barberInfo) {
       }
       return appointments;
     },
-    getDBApts : function(theDate, process) {
+    getDBApts: function(theDate, process) {
       console.log('the date: ' + theDate);
       localAptDB.allDocs({
         include_docs: true,

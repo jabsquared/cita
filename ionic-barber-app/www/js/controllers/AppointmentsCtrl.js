@@ -1,33 +1,28 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
 
-  // Initailize Appointments
-  // Feilds
   $scope.data = {};
   $scope.data.date = new moment();
-  var apts = process($scope.data.date);
-  $scope.appointments = apts;
 
-  // Old Feilds
   $scope.barber = barberInfo.getBarber();
 
-  localAptDB.changes({
-    since: 'now',
-    live: true,
-    include_docs: true
-  }).on('change', function(change) {
-    // handle change
-    if (change === 'deleted') {
-      //Handle Deleted Doc
-      docChange('delete', change.doc);
-    } else {
-      // Handle Created Doc
-      docChange('create', change.doc);
+  $scope.appointments = [];
+
+  // Process results and return completed appointments array***
+  var process = function(date_obj) {
+    var today = moment({
+      hour: 9
+    });
+    for (var i = 0; i < 14; i++) {
+      $scope.appointments[i] = {
+        slot_num: i,
+        start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+        end_time: today.add(45, 'minutes').format('h:mm a')
+      };
+      today.subtract((45 * i) + 45, 'minutes');
     }
-  }).on('complete', function(info) {
-    // changes() was canceled
-  }).on('error', function(err) {
-    console.log(err);
-  });
+  };
+
+  process(moment().format('YYYY-MM-DD'));
 
   $scope.eqTime = function(atime) {
     return atime === $scope.data.date;
@@ -47,7 +42,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       buttons: [{
         text: 'Cancel',
         onTap: function(e) {
-          return 'cancel button';
+          return 'canceled';
         }
       }, {
         text: '<b>Confirm</b>',
@@ -63,6 +58,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         }
       }, ]
     });
+
     myPopup.then(function(res) {
       //  alert($scope.newDate.date);
       console.log(res);
@@ -124,96 +120,39 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  // Process results and return completed appointments array***
-  function process(date_obj) {
-    console.log('in process');
-    localAptDB.allDocs({
-      include_docs: true,
-      attachments: true,
-      startkey: date_obj.format('YYYY-MM-DD'),
-      endkey: barberInfo.getBarber()
-    }).then(function(res) {
-      console.log('res: ' + res.rows);
-      var appointments = [];
-      for (var i = 0; i < 14; i++) {
-        if (res.rows[i] !== null) {
-          appointments[i] = res.rows[i];
-        } else {
-          appointments[i] = {
-            slot_num: i
-          };
-        }
-      }
-      return appointments;
-    }).catch(function(err) {
-      console.log(err);
-      return null;
-    });
-  }
+  // Flex Calendar-------------------------------------------------------
 
-  // Modify $scope.appointments based on changes to DB ***
-  function docChange(type, doc) {
-    if (type === 'delete') {
-      // Handle Deleting Doc
-      for (var i = 0; i < $scope.appointments.length; i++) {
-        if ($scope.appointments[i]._id === doc._id) {
-          $scope.appointments[i] = {
-            slot_num: i
-          };
-        }
-      }
-    } else if (type === 'create') {
-      // Handle Adding Doc
-      for (var x = 0; x < $scope.appointments.length; x++) {
-        if ($scope.appointments[x]._id === doc._id) {
-          $scope.appointments[x] = doc;
-        }
-      }
-    }
-  }
+  function populate(date) {
+    // body...
+    console.log(date);
 
-  // Flex Calendar Shit -------------------------------------------------------
-
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth(); //January is 0!
-  var yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = '0' + dd;
-  }
-  if (mm < 10) {
-    mm = '0' + mm;
   }
 
   $scope.options = {
     // defaultDate: new Date(yyyy, mm, dd),
     // minDate: new Date(2015, 06, 12),
     // maxDate: new Date(2015, 12, 31),
-    disabledDates: [
-      new Date(2015, 07, 24),
-      new Date(2015, 07, 25),
-      new Date(2015, 07, 26),
-    ],
     dayNamesLength: 3, // 1 for "M", 2 for "Mo", 3 for "Mon"; 9 will show full day names. Default is 1.
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
       console.log(date_obj);
-      apts = process(new moment(date_obj));
+      apts = process(moment(date_obj));
+      // Re-populate with Appointment
     },
     dateClick: function(date_obj) {
-      apts = process(new moment(date_obj));
+      // apts = process(new moment(date_obj));
+      // Populate with Blank field
+      populate(date_obj);
     },
     changeMonth: function(month, year) {
       console.log(month, year);
     },
   };
 
+  // Change this into DB.getall Appointment
   $scope.events = [{
-    foo: 'bar',
-    date: new Date(2015, 7, 10)
+    date: new Date(2015, 7, 14)
   }, {
-    foo: 'bar',
     date: new Date(2015, 7, 11)
   }];
-
 });
