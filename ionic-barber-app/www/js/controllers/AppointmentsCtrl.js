@@ -3,26 +3,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   $scope.data = {};
   $scope.data.date = new moment();
+  $scope.data.alarm = true;
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
-
-  // Process results and return completed appointments array***
-  var process = function(date_obj) {
-    var today = moment({
-      hour: 9
-    });
-    for (var i = 0; i < 14; i++) {
-      $scope.appointments[i] = {
-        slot_num: i,
-        start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-        end_time: today.add(45, 'minutes').format('h:mm a')
-      };
-      today.subtract((45 * i) + 45, 'minutes');
-    }
-  };
-
-  process(moment().format('YYYY-MM-DD'));
 
   $scope.eqTime = function(atime) {
     return atime === $scope.data.date;
@@ -63,13 +47,14 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       //  alert($scope.newDate.date);
       console.log(res);
       if (res === 'submit') {
+        console.log('putting data');
         localAptDB.put({
           _id: moment().format() + '-' + barberInfo.getBarber(),
           slot_num: num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
           barber: $scope.barber,
-          date: $scope.data.date,
+          date: $scope.data.date.format(),
           alarm: $scope.data.alarm,
           sms_0: false,
           sms_1: false,
@@ -125,8 +110,25 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   function populate(date) {
     // body...
     console.log(date);
-
   }
+
+  // Process results and return completed appointments array***
+  var process = function(date_obj) {
+    $scope.data.date = date_obj;
+    var today = moment({
+      hour: 9
+    });
+    for (var i = 0; i < 14; i++) {
+      $scope.appointments[i] = {
+        slot_num: i,
+        start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+        end_time: today.add(45, 'minutes').format('h:mm a')
+      };
+      today.subtract((45 * i) + 45, 'minutes');
+    }
+  };
+
+  process(moment().format('YYYY-MM-DD'));
 
   $scope.options = {
     // defaultDate: new Date(yyyy, mm, dd),
