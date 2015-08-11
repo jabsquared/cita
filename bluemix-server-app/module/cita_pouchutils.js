@@ -1,4 +1,6 @@
 'use strict';
+var sender = require('./cita_twilio');
+
 var secret = require('./cita_secret');
 
 var PouchDB = require('pouchdb');
@@ -21,7 +23,7 @@ exports.logDB = (secret.cloudantAuth.url === "lab") ?
     }
   });
 
-var putAppointment = function PutAppointment(aptDB, theD) {
+var putAppointment = function PutAppointment(aptDB, theD, msg) {
   // body...
   aptDB.put({
     client_name: theD.client_name,
@@ -37,33 +39,23 @@ var putAppointment = function PutAppointment(aptDB, theD) {
       return console.log(err);
     }
     // console.log(response);
-
-    // sendsms(0, "+12067909711", "You have an Appoinment in 3 sec with " + theD.barber + " on " + ad.toTimeString());
-    // sendsms(0, theD.client_phone, "From The Beau Barbershop: You have an appoinment with " + theD.barber + " on " + ad.toTimeString('en-US', {
-    //   hour: '2-digit',
-    //   minute: '2-digit'
-    // }));
-    // sendsms(0, theD.client_phone, "From The Beau Barbershop: You have an appoinment in 30 minutes with " +
-    //   theD.barber + " on " +
-    //   ad.toTimeString()
-    //   // ad.toLocaleTimeString('en-US', {
-    //   //   hour: '2-digit',
-    //   //   minute: '2-digit'
-    //   // })
-    // );
+    if (msg){
+      sender.SendSMS(theD.client_phone,msg);
+    }
   });
 };
 
-var deleteAppointment = function DeleteAppointment(aptDB, theD, logDB) {
+var deleteAppointment = function DeleteAppointment(aptDB, logDB, theD, msg) {
   // body...
-  putAppointment(logDB, theD);
+  putAppointment(logDB, theD, null);
 
   aptDB.remove(theD, function(err, response) {
     if (err) {
       return console.log(err);
     }
-    // handle response
-    // sendsms(0, cp, "From The Beau Barbershop: thank you and have a nice day!");
+    else if (msg){
+      sender.SendSMS(theD.client_phone, msg);
+    }
   });
 };
 

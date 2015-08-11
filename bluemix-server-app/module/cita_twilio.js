@@ -6,10 +6,11 @@ var twilio = require('twilio');
 
 if (secret.twilioAuth.sID!=="lab"){
   var client = new twilio.RestClient(
-    secret.twilioAuth.sID, secret.twilioAuth.token);
+    secret.twilioAuth.sID,
+    secret.twilioAuth.token);
 }
 
-var sendSMS = function SendSMS(id, toNum, msg) {
+var sendSMS = function SendSMS(toNum, msg) {
   if (secret.twilioAuth.sID==="lab") {
     console.log(msg);
     return;
@@ -37,8 +38,8 @@ var sendSMS = function SendSMS(id, toNum, msg) {
     if (err) {
       console.error("Problem: " + message);
       console.log("Error: " + message);
-      sendSMS(0, null, msg);
-      sendSMS(1, null, msg);
+      sendSMS(null, msg);
+      sendSMS(null, msg);
       return;
     } else {
       console.log("Done");
