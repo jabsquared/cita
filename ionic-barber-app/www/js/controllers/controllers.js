@@ -243,9 +243,9 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       }
     }
     appointments.push(apt);
-    console.log("appts:");
+    // console.log("appts:");
     // console.log(appointments);
-    console.log($scope.appointments);
+    // console.log($scope.appointments);
   });
 
   $scope.$on('deleteGabinosApt', function(event, id) {
@@ -272,7 +272,7 @@ app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup,
   //Feilds
   $scope.schedule_info = {};
   $scope.schedule_info.alarm = true;
-  $scope.today = new Date();
+  $scope.today = new Date(Date.now());
 
   //Functions
 
