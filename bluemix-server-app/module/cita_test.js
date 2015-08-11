@@ -40,6 +40,6 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   });
 };
 
-il.add(testIncomingAppointment, []).setInterval(4500).run();
+il.add(testIncomingAppointment, []).setInterval(999).run();
 
 module.exports = exports;
