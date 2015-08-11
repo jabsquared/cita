@@ -10,6 +10,7 @@
     "ionic-service-core": "~0.1.9",
     "ngCordova": "~0.1.17-alpha",
     "flex-calendar": "*",
-    "pouchdb": "~4.0.0"
+    "pouchdb": "~4.0.0",
+    "moment": "~2.10.6"
   }
 }
