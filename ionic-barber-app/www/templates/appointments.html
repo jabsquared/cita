@@ -4,7 +4,7 @@
     <h1 class="title large">{{barber}}'s Appointments</h1>
     <button class="button icon-right ion-plus button-clear button-assertive" ng-click="schedule()"></button>
   </ion-header-bar>
-  <ion-content>
+  <ion-content has-bouncing="false">
     <flex-calendar events="events" options="options" style="padding-top: 2em"></flex-calendar>
 <!-- Start of Old Appointments -->
 <!-- <div class="list card" ng-if="a.barber === barber" ng-repeat="a in appointments | orderBy:'time'">
@@ -32,11 +32,12 @@
 <!-- Start of New Appointments -->
     <div class="list">
       <div class="" collection-repeat="a in appointments">
-        <button class="button button-full button-royal" ng-click="schedule()" ng-if="!a.client_name">
+        <button class="button button-full button-royal" ng-click="schedule(a.slot_num)" ng-if="!a.client_name">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i>
-              Schedule Haircut
+              <!-- Schedule Haircut -->
+              {{a.slot_num}}
             </div>
             <div class="" style="float: right">
               {{a.start_time}}
@@ -45,7 +46,7 @@
             </div>
           </div>
         </button>
-        <button class="button button-full button-stable" ng-if="a.client_name">
+        <button class="button button-full button-stable" ng-if="a.client_name && eqtime(a.date)">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-close-circled" style="margin-right: 1em"></i>

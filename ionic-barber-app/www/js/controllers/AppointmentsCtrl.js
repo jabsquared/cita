@@ -1,20 +1,5 @@
 var appointments = [];
 
-app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo) {
-  console.log('in account controller');
-
-  //Feilds
-  $scope.barbers = barberInfo.getBarbers();
-
-  //Functions
-  $scope.schedule = function(name) {
-    barberInfo.setBaber(name);
-    console.log(barberInfo.getBarber());
-    $state.go('appointments');
-  };
-
-});
-
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, aptListener, barberInfo, appointmentData, gabinoAptListener) {
 
   // Initailize Appointments
@@ -25,7 +10,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   $scope.schedule_info.alarm = true;
   $scope.today = new moment();
   $scope.data = {};
-  $scope.data.date = moment();
+  $scope.data.date = moment().format('YYYY-MM-DD');
+
+  $scope.eqTime = function (atime) {
+    return atime === $scope.data.date;
+  };
 
   //Functions
   $scope.back = function() {
@@ -61,29 +50,28 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       //  alert($scope.newDate.date);
       console.log(res);
       if (res === 'submit') {
-          //Update doc with new time slot!
-          remoteGabinosAptDB.put({
-            _id: $scope.data.date.format() + '-' + $scope.barber,
-            slot_num: num,
-            client_name: $scope.data.name,
-            client_phone: $scope.data.phone,
-            barber: $scope.barber,
-            date: $scope.data.date,
-            alarm: $scope.data.alarm,
-            sms_0: false,
-            sms_1: false,
-            done: false
-          }).then(function(response) {
-            console.log('Complete!');
-            // Show some pops up fancy stuffs here, also go back to login.
-            console.log(response);
-            $state.go('appointments');
-          }).catch(function(err) {
-            console.log(err);
-          });
-          }
+        remoteGabinosAptDB.put({
+          _id: moment().format() + '-' + $scope.barber,
+          slot_num: num,
+          client_name: $scope.data.name,
+          client_phone: $scope.data.phone,
+          barber: $scope.barber,
+          date: $scope.data.date,
+          alarm: $scope.data.alarm,
+          sms_0: false,
+          sms_1: false,
+          done: false
+        }).then(function(response) {
+          console.log('Complete!');
+          // Show some pops up fancy stuffs here, also go back to login.
+          console.log(response);
+          $state.go('appointments');
+        }).catch(function(err) {
+          console.log(err);
         });
-      };
+      }
+    });
+  };
 
   $scope.delete = function(id) {
     var confirmPopup = $ionicPopup.confirm({
@@ -119,6 +107,36 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
+  //Event Listeners
+  $scope.$on('addGabinosApt', function(event, apt) {
+    console.log(apt);
+    console.log('Updating');
+    for (var i = 0; i < apt.rows.length; i++) {
+      // console.log('Loop Date:');
+      console.log(apt.rows[i].doc.date);
+      // if (new moment(apt.rows[i].doc.date).format('YYYY-MM-DD') === $scope.data.date.format('YYYY-MM-DD')) {
+        appointments[apt.rows[i].doc.slot_num].client_name = apt.rows[i].doc.client_name;
+        appointments[apt.rows[i].doc.slot_num].client_phone = apt.rows[i].doc.client_phone;
+        appointments[apt.rows[i].doc.slot_num].barber = apt.rows[i].doc.barber;
+        appointments[apt.rows[i].doc.slot_num].date = new moment (apt.rows[i].doc.date).format('YYYY-MM-DD');
+        appointments[apt.rows[i].doc.slot_num].alarm = apt.rows[i].doc.alarm;
+        appointments[apt.rows[i].doc.slot_num].sms_0 = apt.rows[i].doc.sms_0;
+        appointments[apt.rows[i].doc.slot_num].sms_1 = apt.rows[i].doc.sms_1;
+        appointments[apt.rows[i].doc.slot_num].done = apt.rows[i].doc.done;
+      // }
+    }
+    console.log(appointments);
+  });
+
+  $scope.$on('deleteGabinosApt', function(event, id) {
+    console.log('Deleting');
+    for (var i = 0; i < appointments.length; i++) {
+      if (appointments[i]._id === id) {
+        appointments.splice(i, 1);
+      }
+    }
+  });
+
   // Flex Calendar Shit -------------------------------------------------------
 
   var today = new Date();
@@ -145,13 +163,13 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
       console.log(date_obj);
-      $scope.data.date = date_obj.date;
+      $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
       $scope.appointments = appointmentData.getApts(date_obj.date);
       // console.log($scope.appointments);
     },
     dateClick: function(date_obj) {
       console.log(date_obj);
-      $scope.data.date = date_obj.date;
+      $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
       $scope.appointments = appointmentData.getApts(date_obj.date);
     },
     changeMonth: function(month, year) {
@@ -167,69 +185,4 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     date: new Date(2015, 7, 11)
   }];
 
-  //Event Listeners
-  $scope.$on('addGabinosApt', function(event, apt) {
-    console.log(apt);
-    console.log('Updating');
-    for (var i = 0; i < apt.rows.length; i++) {
-      // console.log('Loop Date:');
-      // console.log(apt.rows[i].doc);
-      appointments[apt.rows[i].doc.slot_num].client_name = apt.rows[i].doc.client_name;
-      appointments[apt.rows[i].doc.slot_num].client_phone = apt.rows[i].doc.client_phone;
-      appointments[apt.rows[i].doc.slot_num].barber = apt.rows[i].doc.barber;
-      appointments[apt.rows[i].doc.slot_num].time = apt.rows[i].doc.time;
-      appointments[apt.rows[i].doc.slot_num].alarm = apt.rows[i].doc.alarm;
-      appointments[apt.rows[i].doc.slot_num].sms_0 = apt.rows[i].doc.sms_0;
-      appointments[apt.rows[i].doc.slot_num].sms_1 = apt.rows[i].doc.sms_1;
-      appointments[apt.rows[i].doc.slot_num].done = apt.rows[i].doc.done;
-    }
-    console.log(appointments);
-  });
-
-  $scope.$on('deleteGabinosApt', function(event, id) {
-    console.log('Deleting');
-    for (var i = 0; i < appointments.length; i++) {
-      if (appointments[i]._id === id) {
-        appointments.splice(i, 1);
-      }
-    }
-  });
-
-});
-
-app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate, barberInfo) {
-
-  //Feilds
-  $scope.schedule_info = {};
-  $scope.schedule_info.alarm = true;
-  $scope.today = new Date(Date.now());
-
-  //Functions
-
-  $scope.submitData = function() {
-    console.log($scope.schedule_info.date);
-    var barber_name = barberInfo.getBarber();
-    $scope.schedule_info.date = new Date($scope.schedule_info.date);
-    if ($scope.hasOwnProperty("appointments") !== true) {
-      $scope.appointments = [];
-    }
-    remoteAptDB.put({
-      _id: $scope.schedule_info.date.toISOString() + '-' + barber_name,
-      client_name: $scope.schedule_info.client_name,
-      client_phone: $scope.schedule_info.number,
-      barber: barber_name,
-      time: $scope.schedule_info.date,
-      alarm: $scope.schedule_info.alarm,
-      sms_0: false,
-      sms_1: false,
-      done: false
-    }).then(function(response) {
-      console.log('Complete!');
-      // Show some pops up fancy stuffs here, also go back to login.
-      console.log(response);
-      $state.go('appointments');
-    }).catch(function(err) {
-      console.log(err);
-    });
-  };
 });

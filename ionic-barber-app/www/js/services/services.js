@@ -24,7 +24,7 @@ app.factory('aptListener', function($rootScope) {
   return true;
 });
 
-app.factory('gabinoAptListener', function($rootScope) {
+app.factory('gabinoAptListener', function($rootScope, barberInfo) {
   localGabinosAptDB.changes({
     live: true
   }).on('change', function(change) {
@@ -34,11 +34,19 @@ app.factory('gabinoAptListener', function($rootScope) {
       });
     } else {
       $rootScope.$apply(function() {
-        localGabinosAptDB.get(change.id, function(err, doc) {
-          $rootScope.$apply(function() {
-            if (err) console.log(err);
-            $rootScope.$broadcast('addGabinosApt', doc);
-          });
+        // localGabinosAptDB.get(change.id, function(err, doc) {
+        //   $rootScope.$apply(function() {
+        //     if (err) console.log(err);
+        //     $rootScope.$broadcast('addGabinosApt', doc);
+        //   });
+        // });
+        localGabinosAptDB.allDocs({
+          include_docs: true,
+          endkey: barberInfo.getBarber()
+        }).then(function(result) {
+          $rootScope.$broadcast('addGabinosApt', result);
+        }).catch(function(err) {
+          console.log(err);
         });
       });
     }
@@ -76,26 +84,22 @@ app.factory('barberInfo', function($rootScope) {
 });
 
 app.service('appointmentData', function() {
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth(); //January is 0!
-  var yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = '0' + dd;
-  }
-  if (mm < 10) {
-    mm = '0' + mm;
-  }
-  var today_at_9 = new Date(yyyy, mm, dd, 09);
+  // moment().add(i * 45, 'minutes');
+  var today = new moment();
+  today.hours(9);
+  today.minutes(0);
+  today.seconds(0);
+  // var today_at_9 = new Date(yyyy, mm, dd, 09);
   // dates (years, months, days, hours, minutes, seconds, and milliseconds)
   // new Date(oldDateObj.getTime() + diff*60000);
   var appointments = [];
   for (var i = 0; i < 14; i++) {
     appointments[i] = {
       slot_num: i,
-      start_time: new Date(today_at_9.getTime() + ((45 * i) * 60000)),
-      end_time: new Date(new Date(this.start_time).getTime() + (45 * 60000))
+      start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+      end_time: today.add(45, 'minutes').format('h:mm a')
     };
+    today.subtract((45 * i) + 45, 'minutes');
   }
   return {
     getApts: function() {
