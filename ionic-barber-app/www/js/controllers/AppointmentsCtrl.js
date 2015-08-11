@@ -168,8 +168,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
       console.log(date_obj);
-      $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
-      processData(appointmentData.getDBApts($scope.data.date));
+      $scope.data.date = moment(date_obj.date).format('YYYY-MM-DD');
+      // processData(appointmentData.getDBApts($scope.data.date));
+      appointmentData.getDBApts($scope.data.date,processData());
+
       // console.log($scope.appointments);
     },
     dateClick: function(date_obj) {
@@ -180,8 +182,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       console.log('Apts Before:');
       console.log(appointments);
       console.log('Returned:');
+
       console.log(appointmentData.getDBApts($scope.data.date));
-      processData(appointmentData.getDBApts($scope.data.date));
+      appointmentData.getDBApts($scope.data.date,processData());
+
       console.log('Apts After:');
       console.log(appointments);
     },

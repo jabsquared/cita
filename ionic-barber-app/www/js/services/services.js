@@ -84,36 +84,38 @@ app.factory('barberInfo', function($rootScope) {
 });
 
 app.service('appointmentData', function(barberInfo) {
-      // moment().add(i * 45, 'minutes');
-      return {
-        getApts: function() {
-          var today = new moment();
-          today.hours(9);
-          today.minutes(0);
-          today.seconds(0);
-          var appointments = [];
-          for (var i = 0; i < 14; i++) {
-            appointments[i] = {
-              slot_num: i,
-              start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-              end_time: today.add(45, 'minutes').format('h:mm a')
-            };
-            today.subtract((45 * i) + 45, 'minutes');
-          }
-          return appointments;
-        },
-        getDBApts: function(theDate) {
-              console.log('the date: ' + theDate);
-              remoteGabinosAptDB.allDocs({
-                include_docs: true,
-                startkey: theDate,
-                endkey: barberInfo.getBarber()
-              }).then(function(result) {
-                return result;
-              }).catch(function(err) {
-                console.log(err);
-                return null;
-              });
-          }
+  // moment().add(i * 45, 'minutes');
+  return {
+    getApts: function() {
+      var today = new moment();
+      today.hours(9);
+      today.minutes(0);
+      today.seconds(0);
+      var appointments = [];
+      for (var i = 0; i < 14; i++) {
+        appointments[i] = {
+          slot_num: i,
+          start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+          end_time: today.add(45, 'minutes').format('h:mm a')
         };
+        today.subtract((45 * i) + 45, 'minutes');
+      }
+      return appointments;
+    },
+    getDBApts : function(theDate, process) {
+      console.log('the date: ' + theDate);
+      remoteGabinosAptDB.allDocs({
+        include_docs: true,
+        startkey: theDate,
+        endkey: barberInfo.getBarber()
+      }).then(function(result) {
+        console.log(result);
+        process(result);
+        return result;
+      }).catch(function(err) {
+        console.log(err);
+        return null;
       });
+    }
+  };
+});
