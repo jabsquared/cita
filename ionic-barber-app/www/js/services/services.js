@@ -1,21 +1,19 @@
-app.factory('aptListener', function($rootScope) {
+app.factory('aptListener', function(barberInfo) {
+  var appointments = [];
   localAptDB.changes({
     live: true
   }).on('change', function(change) {
-    if (change.deleted) {
-      $rootScope.$apply(function() {
-        $rootScope.$broadcast('delete', change.id);
-      });
-    } else {
-      $rootScope.$apply(function() {
-        localAptDB.get(change.id, function(err, doc) {
-          $rootScope.$apply(function() {
-            if (err) console.log(err);
-            $rootScope.$broadcast('add', doc);
-          });
-        });
-      });
-    }
+    var nao = moment().format().substring(0, 13);
+    localAptDB.allDocs({
+      include_docs: true,
+      startkey: nao, //YMD
+      endkey: barberInfo.getBarber()
+    }, function(err, response) {
+      if (err) {
+        return console.log(err);
+      }
+      appointments = response.rows;
+    });
   }).on('create', function(change) {
 
   }).on('delete', function(change) {
@@ -24,41 +22,7 @@ app.factory('aptListener', function($rootScope) {
   return true;
 });
 
-app.factory('gabinoAptListener', function($rootScope, barberInfo) {
-  localGabinosAptDB.changes({
-    live: true
-  }).on('change', function(change) {
-    if (change.deleted) {
-      $rootScope.$apply(function() {
-        $rootScope.$broadcast('deleteGabinosApt', change.id);
-      });
-    } else {
-      $rootScope.$apply(function() {
-        // localGabinosAptDB.get(change.id, function(err, doc) {
-        //   $rootScope.$apply(function() {
-        //     if (err) console.log(err);
-        //     $rootScope.$broadcast('addGabinosApt', doc);
-        //   });
-        // });
-        localGabinosAptDB.allDocs({
-          include_docs: true,
-          endkey: barberInfo.getBarber()
-        }).then(function(result) {
-          $rootScope.$broadcast('addGabinosApt', result);
-        }).catch(function(err) {
-          console.log(err);
-        });
-      });
-    }
-  }).on('create', function(change) {
-
-  }).on('delete', function(change) {
-
-  });
-  return true;
-});
-
-app.factory('barberInfo', function($rootScope) {
+app.factory('barberInfo', function() {
   var barbers = [{
     name: "Gabino",
     desc: "Profesional Barber"
@@ -69,7 +33,7 @@ app.factory('barberInfo', function($rootScope) {
     name: "Antonio",
     desc: "Profesional Barber"
   }];
-  var barber = '';
+  var barber = 'Gabino';
   return {
     setBaber: function(name) {
       barber = name;
@@ -104,7 +68,7 @@ app.service('appointmentData', function(barberInfo) {
     },
     getDBApts : function(theDate, process) {
       console.log('the date: ' + theDate);
-      remoteGabinosAptDB.allDocs({
+      localAptDB.allDocs({
         include_docs: true,
         startkey: theDate,
         endkey: barberInfo.getBarber()

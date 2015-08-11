@@ -12,16 +12,26 @@ var il = new InfiniteLoop();
 
 var bm = 0;
 
+var fi = 0;
+
+var compareLogNFi = function(err, info) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log("|" + (info.doc_count+1) + " d >---< f " + fi);
+  // handle result
+};
+
 var SMSBot = function() {
   // Get the Current Date
   var nao = new Date();
-  console.log(++bm);
+  // console.log("|--- t = " + (++bm) + "s");
   // Extract the needed infomation from
   var naoymd =
     // nao.toISOString().substring(0, 11); // YMD
     nao.toISOString().substring(0, 13); // YMDH
-    // nao.toISOString().substring(0, 15); // YMDHm
-    // nao.toISOString().substring(0, 17); // YMDHM
+  // nao.toISOString().substring(0, 15); // YMDHm
+  // nao.toISOString().substring(0, 17); // YMDHM
   // Filter by YMDH, client-side
   aptDB.allDocs({
     include_docs: true,
@@ -32,6 +42,7 @@ var SMSBot = function() {
       return console.log(err);
     }
     // console.log("All The Responses:"); console.log(response);
+    // console.log("|    r = " + response.total_rows + "a");
     // Go through all messages for the last D || H || M
     for (var i = 0; i < response.rows.length; i++) {
       // console.log("Responses on row " + i + " :"); console.log(response.rows[i]);
@@ -47,7 +58,7 @@ var SMSBot = function() {
       var ad = new Date(theD.time);
       // console.log(ad.getTime());
       // If nao is > 6AM && 1st reminder == false
-      if (nao.getHours() >= 6 && !theD.sms_0) { // Skip if sms_0 has been sent
+      if (nao.getHours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
         var sms0 = ("From The Beau Barbershop: You have an appoinment with " + theD.barber + " on " +
           ad.toTimeString('en-US', {
             hour: '2-digit',
@@ -61,7 +72,7 @@ var SMSBot = function() {
       }
       // If nao is greater than (AppointmentTime - 30 MIN)
       // TODO:
-      if ((ad.getTime() - nao.getTime()) < 3000 && !theD.sms_1) { //Skip if sms_1 has been sent
+      if ((ad.getTime() - nao.getTime()) < 60*3*999 && !theD.sms_1) { //Skip if sms_1 has been sent
         var sms1 = ("From The Beau Barbershop: You have an appoinment in 30 minutes with " +
           theD.barber + " on " +
           ad.toTimeString()
@@ -76,18 +87,19 @@ var SMSBot = function() {
       if (nao.getTime() > ad.getTime()) {
         var smsDone = "From The Beau Barbershop: thank you and have a nice day!";
 
+        // console.log("|--- f = " + (++fi) + "a");
+        // logDB.info(compareLogNFi);
+
         theD.done = true;
 
         PouchUtils.deleteAppointment(aptDB, logDB, theD, smsDone);
-
-        console.log("DONE");
       }
     }
   });
 };
 
 // Set Timer:
-il.add(SMSBot, []).setInterval(1000).run();
+il.add(SMSBot, []).setInterval(9999).run();
 
 // 1800000 for 30 minutes
 
