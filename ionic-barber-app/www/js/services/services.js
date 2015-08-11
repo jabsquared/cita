@@ -83,27 +83,41 @@ app.factory('barberInfo', function($rootScope) {
   };
 });
 
-app.service('appointmentData', function() {
-  // moment().add(i * 45, 'minutes');
-  var today = new moment();
-  today.hours(9);
-  today.minutes(0);
-  today.seconds(0);
-  // var today_at_9 = new Date(yyyy, mm, dd, 09);
-  // dates (years, months, days, hours, minutes, seconds, and milliseconds)
-  // new Date(oldDateObj.getTime() + diff*60000);
-  var appointments = [];
-  for (var i = 0; i < 14; i++) {
-    appointments[i] = {
-      slot_num: i,
-      start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-      end_time: today.add(45, 'minutes').format('h:mm a')
-    };
-    today.subtract((45 * i) + 45, 'minutes');
-  }
-  return {
-    getApts: function() {
-      return appointments;
-    }
-  };
-});
+app.service('appointmentData', function(barberInfo) {
+      // moment().add(i * 45, 'minutes');
+      var today = new moment();
+      today.hours(9);
+      today.minutes(0);
+      today.seconds(0);
+      // var today_at_9 = new Date(yyyy, mm, dd, 09);
+      // dates (years, months, days, hours, minutes, seconds, and milliseconds)
+      // new Date(oldDateObj.getTime() + diff*60000);
+      var appointments = [];
+      for (var i = 0; i < 14; i++) {
+        appointments[i] = {
+          slot_num: i,
+          start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+          end_time: today.add(45, 'minutes').format('h:mm a')
+        };
+        today.subtract((45 * i) + 45, 'minutes');
+      }
+      return {
+        getApts: function() {
+          return appointments;
+        },
+        getDBApts: function(theDate) {
+              remoteGabinosAptDB.allDocs({
+                include_docs: true,
+                startkey: theDate,
+                endkey: barberInfo.getBarber()
+              }).then(function(result) {
+                console.log('New Results: ');
+                console.log(result);
+                return result;
+              }).catch(function(err) {
+                console.log(err);
+                return null;
+              });
+          }
+        };
+      });
