@@ -1,4 +1,4 @@
-app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate, barberInfo) {
+app.controller("ScheduleCtrl", function($scope, $state, $ionicPopup, aptListener, $ionicSideMenuDelegate, barberInfo) {
 
   //Feilds
   $scope.schedule_info = {};
@@ -14,7 +14,7 @@ app.controller("ScheduleCtrl", function($scope, $rootScope, $state, $ionicPopup,
     if ($scope.hasOwnProperty("appointments") !== true) {
       $scope.appointments = [];
     }
-    remoteAptDB.put({
+    localAptDB.put({
       _id: $scope.schedule_info.date.toISOString() + '-' + barber_name,
       client_name: $scope.schedule_info.client_name,
       client_phone: $scope.schedule_info.number,

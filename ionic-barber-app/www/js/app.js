@@ -9,15 +9,6 @@ var remoteAptDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03M
   }
 });
 
-var localGabinosAptDB = new PouchDB("gabinos_appointments");
-var remoteGabinosAptDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03Mw0iUx3SN @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/gabinos_apts', {
-  auth: {
-    username: 'itchentleverturearywhers',
-    password: 'U7vFQNN2joOhU03Mw0iUx3SN'
-  }
-});
-
-
 app.run(function($ionicPlatform, $ionicAnalytics) {
   $ionicPlatform.ready(function() {
     $ionicAnalytics.register();
@@ -29,10 +20,6 @@ app.run(function($ionicPlatform, $ionicAnalytics) {
     }
     //auto sync local and remote db's
     localAptDB.sync(remoteAptDB, {
-      live: true,
-      retry: true
-    });
-    localGabinosAptDB.sync(remoteGabinosAptDB, {
       live: true,
       retry: true
     });

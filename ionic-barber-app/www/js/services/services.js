@@ -1,21 +1,19 @@
-app.factory('aptListener', function($rootScope) {
+app.factory('aptListener', function(barberInfo) {
+  var appointments = [];
   localAptDB.changes({
     live: true
   }).on('change', function(change) {
-    if (change.deleted) {
-      $rootScope.$apply(function() {
-        $rootScope.$broadcast('delete', change.id);
-      });
-    } else {
-      $rootScope.$apply(function() {
-        localAptDB.get(change.id, function(err, doc) {
-          $rootScope.$apply(function() {
-            if (err) console.log(err);
-            $rootScope.$broadcast('add', doc);
-          });
-        });
-      });
-    }
+    var nao = moment().format().substring(0, 13);
+    localAptDB.allDocs({
+      include_docs: true,
+      startkey: nao, //YMD
+      endkey: barberInfo.getBarber()
+    }, function(err, response) {
+      if (err) {
+        return console.log(err);
+      }
+      appointments = response.rows;
+    });
   }).on('create', function(change) {
 
   }).on('delete', function(change) {
@@ -24,41 +22,7 @@ app.factory('aptListener', function($rootScope) {
   return true;
 });
 
-app.factory('gabinoAptListener', function($rootScope, barberInfo) {
-  localGabinosAptDB.changes({
-    live: true
-  }).on('change', function(change) {
-    if (change.deleted) {
-      $rootScope.$apply(function() {
-        $rootScope.$broadcast('deleteGabinosApt', change.id);
-      });
-    } else {
-      $rootScope.$apply(function() {
-        // localGabinosAptDB.get(change.id, function(err, doc) {
-        //   $rootScope.$apply(function() {
-        //     if (err) console.log(err);
-        //     $rootScope.$broadcast('addGabinosApt', doc);
-        //   });
-        // });
-        localGabinosAptDB.allDocs({
-          include_docs: true,
-          endkey: barberInfo.getBarber()
-        }).then(function(result) {
-          $rootScope.$broadcast('addGabinosApt', result);
-        }).catch(function(err) {
-          console.log(err);
-        });
-      });
-    }
-  }).on('create', function(change) {
-
-  }).on('delete', function(change) {
-
-  });
-  return true;
-});
-
-app.factory('barberInfo', function($rootScope) {
+app.factory('barberInfo', function() {
   var barbers = [{
     name: "Gabino",
     desc: "Profesional Barber"
@@ -69,7 +33,7 @@ app.factory('barberInfo', function($rootScope) {
     name: "Antonio",
     desc: "Profesional Barber"
   }];
-  var barber = '';
+  var barber = 'Gabino';
   return {
     setBaber: function(name) {
       barber = name;
@@ -84,40 +48,37 @@ app.factory('barberInfo', function($rootScope) {
 });
 
 app.service('appointmentData', function(barberInfo) {
-      // moment().add(i * 45, 'minutes');
-      var today = new moment();
-      today.hours(9);
-      today.minutes(0);
-      today.seconds(0);
-      // var today_at_9 = new Date(yyyy, mm, dd, 09);
-      // dates (years, months, days, hours, minutes, seconds, and milliseconds)
-      // new Date(oldDateObj.getTime() + diff*60000);
-      var appointments = [];
-      for (var i = 0; i < 14; i++) {
-        appointments[i] = {
-          slot_num: i,
-          start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-          end_time: today.add(45, 'minutes').format('h:mm a')
-        };
-        today.subtract((45 * i) + 45, 'minutes');
-      }
-      return {
-        getApts: function() {
-          return appointments;
-        },
-        getDBApts: function(theDate) {
-              remoteGabinosAptDB.allDocs({
-                include_docs: true,
-                startkey: theDate,
-                endkey: barberInfo.getBarber()
-              }).then(function(result) {
-                console.log('New Results: ');
-                console.log(result);
-                return result;
-              }).catch(function(err) {
-                console.log(err);
-                return null;
-              });
-          }
-        };
+  // moment().add(i * 45, 'minutes');
+  var today = moment({hour:9});
+  // var today_at_9 = new Date(yyyy, mm, dd, 09);
+  // dates (years, months, days, hours, minutes, seconds, and milliseconds)
+  // new Date(oldDateObj.getTime() + diff*60000);
+  var appointments = [];
+  for (var i = 0; i < 14; i++) {
+    appointments[i] = {
+      slot_num: i,
+      start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+      end_time: today.add(45, 'minutes').format('h:mm a')
+    };
+    today.subtract((45 * i) + 45, 'minutes');
+  }
+  return {
+    getApts: function() {
+      return appointments;
+    },
+    getDBApts: function(theDate) {
+      localAptDB.allDocs({
+        include_docs: true,
+        startkey: theDate,
+        endkey: barberInfo.getBarber()
+      }).then(function(result) {
+        console.log('New Results: ');
+        console.log(result);
+        return result;
+      }).catch(function(err) {
+        console.log(err);
+        return null;
       });
+    }
+  };
+});

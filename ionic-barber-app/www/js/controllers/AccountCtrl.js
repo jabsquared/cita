@@ -10,5 +10,4 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo) {
     console.log(barberInfo.getBarber());
     $state.go('appointments');
   };
-
 });
