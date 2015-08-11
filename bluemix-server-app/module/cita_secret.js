@@ -1,6 +1,11 @@
-// Define Vars
-var twilioAuth = {sID:"lab"};
-var cloudantAuth = {url:"lab"};
+'use strict';
+
+var twilioAuth = {
+  sID: "lab"
+};
+var cloudantAuth = {
+  url: "lab"
+};
 
 // Check if ENV from BLUEMIX exist
 if (process.env.VCAP_SERVICES) {
@@ -23,10 +28,11 @@ if (process.env.VCAP_SERVICES) {
     if (service.name === 'Twilio-79') { // Test Twilio
       twilioAuth.sID = service.credentials.accountSID;
       twilioAuth.token = service.credentials.authToken;
-      }
-    });
-  }
+    }
+  });
 }
+
 // Export keys
 exports.twilioAuth = twilioAuth;
 exports.cloudantAuth = cloudantAuth;
+module.exports = exports;

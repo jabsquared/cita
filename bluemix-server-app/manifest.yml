@@ -7,7 +7,7 @@ applications:
   disk_quota: 1024M
   host: cita-beau-barbershop
   name: cita-beau-barbershop
-  command: node app.js
+  command: node --expose-gc app.js
   path: .
   domain: mybluemix.net
   instances: 1
