@@ -25,7 +25,7 @@ var compareLogNFi = function(err, info) {
 var SMSBot = function() {
   // Get the Current Date
   var nao = new Date();
-  console.log("|--- t = " + (++bm) + "s");
+  // console.log("|--- t = " + (++bm) + "s");
   // Extract the needed infomation from
   var naoymd =
     // nao.toISOString().substring(0, 11); // YMD
@@ -42,7 +42,7 @@ var SMSBot = function() {
       return console.log(err);
     }
     // console.log("All The Responses:"); console.log(response);
-    console.log("|    r = " + response.total_rows + "a");
+    // console.log("|    r = " + response.total_rows + "a");
     // Go through all messages for the last D || H || M
     for (var i = 0; i < response.rows.length; i++) {
       // console.log("Responses on row " + i + " :"); console.log(response.rows[i]);
@@ -87,16 +87,12 @@ var SMSBot = function() {
       if (nao.getTime() > ad.getTime()) {
         var smsDone = "From The Beau Barbershop: thank you and have a nice day!";
 
-        console.log("|--- f = " + (++fi) + "a");
-
-
-        logDB.info(compareLogNFi);
+        // console.log("|--- f = " + (++fi) + "a");
+        // logDB.info(compareLogNFi);
 
         theD.done = true;
 
         PouchUtils.deleteAppointment(aptDB, logDB, theD, smsDone);
-
-        console.log("|--- DONE");
       }
     }
   });
