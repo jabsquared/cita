@@ -1,8 +1,18 @@
-var app = angular.module('starter', ['ionic','ionic.service.core','ionic.service.analytics',  'flexcalendar', 'pascalprecht.translate']);
+var app = angular.module('starter', ['ionic','ionic.service.core',  'flexcalendar', 'pascalprecht.translate']);
+// 'ionic.service.analytics',
 
-app.run(function($ionicPlatform, $ionicAnalytics) {
+//instanciate databases
+var localAptDB = new PouchDB("appointments");
+var remoteAptDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03Mw0iUx3SN @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments', {
+  auth: {
+    username: 'itchentleverturearywhers',
+    password: 'U7vFQNN2joOhU03Mw0iUx3SN'
+  }
+});
+// $ionicAnalytics
+app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
-    $ionicAnalytics.register();
+    // $ionicAnalytics.register();
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
