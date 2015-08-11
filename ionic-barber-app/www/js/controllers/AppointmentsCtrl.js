@@ -1,14 +1,33 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, aptListener, barberInfo, appointmentData) {
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
 
   // Initailize Appointments
   // Feilds
-  $scope.appointments = aptListener.appointments = appointmentData.getApts();
-  $scope.barber = barberInfo.getBarber();
-  $scope.schedule_info = {};
-  $scope.schedule_info.alarm = true;
-  $scope.today = new moment();
   $scope.data = {};
-  $scope.data.date = moment().format('YYYY-MM-DD');
+  $scope.data.date = new moment();
+  var apts = process($scope.data.date);
+  $scope.appointments = apts;
+
+  // Old Feilds
+  $scope.barber = barberInfo.getBarber();
+
+  localAptDB.changes({
+    since: 'now',
+    live: true,
+    include_docs: true
+  }).on('change', function(change) {
+    // handle change
+    if (change === 'deleted') {
+      //Handle Deleted Doc
+      docChange('delete', change.doc);
+    } else {
+      // Handle Created Doc
+      docChange('create', change.doc);
+    }
+  }).on('complete', function(info) {
+    // changes() was canceled
+  }).on('error', function(err) {
+    console.log(err);
+  });
 
   $scope.eqTime = function(atime) {
     return atime === $scope.data.date;
@@ -105,22 +124,53 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  var processData = function ProcessData (apt) {
-    for (var i = 0; i < apt.rows.length; i++) {
-      console.log('Loop Date:');
-      console.log(apt.rows[i].doc.date);
-      // if (new moment(apt.rows[i].doc.date).format('YYYY-MM-DD') === $scope.data.date.format('YYYY-MM-DD')) {
-      appointments[apt.rows[i].doc.slot_num].client_name = apt.rows[i].doc.client_name;
-      appointments[apt.rows[i].doc.slot_num].client_phone = apt.rows[i].doc.client_phone;
-      appointments[apt.rows[i].doc.slot_num].barber = apt.rows[i].doc.barber;
-      appointments[apt.rows[i].doc.slot_num].date = new moment(apt.rows[i].doc.date).format('YYYY-MM-DD');
-      appointments[apt.rows[i].doc.slot_num].alarm = apt.rows[i].doc.alarm;
-      appointments[apt.rows[i].doc.slot_num].sms_0 = apt.rows[i].doc.sms_0;
-      appointments[apt.rows[i].doc.slot_num].sms_1 = apt.rows[i].doc.sms_1;
-      appointments[apt.rows[i].doc.slot_num].done = apt.rows[i].doc.done;
-      // }
+  // Process results and return completed appointments array***
+  function process(date_obj) {
+    console.log('in process');
+    localAptDB.allDocs({
+      include_docs: true,
+      attachments: true,
+      startkey: date_obj.format('YYYY-MM-DD'),
+      endkey: barberInfo.getBarber()
+    }).then(function(res) {
+      console.log('res: ' + res.rows);
+      var appointments = [];
+      for (var i = 0; i < 14; i++) {
+        if (res.rows[i] !== null) {
+          appointments[i] = res.rows[i];
+        } else {
+          appointments[i] = {
+            slot_num: i
+          };
+        }
+      }
+      return appointments;
+    }).catch(function(err) {
+      console.log(err);
+      return null;
+    });
+  }
+
+  // Modify $scope.appointments based on changes to DB ***
+  function docChange(type, doc) {
+    if (type === 'delete') {
+      // Handle Deleting Doc
+      for (var i = 0; i < $scope.appointments.length; i++) {
+        if ($scope.appointments[i]._id === doc._id) {
+          $scope.appointments[i] = {
+            slot_num: i
+          };
+        }
+      }
+    } else if (type === 'create') {
+      // Handle Adding Doc
+      for (var x = 0; x < $scope.appointments.length; x++) {
+        if ($scope.appointments[x]._id === doc._id) {
+          $scope.appointments[x] = doc;
+        }
+      }
     }
-  };
+  }
 
   // Flex Calendar Shit -------------------------------------------------------
 
@@ -148,26 +198,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
       console.log(date_obj);
-      $scope.data.date = moment(date_obj.date).format('YYYY-MM-DD');
-      // processData(appointmentData.getDBApts($scope.data.date));
-      appointmentData.getDBApts($scope.data.date,ProcessData);
-
-      // console.log($scope.appointments);
+      apts = process(new moment(date_obj));
     },
     dateClick: function(date_obj) {
-      console.log('Date Clicked');
-      console.log(date_obj);
-      $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
-      $scope.appointments = appointments = appointmentData.getApts();
-      console.log('Apts Before:');
-      console.log(appointments);
-      console.log('Returned:');
-
-      console.log(appointmentData.getDBApts($scope.data.date));
-      appointmentData.getDBApts($scope.data.date,ProcessData);
-
-      console.log('Apts After:');
-      console.log(appointments);
+      apts = process(new moment(date_obj));
     },
     changeMonth: function(month, year) {
       console.log(month, year);
