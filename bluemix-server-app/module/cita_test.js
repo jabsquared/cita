@@ -18,7 +18,7 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   // body...
   var tDate = new Date();
 
-  tDate.setTime(tDate.getTime() + 9000);
+  tDate.setTime(tDate.getTime() + 6000);
 
   var barber = barbers[Math.floor(Math.random() * barbers.length)];
 
@@ -40,7 +40,6 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   });
 };
 
-testIncomingAppointment();
-// il.add(testIncomingAppointment, []).setInterval(9000).run();
+il.add(testIncomingAppointment, []).setInterval(4500).run();
 
 module.exports = exports;
