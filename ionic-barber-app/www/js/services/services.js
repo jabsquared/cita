@@ -22,6 +22,21 @@ app.factory('aptListener', function(barberInfo) {
   return true;
 });
 
+app.service('pouchService', function(){
+  this.localDB = new PouchDB("appointments");
+  this.remoteDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03Mw0iUx3SN @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments', {
+    auth: {
+      username: 'itchentleverturearywhers',
+      password: 'U7vFQNN2joOhU03Mw0iUx3SN'
+    }
+  });
+  //auto sync local and remote db's
+  this.localDB.sync(this.remoteDB, {
+    live: true,
+    retry: true
+  });
+});
+
 app.factory('barberInfo', function() {
   var barbers = [{
     name: "Gabino",

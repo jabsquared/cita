@@ -1,16 +1,16 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData, pouchService) {
 
   // Initailize Appointments
   // Feilds
-  $scope.data = {};
-  $scope.data.date = new moment();
-  var apts = process($scope.data.date);
-  $scope.appointments = apts;
+  // $scope.data = {};
+  // $scope.data.date = new moment();
+  // var apts = process($scope.data.date);
+  // $scope.appointments = apts;
 
   // Old Feilds
   $scope.barber = barberInfo.getBarber();
 
-  localAptDB.changes({
+  pouchService.localDB.changes({
     since: 'now',
     live: true,
     include_docs: true
@@ -68,7 +68,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       console.log(res);
       if (res === 'submit') {
         localAptDB.put({
-          _id: moment().format() + '-' + $scope.barber,
+          _id: moment().format() + '-' + barberInfo.getBarber(),
           slot_num: num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
@@ -124,53 +124,26 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  // Process results and return completed appointments array***
-  function process(date_obj) {
-    console.log('in process');
-    localAptDB.allDocs({
-      include_docs: true,
-      attachments: true,
-      startkey: date_obj.format('YYYY-MM-DD'),
-      endkey: barberInfo.getBarber()
-    }).then(function(res) {
-      console.log('res: ' + res.rows);
-      var appointments = [];
-      for (var i = 0; i < 14; i++) {
-        if (res.rows[i] !== null) {
-          appointments[i] = res.rows[i];
-        } else {
-          appointments[i] = {
-            slot_num: i
-          };
-        }
-      }
-      return appointments;
-    }).catch(function(err) {
-      console.log(err);
-      return null;
-    });
-  }
-
   // Modify $scope.appointments based on changes to DB ***
-  function docChange(type, doc) {
-    if (type === 'delete') {
-      // Handle Deleting Doc
-      for (var i = 0; i < $scope.appointments.length; i++) {
-        if ($scope.appointments[i]._id === doc._id) {
-          $scope.appointments[i] = {
-            slot_num: i
-          };
-        }
-      }
-    } else if (type === 'create') {
-      // Handle Adding Doc
-      for (var x = 0; x < $scope.appointments.length; x++) {
-        if ($scope.appointments[x]._id === doc._id) {
-          $scope.appointments[x] = doc;
-        }
-      }
-    }
-  }
+  // function docChange(type, doc) {
+  //   if (type === 'delete') {
+  //     // Handle Deleting Doc
+  //     for (var i = 0; i < $scope.appointments.length; i++) {
+  //       if ($scope.appointments[i]._id === doc._id) {
+  //         $scope.appointments[i] = {
+  //           slot_num: i
+  //         };
+  //       }
+  //     }
+  //   } else if (type === 'create') {
+  //     // Handle Adding Doc
+  //     for (var x = 0; x < $scope.appointments.length; x++) {
+  //       if ($scope.appointments[x]._id === doc._id) {
+  //         $scope.appointments[x] = doc;
+  //       }
+  //     }
+  //   }
+  // }
 
   // Flex Calendar Shit -------------------------------------------------------
 
@@ -198,10 +171,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
       console.log(date_obj);
-      apts = process(new moment(date_obj));
+      // apts = process(new moment(date_obj));
     },
     dateClick: function(date_obj) {
-      apts = process(new moment(date_obj));
+      // apts = process(new moment(date_obj));
     },
     changeMonth: function(month, year) {
       console.log(month, year);
