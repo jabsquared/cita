@@ -107,10 +107,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  //Event Listeners
-  $scope.$on('addGabinosApt', function(event, apt) {
-    console.log(apt);
-    console.log('Updating');
+  var processData = function (apt) {
     for (var i = 0; i < apt.rows.length; i++) {
       // console.log('Loop Date:');
       console.log(apt.rows[i].doc.date);
@@ -125,7 +122,14 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         appointments[apt.rows[i].doc.slot_num].done = apt.rows[i].doc.done;
       // }
     }
+  };
+
+  //Event Listeners
+  $scope.$on('addGabinosApt', function(event, apt) {
+    console.log(apt);
+    console.log('Updating');
     console.log(appointments);
+    processData(apt);
   });
 
   $scope.$on('deleteGabinosApt', function(event, id) {
@@ -164,13 +168,13 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     eventClick: function(date_obj) {
       console.log(date_obj);
       $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
-      $scope.appointments = appointmentData.getApts(date_obj.date);
+      processData(appointmentData.getDBApts($scope.data.date));
       // console.log($scope.appointments);
     },
     dateClick: function(date_obj) {
       console.log(date_obj);
       $scope.data.date = new moment(date_obj.date).format('YYYY-MM-DD');
-      $scope.appointments = appointmentData.getApts(date_obj.date);
+      processData(appointmentData.getDBApts($scope.data.date));
     },
     changeMonth: function(month, year) {
       console.log(month, year);
