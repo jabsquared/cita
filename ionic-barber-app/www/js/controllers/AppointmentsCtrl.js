@@ -53,9 +53,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         var j = apm.start_time;
 
         var k = i + j;
-        k = moment(k,"YYYY-MM-DDTh:mm a");
+        k = moment(k, "YYYY-MM-DDTh:mm a");
 
-        console.log('putting data'); console.log(res.start_time);
+        console.log('putting data');
+        console.log(res.start_time);
         localAptDB.put({
           _id: k.format() + '-' + apm.slot_num + '-' + barberInfo.getBarber(),
           slot_num: apm.slot_num,
@@ -161,25 +162,17 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   var process = function Process(date) {
     console.log('call process');
     populate(date);
-    console.log(moment(date).format('YYYY-MM-DD'));
-    localAptDB.allDocs({
-      include_docs: true,
-      startkey: moment(date).format('YYYY-MM-DD'),
-      endkey: barberInfo.getBarber()
-    }).then(function(result) {
-      console.log('Result: rows');
-      console.log(result);
-      // $scope.events = result.rows;
-      for (var i = 0; i < result.rows.length; i++) {
-        console.log('Results:');
-        // console.log(result.rows[i].doc);
-        $scope.appointments[result.rows[i].doc.slot_num] = result.rows[i].doc;
-        // console.log('Scope Apts');
-        // console.log($scope.appointments[result.rows[i].doc.slot_num]);
-        // console.log($scope.appointments);
+    console.log(moment(date).format('YYYY-MM-DDT'));
+
+    localAptDB.find({
+      selector: {
+        date: moment(date, "YYYY-MM-DDT")
       }
-      $scope.$apply();
+    }).then(function(result) {
+      // yo, a result
+      console.log(result);
     }).catch(function(err) {
+      // ouch, an error
       console.log(err);
     });
   };
@@ -206,7 +199,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     },
     changeMonth: function(month, year) {
       console.log(month, year);
-
+      localAptDB.createIndex({
+        index: {
+          fields: ['date', 'barber'],
+        }
+      });
     },
   };
 
