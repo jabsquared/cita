@@ -155,7 +155,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   var process = function Process(date) {
 
   };
-
+  // 1st Population Loop for 1st time user.
   populate(moment().format('YYYY-MM-DD'));
 
   $scope.options = {
