@@ -55,7 +55,7 @@ var SMSBot = function() {
         return;
       }
       // The Appointment Date parsed into a Date Object
-      var ad = new Date(theD.time);
+      var ad = new Date(theD.date);
       // console.log(ad.getTime());
       // If nao is > 6AM && 1st reminder == false
       if (nao.getHours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
@@ -118,17 +118,13 @@ var changes = aptDB.changes({
     return;
   }
 
-  var ad = new Date(theD.time);
+  var ad = new Date(theD.date);
 
   // console.log(ad.getTime());
 
   var instantSMS = "From The Beau Barbershop: You scheduled a hair cut on " +
     ad.toDateString() + " at " +
     ad.toTimeString() +
-    // ad.toLocaleTimeString('en-US', {
-    //   hour: '2-digit',
-    //   minute: '2-digit'
-    // }) +
     " with " + theD.barber +
     ". Have a nice day, " + theD.client_name + "!";
 

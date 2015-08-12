@@ -26,10 +26,11 @@ exports.logDB = (secret.cloudantAuth.url === "lab") ?
 var putAppointment = function PutAppointment(aptDB, theD, msg) {
   // body...
   aptDB.put({
+    slot_num: theD.slot_num,
     client_name: theD.client_name,
     client_phone: theD.client_phone,
     barber: theD.barber,
-    time: new Date(theD.time),
+    date: new Date(theD.time),
     alarm: theD.alarm,
     sms_0: theD.sms_0,
     sms_1: theD.sms_1,

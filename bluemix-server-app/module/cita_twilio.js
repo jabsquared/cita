@@ -11,7 +11,7 @@ if (secret.twilioAuth.sID!=="lab"){
 }
 
 var sendSMS = function SendSMS(toNum, msg) {
-  if (secret.twilioAuth.sID==="lab") {
+  if (secret.twilioAuth.sID==="lab" || true) {
     console.log(msg);
     return;
   }

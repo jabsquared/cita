@@ -1,4 +1,4 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo) {
 
   $scope.data = {};
   $scope.data.date = new moment();
@@ -94,7 +94,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         onTap: function(e) {
           return true;
         }
-      }, ]
+      }]
     });
     confirmPopup.then(function(res) {
       console.log(res);
@@ -131,8 +131,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     //   $rootScope.$apply(); // <--- better call this!
     // });
   }).on('create', function(change) {
-    console.log("Appointments:");
-    console.log(change);
+    // console.log("Appointments:");
+    // console.log(change);
   }).on('delete', function(change) {
 
   });
@@ -144,7 +144,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     // body...
     // console.log(date);
     $scope.data.date = moment(date);
-
+    console.log( $scope.data.date);
     var today = $scope.data.date.hours(9);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
@@ -162,7 +162,6 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     console.log('call process');
     populate(date);
     console.log(moment(date).format('YYYY-MM-DD'));
-    console.log(barberInfo.getBarber());
     localAptDB.allDocs({
       include_docs: true,
       startkey: moment(date).format('YYYY-MM-DD'),
@@ -173,11 +172,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // $scope.events = result.rows;
       for (var i = 0; i < result.rows.length; i++) {
         console.log('Results:');
-        console.log(result.rows[i].doc);
+        // console.log(result.rows[i].doc);
         $scope.appointments[result.rows[i].doc.slot_num] = result.rows[i].doc;
-        console.log('Scope Apts');
+        // console.log('Scope Apts');
         // console.log($scope.appointments[result.rows[i].doc.slot_num]);
-        console.log($scope.appointments);
+        // console.log($scope.appointments);
       }
       $scope.$apply();
     }).catch(function(err) {
