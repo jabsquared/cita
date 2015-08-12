@@ -161,9 +161,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   var process = function Process(date) {
     console.log('call process');
     populate(date);
+    console.log(moment(date).format('YYYY-MM-DD'));
+    console.log(barberInfo.getBarber());
     localAptDB.allDocs({
       include_docs: true,
-      startkey: moment(date).format(),
+      startkey: moment(date).format('YYYY-MM-DD'),
       endkey: barberInfo.getBarber()
     }).then(function(result) {
       console.log('Result: rows');
@@ -200,7 +202,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     dateClick: function(date_obj) {
       // apts = process(new moment(date_obj));
       // Populate with Blank field
-      populate(date_obj);
+      // populate(date_obj);
+      process(date_obj);
     },
     changeMonth: function(month, year) {
       console.log(month, year);
