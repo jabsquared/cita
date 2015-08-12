@@ -140,7 +140,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
 
   var populate = function Populate(date) {
-    console.log('acll populate');
+    console.log('called populate');
     // body...
     // console.log(date);
     $scope.data.date = moment(date);
@@ -167,7 +167,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       endkey: barberInfo.getBarber()
     }).then(function(result) {
       console.log('Result: rows');
-      console.log(result.rows);
+      console.log(result);
       // $scope.events = result.rows;
       for (var i = 0; i < result.rows.length; i++) {
         console.log('Results:');
@@ -204,6 +204,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     },
     changeMonth: function(month, year) {
       console.log(month, year);
+
     },
   };
 
