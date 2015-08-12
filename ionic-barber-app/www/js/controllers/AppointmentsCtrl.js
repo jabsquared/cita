@@ -6,6 +6,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
+  $scope.events = [];
 
   $scope.eqTime = function(atime) {
     return atime === $scope.data.date;
@@ -37,7 +38,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
             //don't allow the user to close unless he enters wifi password
             e.preventDefault();
           } else {
-            return 'submit';
+            return apm;
           }
         }
       }, ]
@@ -46,15 +47,22 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     myPopup.then(function(res) {
       //  alert($scope.newDate.date);
       // console.log(res);
-      if (res === 'submit') {
-        console.log('putting data');
+      if (res !== 'canceled') {
+
+        var i = $scope.data.date.format('YYYY-MM-DDT');
+        var j = apm.start_time;
+
+        var k = i + j;
+        k = moment(k,"YYYY-MM-DDTh:mm a");
+
+        console.log('putting data'); console.log(res.start_time);
         localAptDB.put({
-          _id: $scope.data.date.format() + '-' + apm.slot_num + '-' + barberInfo.getBarber(),
+          _id: k.format() + '-' + apm.slot_num + '-' + barberInfo.getBarber(),
           slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
           barber: $scope.barber,
-          date: $scope.data.date.format(),
+          date: k.format(),
           alarm: $scope.data.alarm,
           sms_0: false,
           sms_1: false,
@@ -63,6 +71,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
           // console.log('Complete!');
           // Show some pops up fancy stuffs here, also go back to login.
           // console.log(response);
+          // TODO: RELOAD Appointment
+
           $state.go('appointments');
         }).catch(function(err) {
           console.log(err);
@@ -140,8 +150,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       $scope.appointments[i] = {
         slot_num: i,
         date: today.format('YYYY-MM-DD'),
-        start_time: today.add((45 * i), 'minutes'),
-        end_time: today.add(45, 'minutes')
+        start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+        end_time: today.add(45, 'minutes').format('h:mm a')
       };
       today.subtract((45 * i) + 45, 'minutes');
     }
@@ -158,6 +168,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     }).then(function(result) {
       console.log('Result: rows');
       console.log(result.rows);
+      // $scope.events = result.rows;
       for (var i = 0; i < result.rows.length; i++) {
         console.log('Results:');
         console.log(result.rows[i].doc);
@@ -197,9 +208,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   };
 
   // Change this into DB.getall Appointment
-  $scope.events = [{
-    date: new Date(2015, 7, 14)
-  }, {
-    date: new Date(2015, 7, 11)
-  }];
+  // $scope.events = [{
+  //   date: moment()
+  // }, {
+  //   date: new Date(2015, 7, 16)
+  // }];
+  // $scope.events = $scope.appointments;
 });
