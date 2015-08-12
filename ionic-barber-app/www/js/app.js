@@ -19,7 +19,7 @@ app.run(function($ionicPlatform) {
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
-    // localBarberDB.sync(remoteBarberDB, { live:true });
+    localAptDB.sync(remoteAptDB, { live:true });
   });
 });
 

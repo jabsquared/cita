@@ -7,30 +7,6 @@
   </ion-header-bar>
   <ion-content has-bouncing="false">
     <flex-calendar events="events" options="options" style="padding-top: 2em"></flex-calendar>
-<!-- Start of Old Appointments -->
-<!-- <div class="list card" ng-if="a.barber === barber" ng-repeat="a in appointments | orderBy:'time'">
-      <a class="item item-icon-left" href="#">
-        <i class="icon ion-ios-clock"></i>
-        {{a.time | date:"MMM d, yyyy 'at' h:mm a"}}
-      </a>
-      <a class="item item-icon-left" href="#">
-        <i class="icon ion-person"></i>
-        {{a.client_name}}
-      </a>
-
-      <a class="item item-icon-left" href="#" ng-href="tel: {{a.client_phone}}">
-        <i class="icon ion-ios-telephone"></i>
-        {{a.client_phone}}
-      </a>
-
-      <div class="button-bar">
-        <button class="button button-dark" ng-click="reschedule(a)">Reschedule</button>
-        <button class="button button-assertive" ng-click="delete(a._id)">Cancel</button>
-      </div>
-
-    </div> -->
-<!-- End of Old Appointments -->
-<!-- Start of New Appointments -->
     <div class="list">
       <div class="" collection-repeat="a in appointments">
         <button class="button button-full button-royal" ng-click="schedule(a)" ng-if="!a.client_name">
@@ -38,7 +14,8 @@
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i>
               <!-- Schedule Haircut -->
-              {{a.slot_num}}
+              <!-- {{a.slot_num}} -->
+              {{a.client_name}}
             </div>
             <div class="" style="float: right">
               {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}}

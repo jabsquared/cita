@@ -20,7 +20,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     // An elaborate, custom popup
     // console.log(apm.start_time);
     var myPopup = $ionicPopup.show({
-      template: '<input type="text" ng-model="data.name" placeholder="Full Name"> <br/> <input type="tel" ng-model="data.phone" placeholder="phone number">',
+      templateUrl: 'templates/schedule.html',
       title: apm.start_time,
       scope: $scope,
       buttons: [{
@@ -48,14 +48,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // console.log(res);
       if (res === 'submit') {
         console.log('putting data');
-
-        var test = moment($scope.date);
-
-        test.hours(apm.start_time.substring(0,1));
-
-        console.log(test);
         localAptDB.put({
-          _id: test.format() + '-' + barberInfo.getBarber(),
+          _id: $scope.data.date.format() + '-' + apm.slot_num + '-' + barberInfo.getBarber(),
           slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
@@ -127,7 +121,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     //   $rootScope.$apply(); // <--- better call this!
     // });
   }).on('create', function(change) {
-    console.log("Appointments:");console.log(change);
+    console.log("Appointments:");
+    console.log(change);
   }).on('delete', function(change) {
 
   });
@@ -135,6 +130,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
 
   var populate = function Populate(date) {
+    console.log('acll populate');
     // body...
     // console.log(date);
     $scope.data.date = moment(date);
@@ -153,10 +149,31 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   // Process results and return completed appointments array***
   var process = function Process(date) {
-
+    console.log('call process');
+    populate(date);
+    localAptDB.allDocs({
+      include_docs: true,
+      startkey: moment(date).format(),
+      endkey: barberInfo.getBarber()
+    }).then(function(result) {
+      console.log('Result: rows');
+      console.log(result.rows);
+      for (var i = 0; i < result.rows.length; i++) {
+        console.log('Results:');
+        console.log(result.rows[i].doc);
+        $scope.appointments[result.rows[i].doc.slot_num] = result.rows[i].doc;
+        console.log('Scope Apts');
+        // console.log($scope.appointments[result.rows[i].doc.slot_num]);
+        console.log($scope.appointments);
+      }
+      $scope.$apply();
+    }).catch(function(err) {
+      console.log(err);
+    });
   };
+
   // 1st Population Loop for 1st time user.
-  populate(moment().format('YYYY-MM-DD'));
+  process(moment().format('YYYY-MM-DD'));
 
   $scope.options = {
     // defaultDate: new Date(yyyy, mm, dd),
