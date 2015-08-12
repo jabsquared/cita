@@ -18,6 +18,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   $scope.schedule = function(apm) {
     // An elaborate, custom popup
+    console.log(apm.start_time);
     var myPopup = $ionicPopup.show({
       template: '<input type="text" ng-model="data.name" placeholder="Full Name"> <br/> <input type="tel" ng-model="data.phone" placeholder="phone number">',
       title: 'Choose new date and time.',
@@ -47,8 +48,13 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // console.log(res);
       if (res === 'submit') {
         console.log('putting data');
+        var test = moment($scope.date);
+        console.log(apm.start_time.substring(0,1));
+        test.hours(apm.start_time.substring(0,1));
+        test.minutes(apm.start_time.substring(2,4));
+        test.seconds(0);
         localAptDB.put({
-          _id: moment(apm.start_time).format() + '-' + barberInfo.getBarber(),
+          _id: test.format() + '-' + barberInfo.getBarber(),
           slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
@@ -117,12 +123,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         return console.log(err);
       }
       // appointments = response.rows;
-      console.log("Appointments:");console.log(response.rows);
-
       $rootScope.$apply(); // <--- better call this!
     });
   }).on('create', function(change) {
-
+    console.log("Appointments:");console.log(change);
   }).on('delete', function(change) {
 
   });
@@ -133,12 +137,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     // body...
     // console.log(date);
     $scope.data.date = moment(date);
-    var today = moment({
-      hour: 9
-    });
+    var today = $scope.data.date.hour(9);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
         slot_num: i,
+        date: today.format('YYYY-MM-DD'),
         start_time: today.add((45 * i), 'minutes').format('h:mm a'),
         end_time: today.add(45, 'minutes').format('h:mm a')
       };
