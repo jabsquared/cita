@@ -1,7 +1,7 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
 
   $scope.data = {};
-  $scope.data.date = new Date();
+  $scope.data.date = new moment();
   $scope.data.alarm = true;
 
   $scope.barber = barberInfo.getBarber();
@@ -137,15 +137,13 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   var populate = function Populate(date) {
     // body...
     // console.log(date);
-    $scope.data.date = new Date(date);
+    $scope.data.date = moment(date);
 
-    // var today = $scope.data.date.setHours(9);
-
-
+    var today = $scope.data.date.hours(9);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
         slot_num: i,
-        date: today.toISOString(),
+        date: today.format('YYYY-MM-DD'),
         start_time: today.add((45 * i), 'minutes'),
         end_time: today.add(45, 'minutes')
       };
