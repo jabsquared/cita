@@ -1,7 +1,7 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
 
   $scope.data = {};
-  $scope.data.date = new moment();
+  $scope.data.date = new Date();
   $scope.data.alarm = true;
 
   $scope.barber = barberInfo.getBarber();
@@ -18,10 +18,10 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   $scope.schedule = function(apm) {
     // An elaborate, custom popup
-    console.log(apm.start_time);
+    // console.log(apm.start_time);
     var myPopup = $ionicPopup.show({
       template: '<input type="text" ng-model="data.name" placeholder="Full Name"> <br/> <input type="tel" ng-model="data.phone" placeholder="phone number">',
-      title: 'Choose new date and time.',
+      title: apm.start_time,
       scope: $scope,
       buttons: [{
         text: 'Cancel',
@@ -48,11 +48,12 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // console.log(res);
       if (res === 'submit') {
         console.log('putting data');
+
         var test = moment($scope.date);
-        console.log(apm.start_time.substring(0,1));
+
         test.hours(apm.start_time.substring(0,1));
-        test.minutes(apm.start_time.substring(2,4));
-        test.seconds(0);
+
+        console.log(test);
         localAptDB.put({
           _id: test.format() + '-' + barberInfo.getBarber(),
           slot_num: apm.slot_num,
@@ -79,7 +80,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   $scope.delete = function(id) {
     var confirmPopup = $ionicPopup.confirm({
       title: 'Are you sure you want to cancel?',
-      //  template: 'Are you sure you want to cancel this appointment?',
+      // template: 'Are you sure you want to cancel this appointment?',
       buttons: [{
         text: 'Cancel',
         type: 'button-stable'
@@ -113,18 +114,18 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   localAptDB.changes({
     live: true
   }).on('change', function(change) {
-    var nao = moment().format().substring(0, 13);
-    localAptDB.allDocs({
-      include_docs: true,
-      startkey: nao, //YMD
-      endkey: barberInfo.getBarber()
-    }, function(err, response) {
-      if (err) {
-        return console.log(err);
-      }
-      // appointments = response.rows;
-      $rootScope.$apply(); // <--- better call this!
-    });
+    // var nao = moment().format().substring(0, 13);
+    // localAptDB.allDocs({
+    //   include_docs: true,
+    //   startkey: nao, //YMD
+    //   endkey: barberInfo.getBarber()
+    // }, function(err, response) {
+    //   if (err) {
+    //     return console.log(err);
+    //   }
+    //   // appointments = response.rows;
+    //   $rootScope.$apply(); // <--- better call this!
+    // });
   }).on('create', function(change) {
     console.log("Appointments:");console.log(change);
   }).on('delete', function(change) {
@@ -136,14 +137,17 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   var populate = function Populate(date) {
     // body...
     // console.log(date);
-    $scope.data.date = moment(date);
-    var today = $scope.data.date.hour(9);
+    $scope.data.date = new Date(date);
+
+    // var today = $scope.data.date.setHours(9);
+
+
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
         slot_num: i,
-        date: today.format('YYYY-MM-DD'),
-        start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-        end_time: today.add(45, 'minutes').format('h:mm a')
+        date: today.toISOString(),
+        start_time: today.add((45 * i), 'minutes'),
+        end_time: today.add(45, 'minutes')
       };
       today.subtract((45 * i) + 45, 'minutes');
     }
