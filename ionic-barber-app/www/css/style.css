@@ -73,3 +73,13 @@
   border-color: #525252;
   color: #fff;
 }
+
+.item-complex .item-content {
+  padding: 0px;
+  margin: 0px;
+}
+
+.button.button-block, .button.button-full {
+  padding: 0px 10px;
+  margin: 0px;
+}
