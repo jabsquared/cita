@@ -10,10 +10,10 @@ if (secret.twilioAuth.sID!=="lab"){
     secret.twilioAuth.token);
 }
 
-var lab = false;
+var lab = true;
 
 var sendSMS = function SendSMS(toNum, msg) {
-  if (secret.twilioAuth.sID==="lab" || lab) {
+  if (secret.twilioAuth.sID==="lab"||lab) {
     console.log(msg);
     return;
   }
@@ -39,13 +39,15 @@ var sendSMS = function SendSMS(toNum, msg) {
   }, function(err, message) {
     if (err) {
       console.error("Problem: " + message);
-      console.log("Error: " + message);
-      sendSMS(null, msg);
-      sendSMS(null, msg);
+      console.log("Error: " + err);
+      console.log("Msg: "+ msg);
+      sendSMS(null, err + ":" + message);
       return;
-    } else {
-      console.log("Done");
     }
+    console.log("|--------- SentSMS ---------|");
+    console.log(msg);
+    console.log("|---------------------------|");
+
   });
 };
 

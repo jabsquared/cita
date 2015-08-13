@@ -34,9 +34,8 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
     client_phone: theD.client_phone,
     barber: theD.barber,
     date: theD.date,
-    time: theD.time,
-    //date : k.format('YYYY-MM-DD'),
-    //time : k.format('h:mm ap'),
+    start_time: theD.start_time,
+    end_time: theD.end_time,
     alarm: theD.alarm,
     sms_0: theD.sms_0,
     sms_1: theD.sms_1,
@@ -46,8 +45,8 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
       return console.log(err);
     }
     // console.log(response);
-    if (msg){
-      sender.SendSMS(theD.client_phone,msg);
+    if (msg) {
+      sender.SendSMS(theD.client_phone, msg);
     }
   });
 };
@@ -59,8 +58,7 @@ var deleteAppointment = function DeleteAppointment(aptDB, logDB, theD, msg) {
   aptDB.remove(theD, function(err, response) {
     if (err) {
       return console.log(err);
-    }
-    else if (msg){
+    } else if (msg) {
       sender.SendSMS(theD.client_phone, msg);
     }
   });

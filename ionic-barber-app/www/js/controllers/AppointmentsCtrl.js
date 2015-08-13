@@ -75,8 +75,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
           barber: $scope.barber,
           date: k.format('YYYY-MM-DD'),
           start_time: apm.start_time,
-          end_time: apm.end_time, // XXX: DO WE NEED THIS???
-          time_zone: k.format('Z'),
+          end_time: apm.end_time,
           alarm: $scope.data.alarm,
           sms_0: false,
           sms_1: false,
@@ -107,7 +106,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       }]
     });
     confirmPopup.then(function(res) {
-      console.log(res);
+      // console.log(res);
       if (res === 'submit') {
 
         var i = $scope.data.date.format('YYYY-MM-DDT');

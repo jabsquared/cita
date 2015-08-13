@@ -20,26 +20,24 @@ var compareLogNFi = function(err, info) {
   if (err) {
     return console.log(err);
   }
-  console.log("|" + (info.doc_count+1) + " d >---< f " + fi);
+  console.log("|" + (info.doc_count + 1) + " d >---< f " + fi);
   // handle result
 };
 
-var moment = require('moment');
-
-
+var moment = require('moment-timezone');
 
 var SMSBot = function() {
   // Get the Current Date
-  var nao = moment();
+  var nao = moment().tz('America/Vancouver');
   // console.log("|--- t = " + (++bm) + "s");
   // Extract the needed infomation from
   var naoymd =
     nao.format("YYYY-MM-DDT"); // YMD
-    // nao.format("YYYY-MM-DDTHH:"); // YMDH
-    // nao.format("YYYY-MM-DDTHH:m"); // YMDHm
-    // nao.format("YYYY-MM-DDTHH:mm:"); // YMDHM
-    // Filter by YMDH, client-side
-    // console.log(naoymd);
+  // nao.format("YYYY-MM-DDTHH:"); // YMDH
+  // nao.format("YYYY-MM-DDTHH:m"); // YMDHm
+  // nao.format("YYYY-MM-DDTHH:mm:"); // YMDHM
+  // Filter by YMDH, client-side
+  // console.log(naoymd);
   aptDB.allDocs({
     include_docs: true,
     startkey: naoymd, //YMD
@@ -60,7 +58,8 @@ var SMSBot = function() {
         return;
       }
       // The Appointment Date parsed into a Date Object
-      var ad = moment(theD._id,'YYYY-MM-DDTHH:mm:ssZ');
+      var ad = moment(theD._id, 'YYYY-MM-DDTHH:mm:ssZ')
+        .tz('America/Vancouver');
       // console.log(ad);
       // If nao is > 6AM && 1st reminder == false
       if (nao.hours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
@@ -68,36 +67,40 @@ var SMSBot = function() {
           header + "You have an appoinment with " +
           theD.barber + " at " +
           ad.format("h:mm A") +
-          "! Have a nice day, " + theD.client_name + " :)";
+          "! Have a nice day " + theD.client_name + " :)";
         // Toggle sms0
         theD.sms_0 = true;
         // Put to DB then Send Reminder SMS
         PouchUtils.putAppointment(aptDB, theD, sms0);
+        return();
       }
       // If nao is greater than (AppointmentTime - 30 MIN)
       // TODO:
-      if (ad.diff(nao) > 3*999 && !theD.sms_1) { //Skip if sms_1 has been sent
+      // console.log(ad.diff(nao));
+      if (ad.diff(nao) < 30 * 60 * 999 && !theD.sms_1) { //Skip if sms_1 has been sent
         var sms1 =
-          header + "You have an appoinment in 30 minutes with " +
+          header + "You have an appoinment in " + 30 +
+          " minutes with " +
           theD.barber + " at " +
           ad.format("h:mm A") +
-          "! Have a nice day, " + theD.client_name + " :)";
+          "! Have a nice day " + theD.client_name + " :)";
         // Toggle sms1
         theD.sms_1 = true;
         // Put to DB then Send Reminder SMS
+        PouchUtils.putAppointment(logDB, theD, null);
         PouchUtils.putAppointment(aptDB, theD, sms1);
+        return();
       }
 
       // If nao is greater than appTime, Done = true
+      // console.log(nao.diff(ad));
       if (nao.diff(ad) > 999) {
         var smsDone = header + "Thank you and " +
-        "! Have a nice day, " + theD.client_name + " :)";
+          "! Have a nice day " + theD.client_name + " :)";
 
         // console.log("|--- f = " + (++fi) + "a");
         // logDB.info(compareLogNFi);
-
         theD.done = true;
-
         PouchUtils.deleteAppointment(aptDB, logDB, theD, smsDone);
       }
     }
@@ -105,7 +108,7 @@ var SMSBot = function() {
 };
 
 // Set Timer:
-il.add(SMSBot, []).setInterval(999).run();
+il.add(SMSBot, []).setInterval(4500).run();
 
 // 1800000 for 30 minutes
 
@@ -119,24 +122,31 @@ var changes = aptDB.changes({
 }).on('create', function(change) {
   // handle change
   var theD = change.doc;
-
+  console.log("New Doc Added!");
   if (theD.barber === null) {
     return;
   }
-
-  var ad = moment(theD._id,'YYYY-MM-DDTHH:mm:ssZ');
+  var ad = moment(theD._id, 'YYYY-MM-DDTHH:mm:ssZ')
+    .tz('America/Vancouver');
 
   // console.log(ad.getTime());
+
+  logDB.put(theD);
 
   var instantSMS =
     header + "You scheduled a hair cut on " +
     ad.format("dddd, MMMM Do YYYY") + " at " +
     ad.format("h:mm A") +
     " with " + theD.barber +
-    "! Have a nice day, " + theD.client_name + " :)";
+    "! Have a nice day " + theD.client_name + " :)";
 
   sender.SendSMS(theD.client_phone, instantSMS);
   // console.log(change);
+}).on('delete', function(change) {
+  // console.log(change);
+  // Send some goodbye SMS here
+  console.log("Doc deleted");
+  console.log(change);
 }).on('update', function(change) {
   // console.log(change);
 }).on('complete', function(info) {
