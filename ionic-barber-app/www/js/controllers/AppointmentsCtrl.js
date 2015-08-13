@@ -124,29 +124,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  localAptDB.changes({
-    live: true
-  }).on('change', function(change) {
-    // var nao = moment().format().substring(0, 13);
-    // localAptDB.allDocs({
-    //   include_docs: true,
-    //   startkey: nao, //YMD
-    //   endkey: barberInfo.getBarber()
-    // }, function(err, response) {
-    //   if (err) {
-    //     return console.log(err);
-    //   }
-    //   // appointments = response.rows;
-    //   $rootScope.$apply(); // <--- better call this!
-    // });
-  }).on('create', function(change) {
-    // console.log("Appointments:");
-    // console.log(change);
-  }).on('delete', function(change) {
-
-  });
   // Flex Calendar-------------------------------------------------------
-
 
   var populate = function Populate(date) {
     console.log('called populate');
