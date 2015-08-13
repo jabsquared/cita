@@ -2,8 +2,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   //Feilds
   $scope.data = {};
-  $scope.data.date = new moment();
   $scope.data.alarm = true;
+  $scope.data.date = new moment();
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
@@ -161,7 +161,16 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       console.log(res);
       for (var i = 0; i < res.docs.length; i++) {
         $scope.appointments[res.docs[i].slot_num] = res.docs[i];
+
       }
+      $scope.events.push(
+        {
+          // date: new Date(res.docs[i].date)
+          date: new Date(2015, 7, 16)
+        }
+      );
+      console.log("Events: ");
+      console.log($scope.events);
       $scope.$apply();
     }).catch(function(err) {
       // ouch, an error
@@ -190,6 +199,9 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     },
     changeMonth: function(month, year) {
       console.log(month, year);
+      // $scope.data.date.year = year;
+      // $scope.data.date.month = month;
+      // process($scope.data.date);
     },
   };
 
