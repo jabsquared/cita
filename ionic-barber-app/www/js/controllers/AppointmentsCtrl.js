@@ -132,7 +132,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   var populate = function Populate(date) {
     console.log('called populate');
     console.log($scope.data.date);
-    var today = $scope.data.date.hours(9);
+    var today = $scope.data.date.hour(9).minutes(0);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
         slot_num: i,
@@ -163,12 +163,6 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         $scope.appointments[res.docs[i].slot_num] = res.docs[i];
 
       }
-      $scope.events.push(
-        {
-          // date: new Date(res.docs[i].date)
-          date: new Date(2015, 7, 16)
-        }
-      );
       console.log("Events: ");
       console.log($scope.events);
       $scope.$apply();

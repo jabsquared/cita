@@ -13,9 +13,19 @@
   max-width: 700px;
 }
 
-.card {
+.barber-card {
   padding-bottom: 0px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
+  background-color: #A30006;
+  color: #fff;
+
+}
+
+.barber-card h2 {
+  color: #fff;
+}
+
+.barber-card p {
+  color: #1C0113;
 }
 
 /*Flex Calendar Style*/
@@ -44,5 +54,17 @@
   /*background-color: #F03C02;*/
   background-color: #C21A01;
   border-color: #A30006;
+  color: #fff;
+}
+
+.cancel-btn {
+  background-color: #6B0103;
+  border-color: #525252;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background-color: #6B0103;
+  border-color: #525252;
   color: #fff;
 }
