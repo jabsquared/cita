@@ -109,7 +109,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     confirmPopup.then(function(res) {
       console.log(res);
       if (res === 'submit') {
-
+        console.log('Deleting');
         var i = $scope.data.date.format('YYYY-MM-DDT');
         var j = apm.start_time;
 
