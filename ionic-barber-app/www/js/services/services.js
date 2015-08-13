@@ -1,7 +1,3 @@
-app.factory('aptListener', function(barberInfo, $rootScope) {
-
-  return true;
-});
 
 app.factory('barberInfo', function() {
   var barbers = [{
@@ -17,7 +13,9 @@ app.factory('barberInfo', function() {
   var barber = 'Gabino';
   return {
     setBaber: function(name) {
+      console.log('Setting Name');
       barber = name;
+      console.log('Name: ' + barber);
     },
     getBarber: function() {
       return barber;

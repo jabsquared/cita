@@ -154,8 +154,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     localAptDB.find({
       selector: {
         date: searchDate.toString(),
-        //TODO: Change to dynamic barber name
-        barber: 'Gabino'
+        barber: $scope.barber
       }
     }).then(function(res) {
       // yo, a result
