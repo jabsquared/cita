@@ -1,5 +1,12 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
 
+  //Create index for DB once
+  localAptDB.createIndex({
+    index: {
+      fields: ['date','barber']
+    }
+  });
+
   $scope.data = {};
   $scope.data.date = new moment();
   $scope.data.alarm = true;
@@ -63,7 +70,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
           barber: $scope.barber,
-          date: k.format(),
+          date: k.format('YYYY-MM-DD'),
+          time: k.format('h:mm a'),
           alarm: $scope.data.alarm,
           sms_0: false,
           sms_1: false,
@@ -160,39 +168,28 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   // Process results and return completed appointments array***
   var process = function Process(date) {
-    console.log('call process');
+    // console.log('call process');
     populate(date);
-    console.log(moment(date).format('YYYY-MM-DD'));
-    console.log(barberInfo.getBarber());
-    // localAptDB.allDocs({
-    //   include_docs: true,
-    //   startkey: moment(date).format('YYYY-MM-DD'),
-    //   endkey: moment(date).format('YYYY-MM-DD')
-    // }).then(function(result) {
-    //   console.log('Result: rows');
-    //   console.log(result.rows);
-    //   // $scope.events = result.rows;
-    //   for (var i = 0; i < result.rows.length; i++) {
-    //     console.log('Results:');
-    //     console.log(result.rows[i].doc);
-    //     $scope.appointments[result.rows[i].doc.slot_num] = result.rows[i].doc;
-    //     console.log('Scope Apts');
-    //     // console.log($scope.appointments[result.rows[i].doc.slot_num]);
-    //     console.log($scope.appointments);
-    //   }
-    //   $scope.$apply();
-    // }).catch(function(err) {
-    //   console.log(err);
-    // });
+    // console.log(moment(date).format('YYYY-MM-DD'));
+    // console.log(barberInfo.getBarber());
+    var searchDate = moment(date).format("YYYY-MM-DD");
+    // console.log('searchDate: ' + searchDate);
     localAptDB.find({
       selector: {
-        date: moment(date, "YYYY-MM-DDTh:mm a")
+        date: searchDate.toString(),
+        //TODO: Change to dynamic barber name
+        barber: 'Gabino'
       }
-    }).then(function(result) {
+    }).then(function(res) {
       // yo, a result
-      console.log(result);
+      console.log(res);
+      for (var i = 0; i < res.docs.length; i++) {
+        $scope.appointments[res.docs[i].slot_num] = res.docs[i];
+      }
+      $scope.$apply();
     }).catch(function(err) {
       // ouch, an error
+      console.log('Find Error:');
       console.log(err);
     });
   };
@@ -219,11 +216,6 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     },
     changeMonth: function(month, year) {
       console.log(month, year);
-      localAptDB.createIndex({
-        index: {
-          fields: ['date', 'barber'],
-        }
-      });
     },
   };
 
