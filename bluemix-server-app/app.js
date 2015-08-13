@@ -9,7 +9,7 @@ var port = (process.env.VCAP_APP_PORT || 3000);
 
 var bot = require('./module/cita_reminderbot');
 
-// var test = require('./module/cita_test');
+var test = require('./module/cita_test');
 
 var appEnv = cfenv.getAppEnv();
 

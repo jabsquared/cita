@@ -4,6 +4,8 @@ var PouchDB = require('pouchdb');
 
 var PouchUtils = require('./cita_pouchutils');
 
+var moment = require('moment');
+
 var aptDB = PouchUtils.aptDB;
 
 var logDB = PouchUtils.logDB;
@@ -16,19 +18,22 @@ var barbers = ['Gabino', 'Matt', 'Antonio'];
 
 var testIncomingAppointment = function TestIncomingAppointment() {
   // body...
-  var tDate = new Date();
-
-  tDate.setTime(tDate.getTime() + 6000);
+  var tDate = moment().add(6,'s');
 
   var barber = barbers[Math.floor(Math.random() * barbers.length)];
 
+  var slot = Math.floor(Math.random()*14);
+
+  // console.log();
+
   aptDB.put({
-    _id: tDate.toISOString() + '-' + barber,
-    slot_num: 3,
+    _id: tDate.format() + '-' + barber,
+    slot_num: slot,
     client_name: "Trix",
     client_phone: "0123456789",
     barber: barber,
-    date: tDate,
+    date: tDate.format('YYYY-MM-DD'),
+    time: tDate.format('h:mm a'),
     alarm: true,
     sms_0: false,
     sms_1: false,
@@ -41,6 +46,8 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   });
 };
 
-il.add(testIncomingAppointment, []).setInterval(999).run();
+testIncomingAppointment();
+
+// il.add(testIncomingAppointment, []).setInterval(999).run();
 
 module.exports = exports;

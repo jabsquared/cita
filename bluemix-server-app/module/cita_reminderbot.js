@@ -14,6 +14,8 @@ var bm = 0;
 
 var fi = 0;
 
+var header = "From The Beau Barbershop: ";
+
 var compareLogNFi = function(err, info) {
   if (err) {
     return console.log(err);
@@ -22,17 +24,20 @@ var compareLogNFi = function(err, info) {
   // handle result
 };
 
+var moment = require('moment');
+
 var SMSBot = function() {
   // Get the Current Date
-  var nao = new Date();
+  var nao = moment();
   // console.log("|--- t = " + (++bm) + "s");
   // Extract the needed infomation from
   var naoymd =
-    // nao.toISOString().substring(0, 11); // YMD
-    nao.toISOString().substring(0, 13); // YMDH
-  // nao.toISOString().substring(0, 15); // YMDHm
-  // nao.toISOString().substring(0, 17); // YMDHM
-  // Filter by YMDH, client-side
+    // nao.format("YYYY-MM-DDT"); // YMD
+    nao.format("YYYY-MM-DDTHH"); // YMDH
+    // nao.format("YYYY-MM-DDTHH:M"); // YMDHm
+    // nao.format("YYYY-MM-DDTHH:MM"); // YMDHM
+    // Filter by YMDH, client-side
+    console.log(naoymd);
   aptDB.allDocs({
     include_docs: true,
     startkey: naoymd, //YMD
@@ -55,16 +60,14 @@ var SMSBot = function() {
         return;
       }
       // The Appointment Date parsed into a Date Object
-      var ad = new Date(theD.date);
-      // console.log(ad.getTime());
+      var ad = moment(theD.date);
+      console.log(ad);
       // If nao is > 6AM && 1st reminder == false
-      if (nao.getHours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
-        var sms0 = ("From The Beau Barbershop: You have an appoinment with " + theD.barber + " on " +
-          ad.toTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit'
-          })
-        );
+      if (nao.hours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
+        var sms0 =
+          header + "You have an appoinment with " +
+          theD.barber + " on " +
+          ad.format();
         // Toggle sms0
         theD.sms_0 = true;
         // Put to DB then Send Reminder SMS
@@ -72,11 +75,11 @@ var SMSBot = function() {
       }
       // If nao is greater than (AppointmentTime - 30 MIN)
       // TODO:
-      if ((ad.getTime() - nao.getTime()) < 60*3*999 && !theD.sms_1) { //Skip if sms_1 has been sent
-        var sms1 = ("From The Beau Barbershop: You have an appoinment in 30 minutes with " +
+      if (ad.diff(nao) > 3*999 && !theD.sms_1) { //Skip if sms_1 has been sent
+        var sms1 =
+          header + "You have an appoinment in 30 minutes with " +
           theD.barber + " on " +
-          ad.toTimeString()
-        );
+          ad.toTimeString();
         // Toggle sms1
         theD.sms_1 = true;
         // Put to DB then Send Reminder SMS
@@ -84,7 +87,7 @@ var SMSBot = function() {
       }
 
       // If nao is greater than appTime, Done = true
-      if (nao.getTime() > ad.getTime()) {
+      if (nao.diff(ad) > 999) {
         var smsDone = "From The Beau Barbershop: thank you and have a nice day!";
 
         // console.log("|--- f = " + (++fi) + "a");
@@ -99,7 +102,7 @@ var SMSBot = function() {
 };
 
 // Set Timer:
-il.add(SMSBot, []).setInterval(9999).run();
+il.add(SMSBot, []).setInterval(999).run();
 
 // 1800000 for 30 minutes
 
@@ -122,7 +125,7 @@ var changes = aptDB.changes({
 
   // console.log(ad.getTime());
 
-  var instantSMS = "From The Beau Barbershop: You scheduled a hair cut on " +
+  var instantSMS = "You scheduled a hair cut on " +
     ad.toDateString() + " at " +
     ad.toTimeString() +
     " with " + theD.barber +

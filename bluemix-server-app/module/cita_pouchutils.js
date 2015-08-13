@@ -5,6 +5,8 @@ var secret = require('./cita_secret');
 
 var PouchDB = require('pouchdb');
 
+// var moment = require('moment');
+
 exports.aptDB = (secret.cloudantAuth.url === "lab") ?
   new PouchDB("lab/apm") : // Local testing
   new PouchDB(secret.cloudantAuth.url + "/appointments", {
@@ -25,12 +27,16 @@ exports.logDB = (secret.cloudantAuth.url === "lab") ?
 
 var putAppointment = function PutAppointment(aptDB, theD, msg) {
   // body...
+  // var k = moment(theD.time);
   aptDB.put({
     slot_num: theD.slot_num,
     client_name: theD.client_name,
     client_phone: theD.client_phone,
     barber: theD.barber,
-    date: new Date(theD.time),
+    date: theD.date,
+    time: theD.time,
+    //date : k.format('YYYY-MM-DD'),
+    //time : k.format('h:mm ap'),
     alarm: theD.alarm,
     sms_0: theD.sms_0,
     sms_1: theD.sms_1,

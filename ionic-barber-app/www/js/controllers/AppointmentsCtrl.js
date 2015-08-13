@@ -45,7 +45,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
             //don't allow the user to close unless he enters wifi password
             e.preventDefault();
           } else {
-            return apm;
+            return "cool";
           }
         }
       }, ]
@@ -56,7 +56,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // console.log(res);
       if (res !== 'canceled') {
 
-        var i = $scope.data.date.format('YYYY-MM-DDT');
+        var i = $scope.data.date.format('YYYY-MM-DD');
         var j = apm.start_time;
 
         var k = i + j;
@@ -70,8 +70,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
           barber: $scope.barber,
-          date: k.format('YYYY-MM-DD'),
-          time: k.format('h:mm a'),
+          date: i,
+          time: j,
           alarm: $scope.data.alarm,
           sms_0: false,
           sms_1: false,
