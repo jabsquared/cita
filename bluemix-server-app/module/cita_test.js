@@ -24,10 +24,11 @@ var testIncomingAppointment = function TestIncomingAppointment() {
 
   aptDB.put({
     _id: tDate.toISOString() + '-' + barber,
+    slot_num: 3,
     client_name: "Trix",
     client_phone: "0123456789",
     barber: barber,
-    time: tDate,
+    date: tDate,
     alarm: true,
     sms_0: false,
     sms_1: false,

@@ -1,4 +1,4 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, appointmentData) {
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo) {
 
   //Create index for DB once
   localAptDB.createIndex({
@@ -103,7 +103,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         onTap: function(e) {
           return true;
         }
-      }, ]
+      }]
     });
     confirmPopup.then(function(res) {
       console.log(res);
@@ -140,8 +140,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     //   $rootScope.$apply(); // <--- better call this!
     // });
   }).on('create', function(change) {
-    console.log("Appointments:");
-    console.log(change);
+    // console.log("Appointments:");
+    // console.log(change);
   }).on('delete', function(change) {
 
   });
@@ -149,11 +149,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
 
   var populate = function Populate(date) {
-    console.log('acll populate');
+    console.log('called populate');
     // body...
     // console.log(date);
     $scope.data.date = moment(date);
-
+    console.log( $scope.data.date);
     var today = $scope.data.date.hours(9);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
