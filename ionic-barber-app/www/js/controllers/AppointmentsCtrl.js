@@ -49,7 +49,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
             //don't allow the user to close unless he enters wifi password
             e.preventDefault();
           } else {
-            return apm;
+            return "cool";
           }
         }
       }, ]
@@ -62,7 +62,6 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
         var i = $scope.data.date.format('YYYY-MM-DDT');
         var j = apm.start_time;
-
         var k = i + j;
         k = moment(k, "YYYY-MM-DDTh:mm a");
 
@@ -107,7 +106,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       }]
     });
     confirmPopup.then(function(res) {
-      console.log(res);
+      // console.log(res);
       if (res === 'submit') {
         console.log('Deleting');
         var i = $scope.data.date.format('YYYY-MM-DDT');
@@ -138,7 +137,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         slot_num: i,
         date: today.format('YYYY-MM-DD'),
         start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-        end_time: today.add(45, 'minutes').format('h:mm a')
+        end_time: today.add(45, 'minutes').format('h:mm a'),
       };
       today.subtract((45 * i) + 45, 'minutes');
     }
@@ -161,7 +160,6 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       console.log(res);
       for (var i = 0; i < res.docs.length; i++) {
         $scope.appointments[res.docs[i].slot_num] = res.docs[i];
-
       }
       console.log("Events: ");
       console.log($scope.events);

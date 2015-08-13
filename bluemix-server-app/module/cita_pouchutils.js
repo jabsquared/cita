@@ -5,6 +5,8 @@ var secret = require('./cita_secret');
 
 var PouchDB = require('pouchdb');
 
+// var moment = require('moment');
+
 exports.aptDB = (secret.cloudantAuth.url === "lab") ?
   new PouchDB("lab/apm") : // Local testing
   new PouchDB(secret.cloudantAuth.url + "/appointments", {
@@ -25,12 +27,15 @@ exports.logDB = (secret.cloudantAuth.url === "lab") ?
 
 var putAppointment = function PutAppointment(aptDB, theD, msg) {
   // body...
+  // var k = moment(theD.time);
   aptDB.put({
     slot_num: theD.slot_num,
     client_name: theD.client_name,
     client_phone: theD.client_phone,
     barber: theD.barber,
-    date: new Date(theD.time),
+    date: theD.date,
+    start_time: theD.start_time,
+    end_time: theD.end_time,
     alarm: theD.alarm,
     sms_0: theD.sms_0,
     sms_1: theD.sms_1,
@@ -40,8 +45,8 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
       return console.log(err);
     }
     // console.log(response);
-    if (msg){
-      sender.SendSMS(theD.client_phone,msg);
+    if (msg) {
+      sender.SendSMS(theD.client_phone, msg);
     }
   });
 };
@@ -53,8 +58,7 @@ var deleteAppointment = function DeleteAppointment(aptDB, logDB, theD, msg) {
   aptDB.remove(theD, function(err, response) {
     if (err) {
       return console.log(err);
-    }
-    else if (msg){
+    } else if (msg) {
       sender.SendSMS(theD.client_phone, msg);
     }
   });

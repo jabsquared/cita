@@ -9,6 +9,7 @@ var remoteAptDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03M
     password: 'U7vFQNN2joOhU03Mw0iUx3SN'
   }
 });
+
 // $ionicAnalytics
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
