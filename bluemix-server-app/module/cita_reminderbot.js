@@ -26,18 +26,20 @@ var compareLogNFi = function(err, info) {
 
 var moment = require('moment');
 
+
+
 var SMSBot = function() {
   // Get the Current Date
   var nao = moment();
   // console.log("|--- t = " + (++bm) + "s");
   // Extract the needed infomation from
   var naoymd =
-    // nao.format("YYYY-MM-DDT"); // YMD
-    nao.format("YYYY-MM-DDTHH"); // YMDH
-    // nao.format("YYYY-MM-DDTHH:M"); // YMDHm
-    // nao.format("YYYY-MM-DDTHH:MM"); // YMDHM
+    nao.format("YYYY-MM-DDT"); // YMD
+    // nao.format("YYYY-MM-DDTHH:"); // YMDH
+    // nao.format("YYYY-MM-DDTHH:m"); // YMDHm
+    // nao.format("YYYY-MM-DDTHH:mm:"); // YMDHM
     // Filter by YMDH, client-side
-    console.log(naoymd);
+    // console.log(naoymd);
   aptDB.allDocs({
     include_docs: true,
     startkey: naoymd, //YMD
@@ -52,22 +54,21 @@ var SMSBot = function() {
     for (var i = 0; i < response.rows.length; i++) {
       // console.log("Responses on row " + i + " :"); console.log(response.rows[i]);
       var theD = response.rows[i].doc;
-
       // console.log(theD);
-
       // If done return;
       if (!theD.alarm || theD.done) {
         return;
       }
       // The Appointment Date parsed into a Date Object
-      var ad = moment(theD.date);
-      console.log(ad);
+      var ad = moment(theD._id,'YYYY-MM-DDTHH:mm:ssZ');
+      // console.log(ad);
       // If nao is > 6AM && 1st reminder == false
       if (nao.hours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
         var sms0 =
           header + "You have an appoinment with " +
-          theD.barber + " on " +
-          ad.format();
+          theD.barber + " at " +
+          ad.format("h:mm A") +
+          "! Have a nice day, " + theD.client_name + " :)";
         // Toggle sms0
         theD.sms_0 = true;
         // Put to DB then Send Reminder SMS
@@ -78,8 +79,9 @@ var SMSBot = function() {
       if (ad.diff(nao) > 3*999 && !theD.sms_1) { //Skip if sms_1 has been sent
         var sms1 =
           header + "You have an appoinment in 30 minutes with " +
-          theD.barber + " on " +
-          ad.toTimeString();
+          theD.barber + " at " +
+          ad.format("h:mm A") +
+          "! Have a nice day, " + theD.client_name + " :)";
         // Toggle sms1
         theD.sms_1 = true;
         // Put to DB then Send Reminder SMS
@@ -88,7 +90,8 @@ var SMSBot = function() {
 
       // If nao is greater than appTime, Done = true
       if (nao.diff(ad) > 999) {
-        var smsDone = "From The Beau Barbershop: thank you and have a nice day!";
+        var smsDone = header + "Thank you and " +
+        "! Have a nice day, " + theD.client_name + " :)";
 
         // console.log("|--- f = " + (++fi) + "a");
         // logDB.info(compareLogNFi);
@@ -121,15 +124,16 @@ var changes = aptDB.changes({
     return;
   }
 
-  var ad = new Date(theD.date);
+  var ad = moment(theD._id,'YYYY-MM-DDTHH:mm:ssZ');
 
   // console.log(ad.getTime());
 
-  var instantSMS = "You scheduled a hair cut on " +
-    ad.toDateString() + " at " +
-    ad.toTimeString() +
+  var instantSMS =
+    header + "You scheduled a hair cut on " +
+    ad.format("dddd, MMMM Do YYYY") + " at " +
+    ad.format("h:mm A") +
     " with " + theD.barber +
-    ". Have a nice day, " + theD.client_name + "!";
+    "! Have a nice day, " + theD.client_name + " :)";
 
   sender.SendSMS(theD.client_phone, instantSMS);
   // console.log(change);

@@ -10,7 +10,7 @@ if (secret.twilioAuth.sID!=="lab"){
     secret.twilioAuth.token);
 }
 
-var lab = true;
+var lab = false;
 
 var sendSMS = function SendSMS(toNum, msg) {
   if (secret.twilioAuth.sID==="lab" || lab) {

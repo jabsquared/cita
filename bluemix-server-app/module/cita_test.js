@@ -24,12 +24,12 @@ var testIncomingAppointment = function TestIncomingAppointment() {
 
   var slot = Math.floor(Math.random()*14);
 
-  // console.log();
+  // console.log(tDate.format("YYYY-MM-DDTHH:mm:"));
 
   aptDB.put({
     _id: tDate.format() + '-' + barber,
     slot_num: slot,
-    client_name: "Trix",
+    client_name: "LAB",
     client_phone: "0123456789",
     barber: barber,
     date: tDate.format('YYYY-MM-DD'),
@@ -46,8 +46,8 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   });
 };
 
-testIncomingAppointment();
+// testIncomingAppointment();
 
-// il.add(testIncomingAppointment, []).setInterval(999).run();
+il.add(testIncomingAppointment, []).setInterval(999).run();
 
 module.exports = exports;

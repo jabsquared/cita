@@ -3,32 +3,29 @@
   <ion-header-bar class="bar-light">
     <button class="button icon-left ion-chevron-left button-clear button-assertive" ng-click="back()"></button>
     <h1 class="title large">{{barber}}'s Appointments</h1>
-    <!-- <button class="button icon-right ion-plus button-clear button-assertive" ng-click="schedule()"></button> -->
   </ion-header-bar>
   <ion-content has-bouncing="false">
     <flex-calendar events="events" options="options" style="padding-top: 2em"></flex-calendar>
     <div class="list">
       <div class="" collection-repeat="a in appointments">
-        <button class="button button-full button-royal" ng-click="schedule(a)" ng-if="!a.client_name">
+        <button class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i>
-              <!-- Schedule Haircut -->
-              <!-- {{a.slot_num}} -->
-              {{a.client_name}}
+              Schedule
             </div>
             <div class="" style="float: right">
-              {{a.start_time}}
+              {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}}
               -
               {{a.end_time}}
             </div>
           </div>
         </button>
-        <button class="button button-full button-stable" ng-if="a.client_name">
+        <button class="button button-full cancel-btn" ng-click="delete(a)" ng-if="a.client_name">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
-              <i class="icon icon-left ion-close-circled" style="margin-right: 1em"></i>
-              Taken
+              <i class="icon icon-left ion-close-circled" style="margin-right: 1em;"></i>
+              Cancel
             </div>
             <div class="" style="float: right">
               {{a.start_time}}
@@ -39,11 +36,10 @@
         </button>
       </div>
     </div>
-<!-- End of New Appointments -->
-    <!-- <div class="padding">
-
-    </div> -->
-    <div class="" style="margin-top: 0.9em"></div>
+    <div class="padding">
+<!-- safe yo -->
+    </div>
+    <div style="margin-top: 2.7em"></div>
 
   </ion-content>
 </ion-view>

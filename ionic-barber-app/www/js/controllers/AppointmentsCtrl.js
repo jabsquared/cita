@@ -1,23 +1,27 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo) {
 
-  //Create index for DB once
-  localAptDB.createIndex({
-    index: {
-      fields: ['date','barber']
-    }
-  });
-
+  //Feilds
   $scope.data = {};
-  $scope.data.date = new moment();
   $scope.data.alarm = true;
+  $scope.data.date = new moment();
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
   $scope.events = [];
+  // Change this into DB.getall Appointment
+  // $scope.events = [{
+  //   date: moment()
+  // }, {
+  //   date: new Date(2015, 7, 16)
+  // }];
+  // $scope.events = $scope.appointments;
 
-  $scope.eqTime = function(atime) {
-    return atime === $scope.data.date;
-  };
+  //Create index for DB once
+  localAptDB.createIndex({
+    index: {
+      fields: ['date', 'barber']
+    }
+  });
 
   //Functions
   $scope.back = function() {
@@ -56,33 +60,30 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // console.log(res);
       if (res !== 'canceled') {
 
-        var i = $scope.data.date.format('YYYY-MM-DD');
+        var i = $scope.data.date.format('YYYY-MM-DDT');
         var j = apm.start_time;
-
         var k = i + j;
         k = moment(k, "YYYY-MM-DDTh:mm a");
 
         console.log('putting data');
         console.log(res.start_time);
         localAptDB.put({
-          _id: k.format() + '-' + apm.slot_num + '-' + barberInfo.getBarber(),
+          _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber,
           slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
           barber: $scope.barber,
-          date: i,
-          time: j,
+          date: k.format('YYYY-MM-DD'),
+          start_time: apm.start_time,
+          end_time: apm.end_time, // XXX: DO WE NEED THIS???
+          time_zone: k.format('Z'),
           alarm: $scope.data.alarm,
           sms_0: false,
           sms_1: false,
           done: false
         }).then(function(response) {
-          // console.log('Complete!');
-          // Show some pops up fancy stuffs here, also go back to login.
-          // console.log(response);
-          // TODO: RELOAD Appointment
-
-          $state.go('appointments');
+          // RELOAD Appointment
+          process(k);
         }).catch(function(err) {
           console.log(err);
         });
@@ -90,7 +91,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  $scope.delete = function(id) {
+  $scope.delete = function(apm) {
     var confirmPopup = $ionicPopup.confirm({
       title: 'Are you sure you want to cancel?',
       // template: 'Are you sure you want to cancel this appointment?',
@@ -101,84 +102,59 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         text: '<b>Yes</b>',
         type: 'button-assertive',
         onTap: function(e) {
-          return true;
+          return 'submit';
         }
       }]
     });
     confirmPopup.then(function(res) {
       console.log(res);
-      if (res) {
+      if (res === 'submit') {
+
+        var i = $scope.data.date.format('YYYY-MM-DDT');
+        var j = apm.start_time;
+
+        var k = i + j;
+        k = moment(k, "YYYY-MM-DDTh:mm a");
+
         console.log('about to delete');
-        remoteAptDB.get(id).then(function(doc) {
-          return remoteAptDB.remove(doc);
-        }).then(function(result) {
-          // handle result
-          console.log('Deleted Document!');
-        }).catch(function(err) {
-          console.log(err);
+        localAptDB.remove(apm).then(function(){
+          process(k);
         });
       } else {
         //canceled
-        console.log('canceled!');
+        console.log('Failed to Delete!');
       }
     });
   };
 
-  localAptDB.changes({
-    live: true
-  }).on('change', function(change) {
-    // var nao = moment().format().substring(0, 13);
-    // localAptDB.allDocs({
-    //   include_docs: true,
-    //   startkey: nao, //YMD
-    //   endkey: barberInfo.getBarber()
-    // }, function(err, response) {
-    //   if (err) {
-    //     return console.log(err);
-    //   }
-    //   // appointments = response.rows;
-    //   $rootScope.$apply(); // <--- better call this!
-    // });
-  }).on('create', function(change) {
-    // console.log("Appointments:");
-    // console.log(change);
-  }).on('delete', function(change) {
-
-  });
   // Flex Calendar-------------------------------------------------------
-
 
   var populate = function Populate(date) {
     console.log('called populate');
-    // body...
-    // console.log(date);
-    $scope.data.date = moment(date);
-    console.log( $scope.data.date);
-    var today = $scope.data.date.hours(9);
+    console.log($scope.data.date);
+    var today = $scope.data.date.hour(9).minutes(0);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
         slot_num: i,
         date: today.format('YYYY-MM-DD'),
         start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-        end_time: today.add(45, 'minutes').format('h:mm a')
+        end_time: today.add(45, 'minutes').format('h:mm a'),
       };
       today.subtract((45 * i) + 45, 'minutes');
     }
   };
 
-  // Process results and return completed appointments array***
   var process = function Process(date) {
     // console.log('call process');
     populate(date);
     // console.log(moment(date).format('YYYY-MM-DD'));
-    // console.log(barberInfo.getBarber());
+    // console.log($scope.barber);
     var searchDate = moment(date).format("YYYY-MM-DD");
     // console.log('searchDate: ' + searchDate);
     localAptDB.find({
       selector: {
         date: searchDate.toString(),
-        //TODO: Change to dynamic barber name
-        barber: 'Gabino'
+        barber: $scope.barber
       }
     }).then(function(res) {
       // yo, a result
@@ -186,6 +162,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       for (var i = 0; i < res.docs.length; i++) {
         $scope.appointments[res.docs[i].slot_num] = res.docs[i];
       }
+      console.log("Events: ");
+      console.log($scope.events);
       $scope.$apply();
     }).catch(function(err) {
       // ouch, an error
@@ -204,26 +182,20 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     dayNamesLength: 3, // 1 for "M", 2 for "Mo", 3 for "Mon"; 9 will show full day names. Default is 1.
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
-      // Process data
+      $scope.data.date = moment(date_obj);
       process(date_obj);
-      // Re-populate with Appointment
     },
     dateClick: function(date_obj) {
-      // apts = process(new moment(date_obj));
-      // Populate with Blank field
-      // populate(date_obj);
+      // TODO Remove call to process.
+      $scope.data.date = moment(date_obj);
       process(date_obj);
     },
     changeMonth: function(month, year) {
       console.log(month, year);
+      // $scope.data.date.year = year;
+      // $scope.data.date.month = month;
+      // process($scope.data.date);
     },
   };
 
-  // Change this into DB.getall Appointment
-  // $scope.events = [{
-  //   date: moment()
-  // }, {
-  //   date: new Date(2015, 7, 16)
-  // }];
-  // $scope.events = $scope.appointments;
 });
