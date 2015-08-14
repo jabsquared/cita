@@ -10,5 +10,5 @@ applications:
   command: node --expose-gc app.js
   path: .
   domain: mybluemix.net
-  instances: 4
-  memory: 135M
+  instances: 1
+  memory: 256M
