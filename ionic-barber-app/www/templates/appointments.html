@@ -36,9 +36,9 @@
         </button>
       </div>
     </div> -->
-    <ion-list show-delete="false" can-swipe="true">
+    <ion-list>
       <ion-item collection-repeat="a in appointments">
-        <button class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
+        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name" can-swipe="false">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
@@ -47,8 +47,10 @@
               {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}} - {{a.end_time}}
             </div>
           </div>
-        </button>
-        <div ng-if="a.client_name">
+        </div>
+
+
+        <div can-swipe="true" ng-if="a.client_name">
           <a class="button button-full cancel-btn" href="tel:{{a.client_phone}}">
             <div class="" style="width: 100%">
               <div class="" style="float: left">
@@ -58,14 +60,14 @@
                 {{a.start_time}} - {{a.end_time}}
               </div>
             </div>
+            <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="a.client_name">
+            </ion-option-button>
           </a>
-          <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)"></ion-option-button>
         </div>
+
       </ion-item>
     </ion-list>
-    <div class="padding">
-      <!-- safe yo -->
-    </div>
-    <div class="" style="margin-top: 3em"></div>
+
+    <div style="margin-top: 3em"></div>
   </ion-content>
 </ion-view>

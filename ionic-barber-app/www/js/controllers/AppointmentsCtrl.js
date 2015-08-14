@@ -142,6 +142,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       };
       today.subtract((45 * i) + 45, 'minutes');
     }
+    console.log('Scope Appointments:');
+    console.log($scope.appointments);
   };
 
   var process = function Process(date) {
@@ -171,6 +173,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       console.log('Find Error:');
       console.log(err);
     });
+
   };
 
   // 1st Population Loop for 1st time user.
@@ -183,13 +186,14 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     dayNamesLength: 3, // 1 for "M", 2 for "Mo", 3 for "Mon"; 9 will show full day names. Default is 1.
     mondayIsFirstDay: true, //set monday as first day of week. Default is false
     eventClick: function(date_obj) {
-      $scope.data.date = moment(date_obj);
-      process(date_obj);
+      // $scope.data.date = moment(date_obj);
+      // process(date_obj);
     },
     dateClick: function(date_obj) {
       // TODO Remove call to process.
       $scope.data.date = moment(date_obj);
       process(date_obj);
+      $state.reload();
     },
     changeMonth: function(month, year) {
       console.log(month, year);
