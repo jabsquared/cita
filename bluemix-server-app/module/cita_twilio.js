@@ -10,15 +10,15 @@ if (secret.twilioAuth.sID!=="lab"){
     secret.twilioAuth.token);
 }
 
-var lab = true;
+var lab = false;
 
 var sendSMS = function SendSMS(toNum, msg) {
   if (secret.twilioAuth.sID==="lab"||lab) {
     console.log(msg);
     return;
   }
-  // var fromNum = '+13602343448';  // Bryan's #
-  var fromNum = '+14696152255'; // LAB's free #
+  var fromNum = '+13602343448';  // Bryan's #
+  // var fromNum = '+14696152255'; // LAB's free #
   if (!toNum) {
     // toNum = "+12067909711"; // Bogdan's #
     toNum = "+12536422707"; // LAB's #
