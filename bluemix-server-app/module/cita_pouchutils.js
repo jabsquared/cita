@@ -48,6 +48,7 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
     if (msg) {
       sender.SendSMS(theD.client_phone, msg);
     }
+    return;
   });
 };
 
@@ -58,9 +59,11 @@ var deleteAppointment = function DeleteAppointment(aptDB, logDB, theD, msg) {
   aptDB.remove(theD, function(err, response) {
     if (err) {
       return console.log(err);
-    } else if (msg) {
+    }
+    if (msg) {
       sender.SendSMS(theD.client_phone, msg);
     }
+    return;
   });
 };
 

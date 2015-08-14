@@ -6,16 +6,62 @@ var aptDB = PouchUtils.aptDB;
 
 var logDB = PouchUtils.logDB;
 
-var InfiniteLoop = require('infinite-loop');
+var moment = require('moment-timezone');
 
-var il = new InfiniteLoop();
-
-var bm = 0;
-
-var fi = 0;
+var sender = require('./cita_twilio');
 
 var header = "From The Beau Barbershop: ";
 
+// Change Checker:
+var changes = aptDB.changes({
+  since: 'now',
+  live: true,
+  include_docs: true
+}).on('create', function(info) {
+  // handle change
+  var theD = info.doc;
+  // console.log("New Doc Added!");
+  // console.log(info);
+  var ad = moment(info.id, 'YYYY-MM-DDTHH:mm:ssZ')
+    .tz('America/Vancouver');
+  if (theD.barber === null) {
+    return;
+  }
+  logDB.put(theD);
+  var instantSMS =
+    header + "You scheduled a hair cut on " +
+    ad.format("dddd, MMMM Do YYYY") + " at " +
+    ad.format("h:mm A") +
+    " with " + theD.barber +
+    "! Have a nice day " + theD.client_name + " :)";
+
+  sender.SendSMS(theD.client_phone, instantSMS);
+  // console.log(change);
+}).on('delete', function(info) {
+  // console.log(change);
+  // Send some goodbye SMS here
+  // console.log(info);
+  var nao = moment().tz('America/Vancouver');
+  var id = info.id;
+  var tel = id.substring(id.length-10);
+  var ad =  moment(id,'YYYY-MM-DDTHH:mm:ssZ').tz('America/Vancouver');
+  if (ad.diff(nao) > 999){
+    var cancelSMS = header + "Your appointment on " +
+    ad.format("dddd, MMMM Do YYYY") + " at " +
+    ad.format("h:mm A") +
+    " has been canceled! Have a nice day :)";
+    sender.SendSMS(tel, cancelSMS);
+  }
+}).on('update', function(change) {
+  // console.log(change);
+}).on('complete', function(info) {
+  // changes() was canceled
+}).on('error', function(err) {
+  console.log(err);
+});
+
+var bm = 0;
+var fi = 0;
 var compareLogNFi = function(err, info) {
   if (err) {
     return console.log(err);
@@ -24,7 +70,10 @@ var compareLogNFi = function(err, info) {
   // handle result
 };
 
-var moment = require('moment-timezone');
+
+var InfiniteLoop = require('infinite-loop');
+
+var il = new InfiniteLoop();
 
 var SMSBot = function() {
   // Get the Current Date
@@ -72,7 +121,7 @@ var SMSBot = function() {
         theD.sms_0 = true;
         // Put to DB then Send Reminder SMS
         PouchUtils.putAppointment(aptDB, theD, sms0);
-        return();
+        return;
       }
       // If nao is greater than (AppointmentTime - 30 MIN)
       // TODO:
@@ -89,7 +138,7 @@ var SMSBot = function() {
         // Put to DB then Send Reminder SMS
         PouchUtils.putAppointment(logDB, theD, null);
         PouchUtils.putAppointment(aptDB, theD, sms1);
-        return();
+        return;
       }
 
       // If nao is greater than appTime, Done = true
@@ -109,48 +158,3 @@ var SMSBot = function() {
 
 // Set Timer:
 il.add(SMSBot, []).setInterval(4500).run();
-
-// 1800000 for 30 minutes
-
-var sender = require('./cita_twilio');
-
-// Change Checker:
-var changes = aptDB.changes({
-  since: 'now',
-  live: true,
-  include_docs: true
-}).on('create', function(change) {
-  // handle change
-  var theD = change.doc;
-  console.log("New Doc Added!");
-  if (theD.barber === null) {
-    return;
-  }
-  var ad = moment(theD._id, 'YYYY-MM-DDTHH:mm:ssZ')
-    .tz('America/Vancouver');
-
-  // console.log(ad.getTime());
-
-  logDB.put(theD);
-
-  var instantSMS =
-    header + "You scheduled a hair cut on " +
-    ad.format("dddd, MMMM Do YYYY") + " at " +
-    ad.format("h:mm A") +
-    " with " + theD.barber +
-    "! Have a nice day " + theD.client_name + " :)";
-
-  sender.SendSMS(theD.client_phone, instantSMS);
-  // console.log(change);
-}).on('delete', function(change) {
-  // console.log(change);
-  // Send some goodbye SMS here
-  console.log("Doc deleted");
-  console.log(change);
-}).on('update', function(change) {
-  // console.log(change);
-}).on('complete', function(info) {
-  // changes() was canceled
-}).on('error', function(err) {
-  console.log(err);
-});

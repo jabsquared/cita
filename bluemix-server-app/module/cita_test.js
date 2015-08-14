@@ -27,7 +27,7 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   // console.log(tDate.format("YYYY-MM-DDTHH:mm:"));
 
   aptDB.put({
-    _id: tDate.format() + '-' + barber,
+    _id: tDate.format() + '-' + barber + '-' + '0123456789',
     slot_num: slot,
     client_name: "LAB",
     client_phone: "0123456789",
