@@ -38,9 +38,7 @@
     </div> -->
     <ion-list>
       <ion-item collection-repeat="a in appointments">
-        <div class="button button-full schedule-btn"
-        ng-click="schedule(a)" ng-if="!a.client_name"
-          can-swipe="false">
+        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name" can-swipe="false">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
@@ -53,22 +51,21 @@
 
 
         <div can-swipe="true" ng-if="a.client_name">
-          <a class="button button-full cancel-btn" href="tel:{{a.client_phone}}">
+          <div class="button button-full cancel-btn">
             <div class="" style="width: 100%">
               <div class="" style="float: left">
-                <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i>
-                {{a.client_name}}
+                <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> {{a.client_name}}
               </div>
-              <div class="" style="float: right">
+              <div class="" style="float: right" ng-click="delete(a)">
                 {{a.start_time}} - {{a.end_time}}
+                <!-- <i class="icon icon-right ion-trash-a">
+                </i> -->
               </div>
             </div>
-          </a>
+          </div>
         </div>
 
-        <ion-option-button class="button-assertive icon ion-trash-a"
-        ng-click="delete(a)"
-        ng-if="a.client_name">
+        <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="a.client_name">
         </ion-option-button>
 
       </ion-item>
