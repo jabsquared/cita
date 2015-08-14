@@ -27,7 +27,11 @@ var changes = aptDB.changes({
   if (theD.barber === null) {
     return;
   }
-  logDB.put(theD);
+  logDB.put(theD).then(function(response) {
+    // handle response
+  }).catch(function(err) {
+    console.log(err);
+  });
   var instantSMS =
     header + "You scheduled a hair cut on " +
     ad.format("dddd, MMMM Do YYYY") + " at " +
@@ -43,13 +47,14 @@ var changes = aptDB.changes({
   // console.log(info);
   var nao = moment().tz('America/Vancouver');
   var id = info.id;
-  var tel = id.substring(id.length-10);
-  var ad =  moment(id,'YYYY-MM-DDTHH:mm:ssZ').tz('America/Vancouver');
-  if (ad.diff(nao) > 999){
+  var tel = id.substring(id.length - 10);
+  var ad = moment(id, 'YYYY-MM-DDTHH:mm:ssZ').tz('America/Vancouver');
+  if (ad.diff(nao) > 999) {
     var cancelSMS = header + "Your appointment on " +
-    ad.format("dddd, MMMM Do YYYY") + " at " +
-    ad.format("h:mm A") +
-    " has been canceled! Have a nice day :)";
+      ad.format("dddd, MMMM Do YYYY") + " at " +
+      ad.format("h:mm A") +
+      " has been canceled! Have a nice day :)";
+    console.log(tel);
     sender.SendSMS(tel, cancelSMS);
   }
 }).on('update', function(change) {
