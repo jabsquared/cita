@@ -27,11 +27,11 @@
   "dependencies": {
     "angular-translate": "~2.7.2"
   },
-  "_release": "335e89e223",
+  "_release": "9cde1bf72a",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "335e89e223d0bdcbf2ae2d41e0a6d6b8ec79b888"
+    "commit": "9cde1bf72af2360ec9c3260c3d782ca06a1febbd"
   },
   "_source": "git://github.com/Russian60/flex-calendar.git",
   "_target": "*",

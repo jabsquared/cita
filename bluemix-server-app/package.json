@@ -6,9 +6,11 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.13.3",
     "cfenv": "1.0.x",
+    "express": "^4.13.3",
     "infinite-loop": "^0.2.2",
+    "moment": "^2.10.6",
+    "moment-timezone": "^0.4.0",
     "pouchdb": "^4.0.0",
     "twilio": "^2.2.1"
   }

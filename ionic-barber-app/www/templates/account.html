@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <ion-view name="account-view">
-  <ion-content class="padding">
-    <div class="title-image">
+  <ion-content has-bouncing="false">
+    <div class="title-image padding">
       <img id="logo-img" src="img/logo.png" alt="THE BEAU BARBERSHOP" />
     </div>
     <div class="padding">
@@ -9,12 +10,25 @@
     <!-- List of Barbers -->
     <div class="list card" ng-repeat="barber in barbers">
       <a ng-click="schedule(barber.name)" style="text-decoration: none">
-        <div class="item item-avatar">
-          <img src="img/ionic.png">
+        <div class="item item-avatar barber-card">
+          <div class="item-icon-left" style="maring-left: 2vw">
+            <i class="icon ion-person"></i>
+          </div>
           <h2>{{barber.name}}</h2>
           <p>Professional Barber</p>
         </div>
       </a>
     </div>
+    <footer style="margin-top: 6vh">
+      <div style="margin: 1em auto; text-align: center; margin-bottom: 0px">
+        made with
+        <i style="color: #C21A01; font-size: 1.3em">
+        &#9829;
+      </i> by
+      </div>
+      <div style="width: 100%; text-align: center">
+        <img src="img/jabsquared.png" alt="jabSquared" style="height: 4.5vh; margin: 0 auto" />
+      </div>
+    </footer>
   </ion-content>
 </ion-view>

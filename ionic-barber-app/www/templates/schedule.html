@@ -1,45 +1,19 @@
-<ion-view name="schedule-view">
-  <ion-header-bar class="bar-light">
-    <a class="button icon-left ion-chevron-left button-clear button-assertive" ng-href="#/appointments"></a>
-    <p class="title">
-      Schdule Appointment
-    </p>
-    </ion-header-bar>
-  <ion-content class="padding">
-<!-- <flex-calendar options="options" events="events" style="padding-top: 2em"></flex-calendar> -->
-        <div class="list list-inset" style="margin-top: 2em">
-          <label class="item item-input">
-            <input ng-model="schedule_info.client_name" placeholder="Name of Client" type="text">
-          </label>
-          <div class="padding">
-<!-- safe yo -->
-          </div>
-          <label class="item item-input">
-            <input ng-model="schedule_info.number" placeholder="Clients Phone Number" type="tel">
-          </label>
-          <div class="padding">
-<!-- safe yo -->
-          </div>
-          <label class="item item-input">
-            <input ng-model="schedule_info.date" placeholder="Date & Time" type="datetime-local">
-          </label>
-          <div class="padding">
-<!-- safe yo -->
-          </div>
-          <ul class="list">
-            <li class="item item-toggle">
-              Enable Reminder
-              <label class="toggle toggle-assertive">
-                <input ng-model="schedule_info.alarm" type="checkbox">
-                <div class="track">
-                  <div class="handle"></div>
-                </div>
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="" style="margin-top: 3em">
-          <button class="button button-block button-assertive" ng-click="submitData()">Schedule Haircut</button>
-        </div>
-  </ion-content>
-</ion-view>
+<!DOCTYPE html>
+<input ng-model="data.name" placeholder="  Full Name" type="text">
+<br/>
+<input ng-model="data.phone" placeholder="  Phone Number" type="tel">
+<br/>
+<ul class="list">
+
+  <li class="item item-toggle">
+     Alarm
+     <label class="toggle toggle-assertive">
+       <input type="checkbox" ng-model="data.alarm">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+  </li>
+
+</ul>
+</label>

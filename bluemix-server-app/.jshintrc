@@ -1,6 +1,6 @@
 {
 	// --------------------------------------------------------------------
-	// JSHint Nodeclipse Configuration v0.11 
+	// JSHint Nodeclipse Configuration v0.11
 	// Strict Edition with some relaxations and switch to Node.js, no `use strict`
 	// by Ory Band, Michael Haschke, Paul Verest
 	// https://github.com/Nodeclipse/nodeclipse-1/blob/master/org.nodeclipse.ui/templates/common-templates/.jshintrc
@@ -24,14 +24,14 @@
 	//
 	// @author http://michael.haschke.biz/
 	// @license http://unlicense.org/
-	 
+
 	// == Enforcing Options ===============================================
 	//
 	// These options tell JSHint to be more strict towards your code. Use
 	// them if you want to allow only a safe subset of JavaScript, very
 	// useful when your codebase is shared with a big number of developers
 	// with different skill levels. Was all true.
-	 
+
 	"bitwise" : true, // Prohibit bitwise operators (&, |, ^, etc.).
 	"curly" : true, // Require {} for every new block or scope.
 	"eqeqeq" : true, // Require triple equals i.e. `===`.
@@ -47,7 +47,7 @@
 	"undef" : true, // Require all non-global variables be declared before they are used.
 	"strict" : false, // Require `use strict` pragma in every file.
 	"trailing" : true, // Prohibit trailing whitespaces.
-	
+
 	// == Relaxing Options ================================================
 	//
 	// These options allow you to suppress certain types of warnings. Use
@@ -57,7 +57,6 @@
 	"boss" : false, // Tolerate assignments inside if, for & while. Usually conditions & loops are for comparison, not assignments.
 	"debug" : false, // Allow debugger statements e.g. browser breakpoints.
 	"eqnull" : false, // Tolerate use of `== null`.
-	"es5" : true, // Allow EcmaScript 5 syntax. // es5 is default https://github.com/jshint/jshint/issues/1411
 	"esnext" : false, // Allow ES.next (ECMAScript 6) specific features such as `const` and `let`.
 	"evil" : false, // Tolerate use of `eval`.
 	"expr" : false, // Tolerate `ExpressionStatement` as Programs.
@@ -78,7 +77,7 @@
 	"sub" : false, // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
 	"supernew" : false, // Tolerate `new function () { ... };` and `new Object;`.
 	"validthis" : false, // Tolerate strict violations when the code is running in strict mode and you use this in a non-constructor function.
-	
+
 	// == Environments ====================================================
 	//
 	// These options pre-define global variables that are exposed by
@@ -95,7 +94,7 @@
 	"prototypejs" : false, // Enable globals exposed by Prototype JavaScript framework.
 	"rhino" : false, // Enable globals available when your code is running inside of the Rhino runtime environment.
 	"wsh" : false, // Enable globals available when your code is running as a script for the Windows Script Host.
-	
+
 	// == JSLint Legacy ===================================================
 	//
 	// These options are legacy from JSLint. Aside from bug fixes they will
@@ -104,14 +103,14 @@
 	"onevar" : false, // Allow only one `var` statement per function.
 	"passfail" : false, // Stop on first error.
 	"white" : false, // Check against strict whitespace and indentation rules.
-	
+
 	// == Undocumented Options ============================================
 	//
 	// While I've found these options in [example1][2] and [example2][3]
 	// they are not described in the [JSHint Options documentation][4].
 	//
 	// [4]: http://www.jshint.com/options/
-	 
+
 	"maxerr" : 100, // Maximum errors before stopping.
 	"predef" : [ // Extra globals.
 	//"exampleVar",

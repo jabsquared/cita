@@ -1,31 +1,5 @@
-app.factory('aptListener', function($rootScope) {
 
-  localAptDB.changes({
-    live: true
-  }).on('change', function(change) {
-    if (change.deleted) {
-      $rootScope.$apply(function() {
-        $rootScope.$broadcast('delete', change.id);
-      });
-    } else {
-      $rootScope.$apply(function() {
-        localAptDB.get(change.id, function(err, doc) {
-          $rootScope.$apply(function() {
-            if (err) console.log(err);
-            $rootScope.$broadcast('add', doc);
-          })
-        });
-      })
-    }
-  }).on('create', function(change) {
-
-  }).on('delete', function(change) {
-
-  });
-  return true;
-});
-
-app.factory('barberInfo', function($rootScope) {
+app.factory('barberInfo', function() {
   var barbers = [{
     name: "Gabino",
     desc: "Profesional Barber"
@@ -36,10 +10,12 @@ app.factory('barberInfo', function($rootScope) {
     name: "Antonio",
     desc: "Profesional Barber"
   }];
-  var barber = '';
+  var barber = 'Gabino';
   return {
     setBaber: function(name) {
+      console.log('Setting Name');
       barber = name;
+      console.log('Name: ' + barber);
     },
     getBarber: function() {
       return barber;
@@ -47,5 +23,5 @@ app.factory('barberInfo', function($rootScope) {
     getBarbers: function() {
       return barbers;
     }
-  }
+  };
 });

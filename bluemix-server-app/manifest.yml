@@ -4,11 +4,11 @@ applications:
   - cita-beau-barbershop-MonitoringAndAnalytics
   - Twilio-9n
   - Twilio-79
-  disk_quota: 1024M
+  disk_quota: 256M
   host: cita-beau-barbershop
   name: cita-beau-barbershop
-  command: node app.js
+  command: node --expose-gc app.js
   path: .
   domain: mybluemix.net
   instances: 1
-  memory: 512M
+  memory: 256M

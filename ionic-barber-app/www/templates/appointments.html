@@ -1,40 +1,41 @@
+<!DOCTYPE html>
 <ion-view name="appointments-view">
   <ion-header-bar class="bar-light">
     <button class="button icon-left ion-chevron-left button-clear button-assertive" ng-click="back()"></button>
-    <h1 class="title large" >{{barber}}'s Appointments</h1>
-    <button class="button icon-right ion-plus button-clear button-assertive" ng-click="schedule()"></button>
-    </ion-header-bar>
-  <ion-content class="padding">
-<!-- <flex-calendar options="options" events="events" style="padding-top: 2em"></flex-calendar> -->
-        <div class="list card" ng-repeat="a in appointments" ng-if="a.barber === barber">
-          <!-- <a href="#" class="item item-icon-left">
-            <i class="icon ion-ios-clock"></i>
-            {{a.barber}}
-          </a> -->
-          <a href="#" class="item item-icon-left">
-            <i class="icon ion-ios-clock"></i>
-            {{a.time | date:"MMM d, yyyy 'at' h:mm a"}}
-          </a>
-          <a href="#" class="item item-icon-left">
-            <i class="icon ion-person"></i>
-            {{a.client_name}}
-          </a>
-
-          <a href="#" ng-href="tel: {{a.client_phone}}" class="item item-icon-left">
-            <i class="icon ion-ios-telephone"></i>
-            {{a.client_phone}}
-          </a>
-
-          <div class="button-bar">
-            <button class="button button-dark" ng-click="reschedule(a._id)">Reschedule</button>
-            <button class="button button-assertive" ng-click="delete(a._id)">Cancel</button>
+    <h1 class="title large">{{barber}}'s Appointments</h1>
+  </ion-header-bar>
+  <ion-content has-bouncing="false">
+    <flex-calendar events="events" options="options" style="padding-top: 2em"></flex-calendar>
+    <ion-list>
+      <ion-item collection-repeat="a in appointments" can-swipe="true">
+        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
+          <div class="" style="width: 100%">
+            <div class="" style="float: left">
+              <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
+            </div>
+            <div class="" style="float: right">
+              {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}} - {{a.end_time}}
+            </div>
           </div>
+        </div>
 
-        </div>
-        <div class="padding">
-<!-- safe yo -->
-        </div>
-        <div class="" style="margin-top: 3em">
-        </div>
+        <a href="tel:{{a.client_phone}}">
+          <div class="button button-full cancel-btn" ng-if="a.client_name">
+            <div class="" style="width: 100%">
+              <div class="" style="float: left">
+                <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> {{a.client_name}}
+              </div>
+              <div class="" style="float: right">
+                {{a.start_time}} - {{a.end_time}}
+              </div>
+            </div>
+          </div>
+        </a>
+        <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="a.client_name">
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+
+    <div style="margin-top: 3em"></div>
   </ion-content>
 </ion-view>
