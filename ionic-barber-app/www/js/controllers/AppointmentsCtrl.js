@@ -31,10 +31,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     }
   });
 
-  //Functions
-  $scope.back = function() {
-    $state.go('account');
-  };
+  //Functions -----------------------------------------------
 
   $scope.schedule = function(apm) {
     // An elaborate, custom popup
@@ -135,7 +132,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     });
   };
 
-  // Flex Calendar-------------------------------------------------------
+  // Flex Calendar------------------------------------------------
 
   var populate = function Populate(date) {
     console.log('called populate');

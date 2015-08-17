@@ -1,16 +1,16 @@
 
 app.factory('barberInfo', function() {
   var barbers = [{
+    name: "Antonio",
+    desc: "Profesional Barber"
+  },{
     name: "Gabino",
     desc: "Profesional Barber"
   }, {
     name: "Matt",
     desc: "Profesional Barber"
-  }, {
-    name: "Antonio",
-    desc: "Profesional Barber"
-  }];
-  var barber = 'Gabino';
+  }, ];
+  var barber = 'Antonio';
   return {
     setBaber: function(name) {
       console.log('Setting Name');
