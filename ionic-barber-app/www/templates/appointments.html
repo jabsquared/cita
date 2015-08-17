@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <ion-view name="appointments-view" title="{{barber}}'s Appointments">
-
-  <ion-content class="has-header has-footer" has-bouncing="false">
+  <ion-nav-bar class="bar-light" align-title="center">
+      <ion-nav-back-button class="button icon-left button-clear">
+          <i class="ion-chevron-left"></i>
+      </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content class="has-header" has-bouncing="false">
     <flex-calendar events="events" options="options"></flex-calendar>
     <ion-list>
       <ion-item collection-repeat="a in appointments" can-swipe="false">
@@ -37,13 +41,5 @@
     </ion-list>
 
   </ion-content>
-
-
-  <ion-footer-bar>
-    <div class="title">
-      <img style="width: 270px; padding:4.5px" ng-src="img/logo.png" alt="THE BEAU BARBERSHOP" />
-    </div>
-
-  </ion-footer-bar>
 
 </ion-view>
