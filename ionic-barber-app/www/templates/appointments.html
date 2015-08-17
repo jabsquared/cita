@@ -4,41 +4,13 @@
     <button class="button icon-left ion-chevron-left button-clear button-assertive" ng-click="back()"></button>
     <h1 class="title large">{{barber}}'s Appointments</h1>
   </ion-header-bar>
-  <ion-content class="has-header" has-bouncing="false">
+
+  <ion-content class="has-header has-footer" has-bouncing="false">
     <flex-calendar events="events" options="options"></flex-calendar>
-    <!-- <div class="list">
-      <div class="" collection-repeat="a in appointments">
-        <button class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
-          <div class="" style="width: 100%">
-            <div class="" style="float: left">
-              <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i>
-              Schedule
-            </div>
-            <div class="" style="float: right">
-              {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}}
-              -
-              {{a.end_time}}
-            </div>
-          </div>
-        </button>
-        <button class="button button-full cancel-btn" ng-click="delete(a)" ng-if="a.client_name">
-          <div class="" style="width: 100%">
-            <div class="" style="float: left">
-              <i class="icon icon-left ion-close-circled" style="margin-right: 1em;"></i>
-              Cancel
-            </div>
-            <div class="" style="float: right">
-              {{a.start_time}}
-              -
-              {{a.end_time}}
-            </div>
-          </div>
-        </button>
-      </div>
-    </div> -->
     <ion-list>
-      <ion-item collection-repeat="a in appointments">
-        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name" can-swipe="false">
+      <ion-item collection-repeat="a in appointments" can-swipe="false">
+
+        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
@@ -49,33 +21,33 @@
           </div>
         </div>
 
-
-        <div can-swipe="true" ng-if="a.client_name">
-
-          <a ng-href=" tel:{{a.client_phone}}" style="text-decoration:none">
-            <div class="button button-full cancel-btn">
-              <div class="" style="width: 100%">
-                <div class="" style="float: left">
-                  <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> {{a.client_name}}
-                </div>
-                <div class="" style="float: right" ng-click="delete(a)">
-                  {{a.start_time}} - {{a.end_time}}
-                  <!-- <i class="icon icon-right ion-trash-a">
-                </i> -->
-                </div>
+        <a href="tel:{{a.client_phone}}">
+          <div class="button button-full cancel-btn" ng-if="a.client_name">
+            <div class="" style="width: 100%">
+              <div class="" style="float: left">
+                <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> {{a.client_name}}
+              </div>
+              <div class="" style="float: right">
+                {{a.start_time}} - {{a.end_time}}
               </div>
             </div>
-          </a>
-        </div>
+          </div>
+        </a>
 
         <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="a.client_name">
         </ion-option-button>
       </ion-item>
+
     </ion-list>
 
-    <div style="text-align: center">
-      <img style="width: 81vw; padding: 2.7vw;" src="img/logo.png" alt="THE BEAU BARBERSHOP" />
-    </div>
   </ion-content>
+
+
+  <ion-footer-bar>
+    <div class="title">
+      <img style="width: 270px; padding:4.5px" ng-src="img/logo.png" alt="THE BEAU BARBERSHOP" />
+    </div>
+
+  </ion-footer-bar>
 
 </ion-view>
