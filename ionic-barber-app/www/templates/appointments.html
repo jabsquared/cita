@@ -36,7 +36,7 @@
         </button>
       </div>
     </div> -->
-    <ion-list cache-view="false">
+    <ion-list>
       <ion-item collection-repeat="a in appointments">
         <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name" can-swipe="false">
           <div class="" style="width: 100%">
@@ -52,7 +52,7 @@
 
         <div can-swipe="true" ng-if="a.client_name">
 
-          <a href="tel:{{a.client_phone}}" style="text-decoration:none">
+          <a ng-href=" tel:{{a.client_phone}}" style="text-decoration:none">
             <div class="button button-full cancel-btn">
               <div class="" style="width: 100%">
                 <div class="" style="float: left">
