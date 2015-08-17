@@ -4,8 +4,8 @@
     <button class="button icon-left ion-chevron-left button-clear button-assertive" ng-click="back()"></button>
     <h1 class="title large">{{barber}}'s Appointments</h1>
   </ion-header-bar>
-  <ion-content has-bouncing="false">
-    <flex-calendar events="events" options="options" style="padding-top: 2em"></flex-calendar>
+  <ion-content class="has-header" has-bouncing="false">
+    <flex-calendar events="events" options="options"></flex-calendar>
     <!-- <div class="list">
       <div class="" collection-repeat="a in appointments">
         <button class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
@@ -70,10 +70,12 @@
 
         <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="a.client_name">
         </ion-option-button>
-
       </ion-item>
     </ion-list>
 
-    <div style="margin-top: 3em"></div>
+    <div style="text-align: center">
+      <img style="width: 81vw; padding: 2.7vw;" src="img/logo.png" alt="THE BEAU BARBERSHOP" />
+    </div>
   </ion-content>
+
 </ion-view>
