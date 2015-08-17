@@ -7,7 +7,8 @@ var twilio = require('twilio');
 if (secret.twilioAuth.sID!=="lab"){
   var client = new twilio.RestClient(
     secret.twilioAuth.sID,
-    secret.twilioAuth.token);
+    secret.twilioAuth.token
+  );
 }
 
 var lab = false;
@@ -17,8 +18,8 @@ var sendSMS = function SendSMS(toNum, msg) {
     console.log(msg);
     return;
   }
-  var fromNum = '+13602343448';  // Bryan's #
-  // var fromNum = '+14696152255'; // LAB's free #
+  // var fromNum = '+13602343448';  // Bryan's #
+  var fromNum = '+14696152255'; // LAB's free #
   if (!toNum) {
     // toNum = "+12067909711"; // Bogdan's #
     toNum = "+12536422707"; // LAB's #

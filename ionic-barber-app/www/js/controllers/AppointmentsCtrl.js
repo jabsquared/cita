@@ -1,4 +1,5 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo) {
+  localAptDB.sync(remoteAptDB, { live:true, retry: true });
 
   //Feilds
   $scope.data = {};

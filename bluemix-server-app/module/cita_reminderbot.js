@@ -27,11 +27,11 @@ var changes = aptDB.changes({
   if (theD.barber === null) {
     return;
   }
-  logDB.put(theD).then(function(response) {
-    // handle response
-  }).catch(function(err) {
-    console.log(err);
-  });
+
+  console.log(theD);
+
+  PouchUtils.logAppointment(logDB, theD);
+
   var instantSMS =
     header + "You scheduled a hair cut on " +
     ad.format("dddd, MMMM Do YYYY") + " at " +
@@ -141,7 +141,6 @@ var SMSBot = function() {
         // Toggle sms1
         theD.sms_1 = true;
         // Put to DB then Send Reminder SMS
-        PouchUtils.putAppointment(logDB, theD, null);
         PouchUtils.putAppointment(aptDB, theD, sms1);
         return;
       }

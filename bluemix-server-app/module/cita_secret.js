@@ -24,8 +24,8 @@ if (process.env.VCAP_SERVICES) {
 
   // Get all of user-provided things, in which check for Twilio
   vcapServices['user-provided'].forEach(function(service) {
-    if (service.name === 'Twilio-9n') { // Release Twilio
-    // if (service.name === 'Twilio-79') { // Test Twilio
+    // if (service.name === 'Twilio-9n') { // Release Twilio
+    if (service.name === 'Twilio-79') { // Test Twilio
       twilioAuth.sID = service.credentials.accountSID;
       twilioAuth.token = service.credentials.authToken;
     }
