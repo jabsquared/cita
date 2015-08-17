@@ -1,13 +1,5 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, $ionicListDelegate) {
 
-  localAptDB.sync(remoteAptDB, {
-    live: true,
-    retry: true
-  }).on('change', function(info) {
-    // handle change
-    $scope.$apply();
-  });
-
   //Feilds
   $scope.data = {};
   $scope.data.alarm = true;
@@ -134,9 +126,9 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   // Flex Calendar------------------------------------------------
 
-  var populate = function Populate(date) {
-    console.log('called populate');
-    console.log($scope.data.date);
+  var populate = function Populate() {
+    // console.log('called populate');
+    // console.log($scope.data.date);
     var today = $scope.data.date.hour(9).minutes(0);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
@@ -153,7 +145,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
 
   var process = function Process(date) {
     // console.log('call process');
-    populate(date);
+    populate();
     // console.log(moment(date).format('YYYY-MM-DD'));
     // console.log($scope.barber);
     var searchDate = moment(date).format("YYYY-MM-DD");
@@ -208,4 +200,12 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // process($scope.data.date);
     },
   };
+
+  localAptDB.sync(remoteAptDB, {
+    live: true,
+    retry: true
+  }).on('change', function(info) {
+    // handle change
+    process($scope.data.date.format());
+  });
 });
