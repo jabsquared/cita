@@ -1,5 +1,12 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo) {
-  localAptDB.sync(remoteAptDB, { live:true, retry: true });
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, $ionicListDelegate) {
+
+  localAptDB.sync(remoteAptDB, {
+    live:true,
+    retry: true
+  }).on('change', function (info) {
+  // handle change
+    $scope.$apply();
+  });
 
   //Feilds
   $scope.data = {};
@@ -194,7 +201,8 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // TODO Remove call to process.
       $scope.data.date = moment(date_obj);
       process(date_obj);
-      $state.reload();
+      // $state.reload();
+      $ionicListDelegate.closeOptionButtons();
     },
     changeMonth: function(month, year) {
       console.log(month, year);
