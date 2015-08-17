@@ -46,6 +46,7 @@ var sendSMS = function SendSMS(toNum, msg) {
       return;
     }
     console.log("|--------- SentSMS ---------|");
+    console.log(toNum);
     console.log(msg);
     console.log("|---------------------------|");
 

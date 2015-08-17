@@ -10,7 +10,7 @@ app.factory('barberInfo', function() {
     name: "Matt",
     desc: "Profesional Barber"
   }, ];
-  var barber = 'Antonio';
+  var barber = "Gabino";
   return {
     setBaber: function(name) {
       console.log('Setting Name');
