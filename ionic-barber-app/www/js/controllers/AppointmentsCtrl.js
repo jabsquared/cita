@@ -1,10 +1,10 @@
 app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, $ionicListDelegate) {
 
   localAptDB.sync(remoteAptDB, {
-    live:true,
+    live: true,
     retry: true
-  }).on('change', function (info) {
-  // handle change
+  }).on('change', function(info) {
+    // handle change
     $scope.$apply();
   });
 
@@ -122,7 +122,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         k = moment(k, "YYYY-MM-DDTh:mm a");
 
         console.log('about to delete');
-        localAptDB.remove(apm).then(function(){
+        localAptDB.remove(apm).then(function() {
           process(k);
         });
       } else {
@@ -208,5 +208,4 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       // process($scope.data.date);
     },
   };
-
 });
