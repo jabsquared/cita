@@ -18,8 +18,6 @@ var sendSMS = function SendSMS(toNum, msg) {
     console.log(msg);
     return;
   }
-  // var fromNum = '+13602343448';  // Bryan's #
-  var fromNum = '+14696152255'; // LAB's free #
   if (!toNum) {
     // toNum = "+12067909711"; // Bogdan's #
     toNum = "+12536422707"; // LAB's #
@@ -35,7 +33,7 @@ var sendSMS = function SendSMS(toNum, msg) {
   //
   client.sendMessage({
     to: toNum,
-    from: fromNum,
+    from: secret.twilioAuth.fromNum,
     body: msg
   }, function(err, message) {
     if (err) {

@@ -21,6 +21,10 @@ app.run(function($ionicPlatform) {
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
+    localAptDB.sync(remoteAptDB, {
+      live: true,
+      retry: true
+    });
   });
 });
 
