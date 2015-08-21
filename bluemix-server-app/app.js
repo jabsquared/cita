@@ -1,21 +1,15 @@
 'use strict';
-var
-  express = require('express'),
-  cfenv = require('cfenv');
 
-var app = express();
+var restify = require('restify');
 
-var port = (process.env.VCAP_APP_PORT || 3000);
+var server = restify.createServer();
 
 var bot = require('./module/cita_reminderbot');
 
-var test = require('./module/cita_test');
+// var test = require('./module/cita_test');
 
-var appEnv = cfenv.getAppEnv();
-
-var server = app.listen(appEnv.port, appEnv.bind, function() {
-  // print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
+server.listen(process.env.VCAP_APP_PORT || 3000, function() {
+	console.log('Travel service listening on '+ server.url);
 });
 
 setInterval(function() {

@@ -18,6 +18,7 @@ var changes = aptDB.changes({
   live: true,
   include_docs: true
 }).on('create', function(info) {
+  console.log("Something Changed!");
   // handle change
   var theD = info.doc;
   // console.log("New Doc Added!");
@@ -28,7 +29,7 @@ var changes = aptDB.changes({
     return;
   }
 
-  console.log(theD);
+  // console.log(theD);
 
   PouchUtils.logAppointment(logDB, theD);
 
@@ -42,7 +43,6 @@ var changes = aptDB.changes({
   sender.SendSMS(theD.client_phone, instantSMS);
   // console.log(change);
 }).on('delete', function(info) {
-  // console.log(change);
   // Send some goodbye SMS here
   // console.log(info);
   var nao = moment().tz('America/Vancouver');
@@ -61,6 +61,7 @@ var changes = aptDB.changes({
   // console.log(change);
 }).on('complete', function(info) {
   // changes() was canceled
+  console.log(info);
 }).on('error', function(err) {
   console.log(err);
 });
@@ -83,6 +84,7 @@ var il = new InfiniteLoop();
 var SMSBot = function() {
   // Get the Current Date
   var nao = moment().tz('America/Vancouver');
+  console.log(nao.format());
   // console.log("|--- t = " + (++bm) + "s");
   // Extract the needed infomation from
   var naoymd =

@@ -30,7 +30,8 @@ var sendSMS = function SendSMS(toNum, msg) {
   if (!msg) {
     msg = "From The Beau Barbershop: jabSquared!";
   }
-  //
+
+  // Send SMS
   client.sendMessage({
     to: toNum,
     from: secret.twilioAuth.fromNum,
