@@ -47,8 +47,10 @@ var testIncomingAppointment = function TestIncomingAppointment() {
   });
 };
 
-// testIncomingAppointment();
+exports.tia = testIncomingAppointment;
 
-il.add(testIncomingAppointment, []).setInterval(999).run();
+exports.tifa = function Tifa() {
+  il.add(testIncomingAppointment, []).setInterval(2700).run();
+};
 
 module.exports = exports;

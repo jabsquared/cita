@@ -8,7 +8,7 @@ var PouchDB = require('pouchdb');
 // var moment = require('moment');
 
 exports.aptDB = (secret.cloudantAuth.url === "lab") ?
-  new PouchDB("lab/apm") : // Local testing
+  new PouchDB("http://127.0.0.1:5984/apm") : // Local testing
   new PouchDB(secret.cloudantAuth.url + "/appointments", {
     auth: {
       username: secret.cloudantAuth.user,
@@ -17,7 +17,7 @@ exports.aptDB = (secret.cloudantAuth.url === "lab") ?
   });
 
 exports.logDB = (secret.cloudantAuth.url === "lab") ?
-  new PouchDB("lab/log") : // Local testing
+  new PouchDB("http://127.0.0.1:5984/log") : // Local testing
   new PouchDB(secret.cloudantAuth.url + "/logs", {
     auth: {
       username: secret.cloudantAuth.user,
@@ -40,7 +40,7 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
     done: theD.done,
   }, theD._id, theD._rev, function(err, response) {
     if (err) {
-      return console.log(err);
+      return console.log("PutApp ERR:" + err);
     }
     // console.log(response);
     sender.SendSMS(theD.client_phone, msg);
@@ -64,7 +64,7 @@ var logAppointment = function LogAppointment(logDB, theD) {
     done: theD.done,
   }, function(err, response) {
     if (err) {
-      return console.log(err);
+      return console.log("LogPut ERR:" + err);
     }
     // console.log(response);
     return;
@@ -74,7 +74,7 @@ var logAppointment = function LogAppointment(logDB, theD) {
 var updateLog = function updateLog(logDB, theD) {
   logDB.get(theD._id, function(err, doc) {
     if (err) {
-      return console.log(err);
+      return console.log("LogUpd ERR:" + err);
     }
     logDB.put({
       _id: theD._id,
