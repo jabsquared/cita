@@ -43,9 +43,7 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
       return console.log(err);
     }
     // console.log(response);
-    if (msg) {
-      sender.SendSMS(theD.client_phone, msg);
-    }
+    sender.SendSMS(theD.client_phone, msg);
     return;
   });
 };

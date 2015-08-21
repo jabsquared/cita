@@ -11,13 +11,12 @@ if (secret.twilioAuth.sID!=="lab"){
   );
 }
 
-var lab = false;
-
 var sendSMS = function SendSMS(toNum, msg) {
-  if (secret.twilioAuth.sID==="lab"||lab) {
+  if (!msg||secret.twilioAuth.sID==="lab") {
     console.log(msg);
     return;
   }
+
   if (!toNum) {
     // toNum = "+12067909711"; // Bogdan's #
     toNum = "+12536422707"; // LAB's #
@@ -25,10 +24,6 @@ var sendSMS = function SendSMS(toNum, msg) {
   // Add Country Code
   if (toNum[0] !== "+") {
     toNum = "+1" + toNum;
-  }
-  // Blank Message?
-  if (!msg) {
-    msg = "From The Beau Barbershop: jabSquared!";
   }
 
   // Send SMS

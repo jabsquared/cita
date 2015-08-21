@@ -41,7 +41,6 @@ var changes = aptDB.changes({
     "! Have a nice day " + theD.client_name + " :)";
 
   sender.SendSMS(theD.client_phone, instantSMS);
-  // console.log(change);
 }).on('delete', function(info) {
   // Send some goodbye SMS here
   // console.log(info);
@@ -54,7 +53,6 @@ var changes = aptDB.changes({
       ad.format("dddd, MMMM Do YYYY") + " at " +
       ad.format("h:mm A") +
       " has been canceled! Have a nice day :)";
-    console.log(tel);
     sender.SendSMS(tel, cancelSMS);
   }
 }).on('update', function(change) {
@@ -109,31 +107,34 @@ var SMSBot = function() {
       // console.log("Responses on row " + i + " :"); console.log(response.rows[i]);
       var theD = response.rows[i].doc;
       // console.log(theD);
+      // If nao is greater than appTime, Done = true
+      // console.log(nao.diff(ad));
       // If done return;
       if (!theD.alarm || theD.done) {
         return;
       }
+
       // The Appointment Date parsed into a Date Object
       var ad = moment(theD._id, 'YYYY-MM-DDTHH:mm:ssZ')
         .tz('America/Vancouver');
       // console.log(ad);
-      // If nao is > 6AM && 1st reminder == false
-      if (nao.hours() >= 8 && !theD.sms_0) { // Skip if sms_0 has been sent
-        var sms0 =
-          header + "You have an appoinment with " +
-          theD.barber + " at " +
-          ad.format("h:mm A") +
+
+      if (nao.diff(ad) > 999 && !theD.done) {
+        var smsDone = header + "Thank you and " +
           "! Have a nice day " + theD.client_name + " :)";
-        // Toggle sms0
-        theD.sms_0 = true;
-        // Put to DB then Send Reminder SMS
-        PouchUtils.putAppointment(aptDB, theD, sms0);
+
+        // console.log("|--- f = " + (++fi) + "a");
+        // logDB.info(compareLogNFi);
+        theD.done = true;
+        PouchUtils.deleteAppointment(aptDB, logDB, theD, smsDone);
         return;
       }
       // If nao is greater than (AppointmentTime - 30 MIN)
       // TODO:
       // console.log(ad.diff(nao));
-      if (ad.diff(nao) < 30 * 60 * 999 && !theD.sms_1) { //Skip if sms_1 has been sent
+
+      //Skip if sms_1 has been sent
+      if (ad.diff(nao) < 30 * 60 * 999 && !theD.sms_1) {
         var sms1 =
           header + "You have an appoinment in " + 30 +
           " minutes with " +
@@ -147,16 +148,19 @@ var SMSBot = function() {
         return;
       }
 
-      // If nao is greater than appTime, Done = true
-      // console.log(nao.diff(ad));
-      if (nao.diff(ad) > 999) {
-        var smsDone = header + "Thank you and " +
+      // If nao is > 6AM && 1st reminder == false
+      // Skip if sms_0 has been sent
+      if (nao.hours() >= 6 && !theD.sms_0) {
+        var sms0 =
+          header + "You have an appoinment with " +
+          theD.barber + " at " +
+          ad.format("h:mm A") +
           "! Have a nice day " + theD.client_name + " :)";
-
-        // console.log("|--- f = " + (++fi) + "a");
-        // logDB.info(compareLogNFi);
-        theD.done = true;
-        PouchUtils.deleteAppointment(aptDB, logDB, theD, smsDone);
+        // Toggle sms0
+        theD.sms_0 = true;
+        // Put to DB then Send Reminder SMS
+        PouchUtils.putAppointment(aptDB, theD, sms0);
+        return;
       }
     }
   });
