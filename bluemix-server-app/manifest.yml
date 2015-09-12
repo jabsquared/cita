@@ -5,10 +5,10 @@ applications:
   - Twilio-9n
   - Twilio-79
   disk_quota: 1024M
-  host: cita-beau-barbershop
   name: cita-beau-barbershop
   command: node --expose-gc app.js
   path: .
-  domain: mybluemix.net
+  # host: cita-beau-barbershop
+  # domain: mybluemix.net
   instances: 1
   memory: 1024M

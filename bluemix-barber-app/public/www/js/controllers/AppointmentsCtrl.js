@@ -130,7 +130,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
     // console.log('called populate');
     // console.log($scope.data.date);
     var today = $scope.data.date.hour(9).minutes(0);
-    for (var i = 0; i < 14; i++) {
+    for (var i = 0; i < 13; i++) {
       $scope.appointments[i] = {
         slot_num: i,
         date: today.format('YYYY-MM-DD'),

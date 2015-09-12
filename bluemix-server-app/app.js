@@ -1,24 +1,25 @@
 'use strict';
-var
-  express = require('express'),
-  cfenv = require('cfenv');
 
-var app = express();
-
-var port = (process.env.VCAP_APP_PORT || 3000);
+var restify = require('restify');
+var server = restify.createServer();
 
 var bot = require('./module/cita_reminderbot');
+bot.CheckChanges();
 
 var test = require('./module/cita_test');
+test.tia();
 
-var appEnv = cfenv.getAppEnv();
+var InfiniteLoop = require('infinite-loop');
 
-var server = app.listen(appEnv.port, appEnv.bind, function() {
-  // print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
+// Set Timer:
+var botil = new InfiniteLoop();
+// botil.add(bot.SMS, 3000, 4000).setInterval(999).run();
+botil.add(bot.SMS, [30 * 60 * 999, 27*54*999]).setInterval(4500).run();
+
+// Set Garbage collector
+var gctil = new InfiniteLoop();
+gctil.add(global.gc,[]).setInterval(999999).run();
+
+server.listen(process.env.VCAP_APP_PORT || 3000, function() {
+	console.log('Cita service listening on '+ server.url);
 });
-
-setInterval(function() {
-  global.gc();
-  // console.log('GC done')
-}, 999999);
