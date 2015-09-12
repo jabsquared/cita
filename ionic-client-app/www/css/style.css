@@ -7,10 +7,11 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 2.5em;
-  height: 36px;
-  width: 36vw;
+  height: 10vw;
+  max-height: 36px;
+  width: 42vw;
   width: fixed;
-  max-width: 135px;
+  /*max-width: 135px;*/
   margin-top: 4.5px;
 }
 
@@ -83,6 +84,12 @@
 .button.button-block, .button.button-full {
   padding: 0px 10px;
   margin: 0px;
+}
+
+.login-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 1.2vh;
 }
 
 input{

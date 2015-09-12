@@ -5,30 +5,35 @@
     <img id="logo-img" src="img/logo.png" alt="THE BEAU BARBERSHOP" />
   </ion-nav-title>
 
-  <ion-content has-bouncing="true">
-    <div class="title-image padding">
-      <img id="logo-img" src="img/logo.png" alt="THE BEAU BARBERSHOP" />
+  <ion-content has-bouncing="true" class="padding">
+    <div class="padding">
+      <!-- give me some space! -->
+    </div>
+    <div class="list list-inset">
+      <label class="item item-input">
+        <input type="text" placeholder="email" ng-model="data.email" mask="example@mail.com">
+      </label>
+      <label class="item item-input">
+        <input type="password" placeholder="Password" ng-model="data.password">
+      </label>
     </div>
     <div class="padding">
       <!-- give me some space! -->
     </div>
+    <button class="button button-dark login-btn" ng-click="login()">Login</button>
+    <button class="button button-positive login-btn" ng-click="fbLogin()">Login with Facebook</button>
+    <button class="button button-calm login-btn" ng-click="">Login with Twitter</button>
+    <button class="button button-stable login-btn" ng-click="signup()">Sign up</button>
 
-      <div class="list list-inset">
-        <label class="item item-input">
-          <input type="text" placeholder="email" ng-model="data.email" mask="example@mail.com">
-        </label>
-        <label class="item item-input">
-          <input type="password" placeholder="Password" ng-model="data.password">
-        </label>
-      </div>
-      <button class="button button-block button-calm" ng-click="login()">Login</button>
-      <button class="button button-block button-positive" ng-click="fbLogin()">Login with Facebook</button>
-      <button class="button button-block button-assertive" ng-click="signup()">Sign up</button
+    <div class="padding">
+      <!-- give me some space! -->
+    </div>
 
     <footer>
       <div style="text-align: center;">
         made with
         <i style="color: #C21A01; font-size: 1.3em">
+        &#9829;
         </i> by
       </div>
       <div style="width: 100%; text-align: center">
