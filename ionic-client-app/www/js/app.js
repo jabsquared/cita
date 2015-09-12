@@ -1,4 +1,4 @@
-var app = angular.module('starter', ['ionic','ionic.service.core',  'flexcalendar', 'pascalprecht.translate']);
+var app = angular.module('starter', ['ionic','ionic.service.core',  'flexcalendar', 'pascalprecht.translate', 'firebase']);
 // 'ionic.service.analytics',
 
 //instanciate databases
@@ -36,6 +36,12 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     url: '/oauth',
     templateUrl: 'templates/oauth.html',
     controller: 'OAuthCtrl'
+  })
+
+  .state('signup', {
+    url: '/signup',
+    templateUrl: 'templates/signup.html',
+    controller: 'SignupCtrl'
   })
 
   .state('account', {
