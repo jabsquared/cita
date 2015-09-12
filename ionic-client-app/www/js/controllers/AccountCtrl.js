@@ -1,4 +1,4 @@
-app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo, UserData, Auth) {
+app.controller('AccountCtrl', function($scope, $rootScope, $state, barberInfo, UserData, Auth) {
   console.log('in account controller');
 
   //Feilds
@@ -11,7 +11,7 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo, U
     $state.go('appointments');
   };
 
-  $scope.logout = function(){
+  $scope.logout = function() {
     Auth.$unauth();
     UserData.clearUser();
     $state.go('oauth');
