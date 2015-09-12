@@ -38,29 +38,31 @@
 /*Flex Calendar Style*/
 
 .flex-calendar .month {
-  background-color: rgb(163, 0, 6) !important;
+  background-color: #333333 !important;
 }
 
 .flex-calendar .week .day {
-  background-color: rgb(107, 1, 3);
+  background-color: #444444;
 }
 
 .flex-calendar .days .day.selected .number {
-    background-color: #F03C02 !important;
+    background-color: #333333 !important;
 }
 
 
 .schedule-btn {
   /*background-color: #F03C02;*/
-  background-color: #C21A01;
-  border-color: #A30006;
+  background-color: #5c5b5b;
+  /*border-color: black;*/
+  border: none;
   color: #fff;
 }
 
 .schedule-btn:hover {
   /*background-color: #F03C02;*/
-  background-color: #C21A01;
-  border-color: #A30006;
+  background-color: #5c5b5b;
+  /*border-color: black;*/
+  border: none;
   color: #fff;
 }
 

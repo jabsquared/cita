@@ -1,4 +1,4 @@
-app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, $ionicListDelegate) {
+app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootScope, barberInfo, UserData, $ionicListDelegate) {
 
   //Feilds
   $scope.data = {};
@@ -67,6 +67,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         console.log(res.start_time);
         localAptDB.put({
           _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber + '-' + $scope.data.phone,
+          user_id: UserData.getUser.uid,
           slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
