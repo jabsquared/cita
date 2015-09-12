@@ -32,6 +32,12 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
   $stateProvider
 
+  .state('oauth', {
+    url: '/oauth',
+    templateUrl: 'templates/oauth.html',
+    controller: 'OAuthCtrl'
+  })
+
   .state('account', {
     url: '/account',
     templateUrl: 'templates/account.html',
@@ -50,7 +56,7 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     controller: 'ScheduleCtrl'
   });
 
-  $urlRouterProvider.otherwise('/account');
+  $urlRouterProvider.otherwise('/oauth');
 
   // Flex Calendar Language Options
 

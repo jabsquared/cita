@@ -7,10 +7,11 @@
     "ionic-service-analytics": "~0.2.4"
   },
   "dependencies": {
-    "ionic-service-core": "~0.1.9",
-    "ngCordova": "~0.1.17-alpha",
+    "angularfire": "~1.1.2",
     "flex-calendar": "*",
-    "pouchdb": "~4.0.0",
-    "moment": "~2.10.6"
+    "ionic-service-core": "~0.1.9",
+    "moment": "~2.10.6",
+    "ngCordova": "~0.1.17-alpha",
+    "pouchdb": "~4.0.0"
   }
 }
