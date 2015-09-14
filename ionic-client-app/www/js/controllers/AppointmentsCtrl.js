@@ -4,9 +4,17 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   $scope.data = {};
   $scope.data.alarm = true;
   $scope.data.date = new moment();
+  $scope.compare_id = function (id) {
+    console.log('Slot user_id: ' + id);
+    console.log('Current user_id: ' + UserData.getUser().uid);
+    console.log('Result:');
+    console.log(id == UserData.getUser().uid);
+    return id == UserData.getUser().uid;
+  };
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
+  console.log('One Appointment:');
   $scope.events = [];
   // Change this into DB.getall Appointment
   // $scope.events = [{
@@ -161,7 +169,7 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
       console.log(res);
       for (var i = 0; i < res.docs.length; i++) {
         $scope.appointments[res.docs[i].slot_num] = res.docs[i];
-
+        console.log('Appointment: ');
       }
       console.log("Events: ");
       console.log($scope.events);

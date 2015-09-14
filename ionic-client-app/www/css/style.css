@@ -53,6 +53,7 @@
 .schedule-btn {
   /*background-color: #F03C02;*/
   background-color: #5c5b5b;
+  /*background-color: #adaaaa;*/
   /*border-color: black;*/
   border: none;
   color: #fff;
@@ -61,6 +62,7 @@
 .schedule-btn:hover {
   /*background-color: #F03C02;*/
   background-color: #5c5b5b;
+  /*background-color: #adaaaa;*/
   /*border-color: black;*/
   border: none;
   color: #fff;
