@@ -4,12 +4,13 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   $scope.data = {};
   $scope.data.alarm = true;
   $scope.data.date = new moment();
+  $scope.user = UserData.getUser();
   $scope.compare_id = function (id) {
     console.log('Slot user_id: ' + id);
-    console.log('Current user_id: ' + UserData.getUser().uid);
+    console.log('Current user_id: ' + $scope.user.uid);
     console.log('Result:');
-    console.log(id == UserData.getUser().uid);
-    return id == UserData.getUser().uid;
+    console.log(id == $scope.user.uid);
+    return id == $scope.user.uid;
   };
 
   $scope.barber = barberInfo.getBarber();
@@ -36,34 +37,40 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
   $scope.schedule = function(apm) {
     // An elaborate, custom popup
     // console.log(apm.start_time);
-    var myPopup = $ionicPopup.show({
-      templateUrl: 'templates/schedule.html',
-      title: apm.start_time,
-      scope: $scope,
-      buttons: [{
-        text: 'Cancel',
-        onTap: function(e) {
-          return 'canceled';
-        }
-      }, {
-        text: '<b>Confirm</b>',
-        type: 'button-assertive',
-        onTap: function(e) {
-          //  alert($scope.newDate.date);
-          if (!$scope.data.name || !$scope.data.phone) {
-            //don't allow the user to close unless he enters wifi password
-            e.preventDefault();
-          } else {
-            return apm;
-          }
-        }
-      }, ]
+    // var myPopup = $ionicPopup.show({
+    //   templateUrl: 'templates/schedule.html',
+    //   title: apm.start_time,
+    //   scope: $scope,
+    //   buttons: [{
+    //     text: 'Cancel',
+    //     onTap: function(e) {
+    //       return 'canceled';
+    //     }
+    //   }, {
+    //     text: '<b>Confirm</b>',
+    //     type: 'button-assertive',
+    //     onTap: function(e) {
+    //       //  alert($scope.newDate.date);
+    //       if (!$scope.data.name || !$scope.data.phone) {
+    //         //don't allow the user to close unless he enters wifi password
+    //         e.preventDefault();
+    //       } else {
+    //         return apm;
+    //       }
+    //     }
+    //   }, ]
+
+    var myPopup = $ionicPopup.confirm({
+        title: 'With ' + $scope.barber + ' at ' + apm.start_time + '?',
+        template: 'Are you sure you want to schedule a haircut?'
+      // });
     });
+
 
     myPopup.then(function(res) {
       //  alert($scope.newDate.date);
       // console.log(res);
-      if (res !== 'canceled') {
+      if (res) {
 
         var i = $scope.data.date.format('YYYY-MM-DDT');
         var j = apm.start_time;
@@ -75,10 +82,11 @@ app.controller("AppointmentsCtrl", function($scope, $state, $ionicPopup, $rootSc
         console.log(res.start_time);
         localAptDB.put({
           _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber + '-' + $scope.data.phone,
-          user_id: UserData.getUser.uid,
+          user_id: $scope.user.uid,
           slot_num: apm.slot_num,
-          client_name: $scope.data.name,
-          client_phone: $scope.data.phone,
+          // client_name: $scope.data.name,
+          client_name: $scope.user.full_name,
+          // client_phone: $scope.data.phone,
           barber: $scope.barber,
           date: k.format('YYYY-MM-DD'),
           start_time: apm.start_time,

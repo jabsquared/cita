@@ -49,6 +49,18 @@
     background-color: #333333 !important;
 }
 
+.apt_btn {
+  background-color: #333333;
+  border: none;
+  color: #fff;
+}
+
+.apt_btn:hover {
+  background-color: #333333;
+  border: none;
+  color: #fff;
+}
+
 
 .schedule-btn {
   /*background-color: #F03C02;*/
@@ -70,13 +82,15 @@
 
 .cancel-btn {
   background-color: #6B0103;
-  border-color: #525252;
+  /*border-color: #525252;*/
+  border: none;
   color: #fff;
 }
 
 .cancel-btn:hover {
   background-color: #6B0103;
-  border-color: #525252;
+  /*border-color: #525252;*/
+  border: none;
   color: #fff;
 }
 
