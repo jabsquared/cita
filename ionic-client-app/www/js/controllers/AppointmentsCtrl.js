@@ -68,13 +68,13 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
       if (res !== 'canceled') {
 
         var i = $scope.data.date.format('YYYY-MM-DDT');
-        var j = apm.startTime;
+        var j = apm.start_time;
 
         var k = i + j;
         k = moment(k, 'YYYY-MM-DDTh:mm a');
 
         console.log('putting data');
-        console.log(res.startTime);
+        console.log(res.start_time);
         localAptDB.put({
           _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber + '-' + $scope.data.phone,
           uid: UserData.getUser.uid,

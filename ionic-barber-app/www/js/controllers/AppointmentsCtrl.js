@@ -67,6 +67,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         console.log(res.start_time);
         localAptDB.put({
           _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber + '-' + $scope.data.phone,
+          uid: '999999999',
           slot_num: apm.slot_num,
           client_name: $scope.data.name,
           client_phone: $scope.data.phone,
