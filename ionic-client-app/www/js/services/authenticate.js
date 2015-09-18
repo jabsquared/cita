@@ -8,9 +8,9 @@ app.factory('Auth', function($firebaseAuth) {
 app.service('UserData', function() {
   var user = {
     uid: '',
-    fullName: '',
+    full_name: '',
     email: '',
-    profileImg: '',
+    profile_img: '',
   };
 
   return {
