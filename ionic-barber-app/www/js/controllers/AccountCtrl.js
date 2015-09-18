@@ -1,4 +1,4 @@
-app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo) {
+app.controller('AccountCtrl', function($scope, $rootScope, $state, barberInfo) {
   console.log('in account controller');
 
   //Feilds

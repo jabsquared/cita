@@ -17,9 +17,7 @@ var checkChanges = function CheckChanges(argument) {
   aptDB.changes({
     since: 'now',
     live: true,
-    INCLUDE_DOCS: true,
-
-    // include_docs: true,
+    include_docs: true,
   }).on('create', function(info) {
     console.log('Something Changed!');
 
@@ -27,7 +25,7 @@ var checkChanges = function CheckChanges(argument) {
     var theD = info.doc;
 
     // console.log('New Doc Added!');
-    // console.log(info);
+    console.log(info);
     var ad = moment(info.id, 'YYYY-MM-DDTHH:mm:ssZ')
       .tz('America/Vancouver');
     if (theD.barber === null) {
@@ -98,8 +96,7 @@ var SMSBot = function(t1, tdel) {
   // Filter by YMDH, client-side
   // console.log(naoymd);
   aptDB.allDocs({
-    // include_docs: true,
-    INCLUDE_DOCS: true,
+    include_docs: true,
     startkey: naoymd, //YMD
     endkey: naoymd + '\uffff',
   }, function(err, response) {

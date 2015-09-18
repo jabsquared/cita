@@ -18,26 +18,27 @@ var barbers = ['Gabino', 'Matt', 'Antonio'];
 
 var testIncomingAppointment = function TestIncomingAppointment() {
   // body...
-  var tDate = moment().add(6,'s');
+  var tDate = moment().add(6, 's');
 
   var barber = barbers[Math.floor(Math.random() * barbers.length)];
 
-  var slot = Math.floor(Math.random()*14);
+  var slot = Math.floor(Math.random() * 14);
 
-  // console.log(tDate.format("YYYY-MM-DDTHH:mm:"));
+  // console.log(tDate.format('YYYY-MM-DDTHH:mm:'));
 
   aptDB.put({
     _id: tDate.format() + '-' + barber + '-' + '0123456789',
-    slot_num: slot,
-    client_name: "LAB",
-    client_phone: "0123456789",
+    uid: 'SOMEUNIQUIEUID',
+    slotNum: slot,
+    clientName: 'LAB',
+    clientPhone: '0123456789',
     barber: barber,
     date: tDate.format('YYYY-MM-DD'),
-    start_time: tDate.format('h:mm a'),
-    end_time: tDate.add(5,'s').format('h:mm a'),
+    startTime: tDate.format('h:mm a'),
+    endTime: tDate.add(5, 's').format('h:mm a'),
     alarm: true,
-    sms_0: false,
-    sms_1: false,
+    sms0: false,
+    sms1: false,
     done: false,
   }).then(function(response) {
     // Show some pops up fancy stuffs here, also go back to login.
