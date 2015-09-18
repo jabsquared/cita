@@ -7,10 +7,10 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
   $scope.data.date = moment();
   $scope.compare_id = function (id) {
     console.log('Slot user_id: ' + id);
-    console.log('Current user_id: ' + UserData.getUser.uid);
+    console.log('Current user_id: ' + UserData.getUser().uid);
     console.log('Result:');
-    console.log(id == UserData.getUser.uid);
-    return id == UserData.getUser.uid;
+    console.log(id == UserData.getUser().uid);
+    return id == UserData.getUser().uid;
   };
 
   $scope.barber = barberInfo.getBarber();
@@ -78,7 +78,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         console.log(res.start_time);
         localAptDB.put({
           _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber + '-' + $scope.data.phone,
-          uid: UserData.getUser.uid,
+          uid: UserData.getUser().uid,
           slot_num: apm.slot_num,
           // client_name: $scope.data.name,
           client_name: $scope.user.full_name,
