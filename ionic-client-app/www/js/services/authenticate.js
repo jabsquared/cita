@@ -3,6 +3,8 @@ app.factory('Auth', function($firebaseAuth) {
   return $firebaseAuth(ref);
 });
 
+// REVIEW : NEED TO went through a renaming session...
+
 app.service('UserData', function() {
   var user = {
     uid: '',

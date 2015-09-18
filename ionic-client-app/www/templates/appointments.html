@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <ion-view name="appointments-view" title="{{barber}}'s Appointments">
   <ion-nav-bar class="bar-light" align-title="center">
-      <ion-nav-back-button class="button icon-left button-clear">
-          <i class="ion-chevron-left"></i>
-      </ion-nav-back-button>
+    <ion-nav-back-button class="button icon-left button-clear">
+      <i class="ion-chevron-left"></i>
+    </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content class="has-header has-footer" has-bouncing="false">
     <flex-calendar events="events" options="options"></flex-calendar>
     <ion-list>
       <ion-item collection-repeat="a in appointments" can-swipe="false">
 
-        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!a.client_name">
-          <div class="" style="width: 100%">
-            <div class="" style="float: left">
-              <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
-            </div>
-            <div class="" style="float: right">
-              {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}} - {{a.end_time}}
-            </div>
-          </div>
-        </div>
-
-        <!-- TODO: Create there different slots
-                  1. user logged in and it's their slot 
+        <!-- TODO: Revise/Loop Over the different slots
+                  1. user logged in and it's their slot
                   2. user logged in and it's not their slot,
                   3. user logged in and the slot is clear -->
 
         <a href="tel:{{a.client_phone}}">
-          <div class="button button-full cancel-btn" ng-if="a.client_name">
+          <div class="button button-full cancel-btn" ng-if="compare_id(a.uid)">
             <div class="" style="width: 100%">
               <div class="" style="float: left">
                 <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> {{a.client_name}}
@@ -38,6 +27,28 @@
             </div>
           </div>
         </a>
+
+        <div class="button button-full cancel-btn" ng-if="!compare_id(a.uid) && a.client_name">
+          <div class="" style="width: 100%">
+            <div class="" style="float: left">
+              <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> Taken
+            </div>
+            <div class="" style="float: right">
+              {{a.start_time}} - {{a.end_time}}
+            </div>
+          </div>
+        </div>
+
+        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!compare_id(a.uid) && !a.client_name">
+          <div class="" style="width: 100%">
+            <div class="" style="float: left">
+              <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
+            </div>
+            <div class="" style="float: right">
+              {{a.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}} - {{a.end_time}}
+            </div>
+          </div>
+        </div>
 
         <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="a.client_name">
         </ion-option-button>

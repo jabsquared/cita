@@ -1,12 +1,21 @@
 app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootScope, barberInfo, UserData, $ionicListDelegate) {
+  console.log('CTRL: Appointments');
 
   //Feilds
   $scope.data = {};
   $scope.data.alarm = true;
   $scope.data.date = moment();
+  $scope.compare_id = function (id) {
+    console.log('Slot user_id: ' + id);
+    console.log('Current user_id: ' + UserData.getUser().uid);
+    console.log('Result:');
+    console.log(id == UserData.getUser().uid);
+    return id == UserData.getUser().uid;
+  };
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
+  console.log('One Appointment:');
   $scope.events = [];
 
   // Change this into DB.getall Appointment
@@ -31,7 +40,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
     // console.log(apm.start_time);
     var myPopup = $ionicPopup.show({
       templateUrl: 'templates/schedule.html',
-      title: apm.startTime,
+      title: apm.start_time,
       scope: $scope,
       buttons: [{
         text: 'Cancel',
@@ -67,18 +76,18 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         console.log('putting data');
         console.log(res.startTime);
         localAptDB.put({
-          _id: k.format() + '-' + apm.slotNum + '-' + $scope.barber + '-' + $scope.data.phone,
+          _id: k.format() + '-' + apm.slot_num + '-' + $scope.barber + '-' + $scope.data.phone,
           uid: UserData.getUser.uid,
-          slotNum: apm.slotNum,
-          clientName: $scope.data.name,
-          clientPhone: $scope.data.phone,
+          slot_num: apm.slot_num,
+          client_name: $scope.data.name,
+          client_phone: $scope.data.phone,
           barber: $scope.barber,
           date: k.format('YYYY-MM-DD'),
-          startTime: apm.startTime,
-          endTime: apm.endTime,
+          start_time: apm.start_time,
+          end_time: apm.end_time,
           alarm: $scope.data.alarm,
-          sms0: false,
-          sms1: false,
+          sms_0: false,
+          sms_1: false,
           done: false,
         }).then(function(response) {
           // RELOAD Appointment
@@ -112,7 +121,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
       if (res === 'submit') {
         console.log('Deleting');
         var i = $scope.data.date.format('YYYY-MM-DDT');
-        var j = apm.startTime;
+        var j = apm.start_time;
 
         var k = i + j;
         k = moment(k, 'YYYY-MM-DDTh:mm a');
@@ -136,10 +145,10 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
     var today = $scope.data.date.hour(9).minutes(0);
     for (var i = 0; i < 14; i++) {
       $scope.appointments[i] = {
-        slotNum: i,
+        slot_num: i,
         date: today.format('YYYY-MM-DD'),
-        startTime: today.add((45 * i), 'minutes').format('h:mm a'),
-        endTime: today.add(45, 'minutes').format('h:mm a'),
+        start_time: today.add((45 * i), 'minutes').format('h:mm a'),
+        end_time: today.add(45, 'minutes').format('h:mm a'),
       };
       today.subtract((45 * i) + 45, 'minutes');
     }
@@ -166,8 +175,8 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
       // yo, a result
       console.log(res);
       for (var i = 0; i < res.docs.length; i++) {
-        $scope.appointments[res.docs[i].slotNum] = res.docs[i];
-
+        $scope.appointments[res.docs[i].slot_num] = res.docs[i];
+        console.log('Appointment: ');
       }
 
       console.log('Events: ');

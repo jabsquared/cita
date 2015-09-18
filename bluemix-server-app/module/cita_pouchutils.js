@@ -29,16 +29,16 @@ exports.logDB = (secret.cloudantAuth.url === 'lab') ?
 var putAppointment = function PutAppointment(aptDB, theD, msg) {
   aptDB.put({
     uid: theD.uid,
-    slotNum: theD.slotNum,
-    clientName: theD.clientName,
-    clientPhone: theD.clientPhone,
+    slot_num: theD.slot_num,
+    client_name: theD.client_name,
+    client_phone: theD.client_phone,
     barber: theD.barber,
     date: theD.date,
-    startTime: theD.startTime,
-    endTime: theD.endTime,
+    start_time: theD.start_time,
+    end_time: theD.end_time,
     alarm: theD.alarm,
-    sms0: theD.sms0,
-    sms1: theD.sms1,
+    sms_0: theD.sms_0,
+    sms_1: theD.sms_1,
     done: theD.done,
   }, theD._id, theD._rev, function(err, response) {
     if (err) {
@@ -46,7 +46,7 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
     }
 
     // console.log(response);
-    sender.SendSMS(theD.clientPhone, msg);
+    sender.SendSMS(theD.client_phone, msg);
     return;
   });
 };
@@ -55,16 +55,16 @@ var logAppointment = function LogAppointment(logDB, theD) {
   logDB.put({
     _id: theD._id,
     uid: theD.uid,
-    slotNum: theD.slotNum,
-    clientName: theD.clientName,
-    clientPhone: theD.clientPhone,
+    slot_num: theD.slot_num,
+    client_name: theD.client_name,
+    client_phone: theD.client_phone,
     barber: theD.barber,
     date: theD.date,
-    startTime: theD.startTime,
-    endTime: theD.endTime,
+    start_time: theD.start_time,
+    end_time: theD.end_time,
     alarm: theD.alarm,
-    sms0: theD.sms0,
-    sms1: theD.sms1,
+    sms_0: theD.sms_0,
+    sms_1: theD.sms_1,
     done: theD.done,
   }, function(err, response) {
     if (err) {
@@ -84,16 +84,16 @@ var updateLog = function UpdateLog(aptDB, logDB, theD, msg) {
 
     logDB.put({
       uid: theD.uid,
-      slotNum: theD.slotNum,
-      clientName: theD.clientName,
-      clientPhone: theD.clientPhone,
+      slot_num: theD.slot_num,
+      client_name: theD.client_name,
+      client_phone: theD.client_phone,
       barber: theD.barber,
       date: theD.date,
-      startTime: theD.startTime,
-      endTime: theD.endTime,
+      start_time: theD.start_time,
+      end_time: theD.end_time,
       alarm: theD.alarm,
-      sms0: theD.sms0,
-      sms1: theD.sms1,
+      sms_0: theD.sms_0,
+      sms_1: theD.sms_1,
       done: theD.done,
     }, theD._id, doc._rev, function(err, response) {
       if (err) {

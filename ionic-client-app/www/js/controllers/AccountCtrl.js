@@ -1,5 +1,5 @@
 app.controller('AccountCtrl', function($scope, $rootScope, $state, barberInfo, UserData, Auth) {
-  console.log('in account controller');
+  console.log('CTRL: Account');
 
   //Feilds
   $scope.barbers = barberInfo.getBarbers();
