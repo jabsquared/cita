@@ -1,5 +1,5 @@
-app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo, UserData, Auth) {
-  console.log('in account controller');
+app.controller('AccountCtrl', function($scope, $rootScope, $state, barberInfo, UserData, Auth) {
+  console.log('CTRL: Account');
 
   //Feilds
   $scope.barbers = barberInfo.getBarbers();
@@ -11,7 +11,7 @@ app.controller("AccountCtrl", function($scope, $rootScope, $state, barberInfo, U
     $state.go('appointments');
   };
 
-  $scope.logout = function(){
+  $scope.logout = function() {
     Auth.$unauth();
     UserData.clearUser();
     $state.go('oauth');

@@ -1,15 +1,15 @@
-app.controller("OAuthCtrl", function($scope, $state, Auth, UserData) {
-  console.log('in oauth controller');
+app.controller('OAuthCtrl', function($scope, $state, Auth, UserData) {
+  console.log('CTRL: OAuth');
   $scope.data = {};
 
   $scope.fbLogin = function() {
-    Auth.$authWithOAuthPopup("facebook", {
-      scope: "email" // permissions requested
+    Auth.$authWithOAuthPopup('facebook', {
+      scope: 'email', // permissions requested
     }).then(function(authData) {
       // Login Successful
     }).catch(function(error) {
-      if (error.code === "TRANSPORT_UNAVAILABLE") {
-        Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+      if (error.code === 'TRANSPORT_UNAVAILABLE') {
+        Auth.$authWithOAuthPopup('facebook').then(function(authData) {
           console.log(authData);
         });
       } else {
@@ -25,12 +25,12 @@ app.controller("OAuthCtrl", function($scope, $state, Auth, UserData) {
     console.log('password ' + $scope.data.password);
     Auth.$authWithPassword({
       email: $scope.data.email,
-      password: $scope.data.password
+      password: $scope.data.password,
     }, function(error, authData) {
       if (error) {
-        console.log("Login Failed!", error);
+        console.log('Login Failed!', error);
       } else {
-        console.log("Authenticated successfully with payload:", authData);
+        console.log('Authenticated successfully with payload:', authData);
       }
     });
   };
@@ -41,27 +41,30 @@ app.controller("OAuthCtrl", function($scope, $state, Auth, UserData) {
 
   Auth.$onAuth(function(authData) {
     if (authData === null) {
-      console.log("Not logged in yet");
+      console.log('Not logged in yet');
     } else {
-      console.log("Logged in as", authData.uid);
+      console.log('Logged in as ', authData.uid);
+
       // Save Profile Information
       if (authData.provider === 'facebook') {
         UserData.setUser({
           uid: authData.uid,
-          full_name: authData.facebook.displayName,
+          fullName: authData.facebook.displayName,
           email: authData.facebook.email,
-          profile_img: authData.facebook.profileImageURL
+          profileImg: authData.facebook.profileImageURL,
         });
       } else if (authData.provider === 'password') {
         UserData.setUser({
           uid: authData.uid,
-          full_name: '',
+          fullName: '',
           email: authData.password.email,
-          profile_img: authData.password.profileImageURL
+          profileImg: authData.password.profileImageURL,
         });
       }
+
       $state.go('account');
     }
+
     $scope.authData = authData; // This will display the user's name in our view
   });
 });
