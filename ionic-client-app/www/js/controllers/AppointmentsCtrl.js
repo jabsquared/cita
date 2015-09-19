@@ -5,17 +5,17 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
   $scope.data = {};
   $scope.data.alarm = true;
   $scope.data.date = moment();
-  $scope.compare_id = function (id) {
+  $scope.compare_id = function(id) {
     // console.log('Slot user_id: ' + id);
     // console.log('Current user_id: ' + UserData.getUser().uid);
     // console.log('Result:');
     // console.log(id == UserData.getUser().uid);
     return id == UserData.getUser().uid;
   };
-  $scope.is_not_default = function (slot) {
-    if(slot.hasOwnProperty('uid')){
+  $scope.is_not_default = function(slot) {
+    if (slot.hasOwnProperty('uid')) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -48,7 +48,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
     // console.log(apm.start_time);
     var myPopup = $ionicPopup.show({
       templateUrl: 'templates/schedule.html',
-      title: apm.start_time,
+      title: "<h4>" + 'Schedule cut at ' + apm.start_time + "</h4>",
       scope: $scope,
       buttons: [{
         text: 'Cancel',
@@ -60,14 +60,11 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         type: 'button-assertive',
         onTap: function(e) {
           //  alert($scope.newDate.date);
-          if (!$scope.data.name || !$scope.data.phone) {
-            //don't allow the user to close unless he enters wifi password
-            e.preventDefault();
-          } else {
-            return apm;
-          }
+          //don't allow the user to close unless he enters wifi password
+          // e.preventDefault();
+          return apm;
         },
-      },]
+      }, ]
     });
 
 
@@ -123,8 +120,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         onTap: function(e) {
           return 'submit';
         },
-      },
-    ],
+      }, ],
     });
     confirmPopup.then(function(res) {
       console.log(res);
