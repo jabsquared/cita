@@ -6,10 +6,10 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
   $scope.data.alarm = true;
   $scope.data.date = moment();
   $scope.compare_id = function (id) {
-    console.log('Slot user_id: ' + id);
-    console.log('Current user_id: ' + UserData.getUser().uid);
-    console.log('Result:');
-    console.log(id == UserData.getUser().uid);
+    // console.log('Slot user_id: ' + id);
+    // console.log('Current user_id: ' + UserData.getUser().uid);
+    // console.log('Result:');
+    // console.log(id == UserData.getUser().uid);
     return id == UserData.getUser().uid;
   };
 
@@ -36,6 +36,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
   //Functions -----------------------------------------------
 
   $scope.schedule = function(apm) {
+    console.log('input: ' + apm);
     // An elaborate, custom popup
     // console.log(apm.start_time);
     var myPopup = $ionicPopup.show({
@@ -66,8 +67,8 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
     myPopup.then(function(res) {
       //  alert($scope.newDate.date);
       // console.log(res);
-      if (res) {
-
+      if (res !== 'canceled') {
+        console.log('Scheduling...');
         var i = $scope.data.date.format('YYYY-MM-DDT');
         var j = apm.start_time;
 
@@ -81,7 +82,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
           uid: UserData.getUser().uid,
           slot_num: apm.slot_num,
           // client_name: $scope.data.name,
-          client_name: $scope.user.full_name,
+          client_name: UserData.getUser().full_name,
           // client_phone: $scope.data.phone,
           barber: $scope.barber,
           date: k.format('YYYY-MM-DD'),
