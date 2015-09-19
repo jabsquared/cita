@@ -87,3 +87,6 @@
 input{
   color: gray !important;
 }
+.scroll-content {
+  cursor: pointer;
+}
