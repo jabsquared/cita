@@ -12,6 +12,13 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
     // console.log(id == UserData.getUser().uid);
     return id == UserData.getUser().uid;
   };
+  $scope.is_not_default = function (slot) {
+    if(slot.hasOwnProperty('uid')){
+      return true;
+    }else{
+      return false;
+    }
+  }
 
   $scope.barber = barberInfo.getBarber();
   $scope.appointments = [];
@@ -151,7 +158,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         slot_num: i,
         date: today.format('YYYY-MM-DD'),
         start_time: today.add((45 * i), 'minutes').format('h:mm a'),
-        end_time: today.add(45, 'minutes').format('h:mm a'),
+        end_time: today.add(45, 'minutes').format('h:mm a')
       };
       today.subtract((45 * i) + 45, 'minutes');
     }

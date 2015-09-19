@@ -16,7 +16,7 @@
                   3. user logged in and the slot is clear -->
 
         <a href="tel:{{a.client_phone}}">
-          <div class="button button-full cancel-btn" ng-if="compare_id(a.uid)">
+          <div class="button button-full apt_btn" ng-if="compare_id(a.uid)">
             <div class="" style="width: 100%">
               <div class="" style="float: left">
                 <i class="icon icon-left ion-scissors" style="margin-right: 1em;"></i> Your Appointment
@@ -28,7 +28,7 @@
           </div>
         </a>
 
-        <div class="button button-full cancel-btn" ng-if="!compare_id(a.uid) && a.client_name">
+        <div class="button button-full cancel-btn" ng-if="!compare_id(a.uid) && is_not_default(a)">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-person" style="margin-right: 1em;"></i> Taken
@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!compare_id(a.uid) && !a.client_name">
+        <div class="button button-full schedule-btn" ng-click="schedule(a)" ng-if="!compare_id(a.uid) && !is_not_default(a)">
           <div class="" style="width: 100%">
             <div class="" style="float: left">
               <i class="icon icon-left ion-calendar" style="margin-right: 1em"></i> Schedule
@@ -50,7 +50,7 @@
           </div>
         </div>
 
-        <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="compare_id(a.user_id) && a.client_name">
+        <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(a)" ng-if="compare_id(a.uid)">
         </ion-option-button>
       </ion-item>
     </ion-list>
