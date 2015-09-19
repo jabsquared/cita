@@ -6,7 +6,6 @@
   clear:both;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2.5em;
   height: 10vw;
   max-height: 36px;
   width: 42vw;
@@ -16,7 +15,7 @@
 }
 
 .barber-card {
-  padding-bottom: 0px;
+  padding-bottom: 0;
   /*background-color: #A3A3A3;*/
   /*background-color: #4F4F4F;*/
   background-color: #333333;
@@ -42,17 +41,36 @@
 }
 
 .flex-calendar .week .day {
-  background-color: #444444;
+  background-color: #444444 !important;
 }
 
 .flex-calendar .days .day.selected .number {
     background-color: #333333 !important;
 }
 
+.apt_btn {
+  /*background-color: #333333 !important;*/
+  background-color: #FFFFFF !important;
+  border-color: #333333;
+  border: none;
+  /*color: #fff;*/
+  color: black;
+}
+
+.apt_btn:hover {
+  /*background-color: #333333 !important;*/
+  background-color: #FFFFFF !important;
+  border-color: #333333;
+  border: none;
+  /*color: #fff;*/
+  color: black;
+}
+
 
 .schedule-btn {
   /*background-color: #F03C02;*/
-  background-color: #5c5b5b;
+  /*background-color: #5c5b5b;*/
+  background-color: #444444 !important;
   /*background-color: #adaaaa;*/
   /*border-color: black;*/
   border: none;
@@ -61,7 +79,8 @@
 
 .schedule-btn:hover {
   /*background-color: #F03C02;*/
-  background-color: #5c5b5b;
+  /*background-color: #5c5b5b;*/
+  background-color: #444444 !important;
   /*background-color: #adaaaa;*/
   /*border-color: black;*/
   border: none;
@@ -69,14 +88,18 @@
 }
 
 .cancel-btn {
-  background-color: #6B0103;
-  border-color: #525252;
+  /*background-color: #6B0103;*/
+  background-color: #333333 !important;
+  /*border-color: #525252;*/
+  border: none;
   color: #fff;
 }
 
 .cancel-btn:hover {
-  background-color: #6B0103;
-  border-color: #525252;
+  /*background-color: #6B0103;*/
+  background-color: #333333 !important;
+  /*border-color: #525252;*/
+  border: none;
   color: #fff;
 }
 

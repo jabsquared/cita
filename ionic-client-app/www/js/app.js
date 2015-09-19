@@ -4,6 +4,9 @@ var app = angular.module('starter', ['ionic','ionic.service.core',  'flexcalenda
 //instanciate databases
 var localAptDB = new PouchDB("appointments");
 
+// Offline Testing:
+// var remoteAptDB = new PouchDB('http://127.0.0.1:5984/apm');
+
 var remoteAptDB = new PouchDB('https://itchentleverturearywhers:U7vFQNN2joOhU03Mw0iUx3SN @af48ada6-78db-4210-a80d-86619c82407e-bluemix.cloudant.com/appointments', {
   auth: {
     username: 'itchentleverturearywhers',
@@ -21,10 +24,10 @@ app.run(function($ionicPlatform) {
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
-    localAptDB.sync(remoteAptDB, {
-      live: true,
-      retry: true
-    });
+    // localAptDB.sync(remoteAptDB, {
+    //   live: true,
+    //   retry: true
+    // });
   });
 });
 

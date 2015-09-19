@@ -4,7 +4,7 @@ var secret = require('./cita_secret');
 
 var twilio = require('twilio');
 
-if (secret.twilioAuth.sID!=="lab"){
+if (secret.twilioAuth.sID !== 'lab') {
   var client = new twilio.RestClient(
     secret.twilioAuth.sID,
     secret.twilioAuth.token
@@ -12,37 +12,39 @@ if (secret.twilioAuth.sID!=="lab"){
 }
 
 var sendSMS = function SendSMS(toNum, msg) {
-  if (!msg||secret.twilioAuth.sID==="lab") {
+  if (!msg || secret.twilioAuth.sID === 'lab') {
     console.log(msg);
     return;
   }
 
   if (!toNum) {
-    // toNum = "+12067909711"; // Bogdan's #
-    toNum = "+12536422707"; // LAB's #
+    // toNum = '+12067909711'; // Bogdan's #
+    toNum = '+12536422707'; // LAB's #
   }
+
   // Add Country Code
-  if (toNum[0] !== "+") {
-    toNum = "+1" + toNum;
+  if (toNum[0] !== '+') {
+    toNum = '+1' + toNum;
   }
 
   // Send SMS
   client.sendMessage({
     to: toNum,
     from: secret.twilioAuth.fromNum,
-    body: msg
+    body: msg,
   }, function(err, message) {
     if (err) {
-      console.error("Problem: " + message);
-      console.log("Error: " + err);
-      console.log("Msg: "+ msg);
-      sendSMS(null, err + ":" + message);
+      console.error('Problem: ' + message);
+      console.log('Error: ' + err);
+      console.log('Msg: ' + msg);
+      sendSMS(null, err + ':' + message);
       return;
     }
-    console.log("|--------- SentSMS ---------|");
+
+    console.log('|--------- SentSMS ---------|');
     console.log(toNum);
     console.log(msg);
-    console.log("|---------------------------|");
+    console.log('|---------------------------|');
 
   });
 };
