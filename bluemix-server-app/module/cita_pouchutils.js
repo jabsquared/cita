@@ -28,10 +28,11 @@ exports.logDB = (secret.cloudantAuth.url === 'lab') ?
 
 var putAppointment = function PutAppointment(aptDB, theD, msg) {
   aptDB.put({
+    _id: theD._id,
     uid: theD.uid,
     slot_num: theD.slot_num,
     client_name: theD.client_name,
-    client_phone: theD.client_phone,
+    // client_phone: theD.client_phone,
     barber: theD.barber,
     date: theD.date,
     start_time: theD.start_time,
@@ -39,7 +40,7 @@ var putAppointment = function PutAppointment(aptDB, theD, msg) {
     alarm: theD.alarm,
     sms_0: theD.sms_0,
     sms_1: theD.sms_1,
-    done: theD.done,
+    done: theD.done
   }, theD._id, theD._rev, function(err, response) {
     if (err) {
       return console.log('PutApp ERR:' + err);
@@ -57,7 +58,7 @@ var logAppointment = function LogAppointment(logDB, theD) {
     uid: theD.uid,
     slot_num: theD.slot_num,
     client_name: theD.client_name,
-    client_phone: theD.client_phone,
+    // client_phone: theD.client_phone,
     barber: theD.barber,
     date: theD.date,
     start_time: theD.start_time,
@@ -65,7 +66,7 @@ var logAppointment = function LogAppointment(logDB, theD) {
     alarm: theD.alarm,
     sms_0: theD.sms_0,
     sms_1: theD.sms_1,
-    done: theD.done,
+    done: theD.done
   }, function(err, response) {
     if (err) {
       return console.log('LogPut ERR:' + err);
@@ -83,10 +84,11 @@ var updateLog = function UpdateLog(aptDB, logDB, theD, msg) {
     }
 
     logDB.put({
+      _id: theD._id,
       uid: theD.uid,
       slot_num: theD.slot_num,
       client_name: theD.client_name,
-      client_phone: theD.client_phone,
+      // client_phone: theD.client_phone,
       barber: theD.barber,
       date: theD.date,
       start_time: theD.start_time,
@@ -94,7 +96,7 @@ var updateLog = function UpdateLog(aptDB, logDB, theD, msg) {
       alarm: theD.alarm,
       sms_0: theD.sms_0,
       sms_1: theD.sms_1,
-      done: theD.done,
+      done: theD.done
     }, theD._id, doc._rev, function(err, response) {
       if (err) {
         return console.log(err);
