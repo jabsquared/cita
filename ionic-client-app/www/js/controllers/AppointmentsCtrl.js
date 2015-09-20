@@ -59,10 +59,13 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         text: '<b>Confirm</b>',
         type: 'button-assertive',
         onTap: function(e) {
-          //  alert($scope.newDate.date);
-          //don't allow the user to close unless he enters wifi password
-          // e.preventDefault();
-          return apm;
+          e.preventDefault();
+          // e.stopImmediatePropagation();
+          console.log('Submit!');
+          // if ($scope.data.phone != null || $scope.data.phone != undefined) {
+            console.log($scope.data.phone);
+            return apm;
+          // }
         },
       }, ]
     });
@@ -87,7 +90,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
           slot_num: apm.slot_num,
           // client_name: $scope.data.name,
           client_name: UserData.getUser().full_name,
-          // client_phone: $scope.data.phone,
+          client_phone: $scope.data.phone,
           barber: $scope.barber,
           date: k.format('YYYY-MM-DD'),
           start_time: apm.start_time,
