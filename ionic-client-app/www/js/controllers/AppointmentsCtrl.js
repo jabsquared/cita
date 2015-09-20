@@ -60,6 +60,7 @@ app.controller('AppointmentsCtrl', function($scope, $state, $ionicPopup, $rootSc
         type: 'button-assertive',
         onTap: function(e) {
           e.preventDefault();
+          // e.stopImmediatePropagation();
           console.log('Submit!');
           // if ($scope.data.phone != null || $scope.data.phone != undefined) {
             console.log($scope.data.phone);
